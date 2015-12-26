@@ -13,7 +13,9 @@ class DateFormat
     /**
      * Private constructor to prevent instantiation of class because it's a static class.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Get date format for RSS feed.
@@ -45,10 +47,11 @@ class DateFormat
      */
     private static function _get($cFormat, $sDate)
     {
-        if ('c' != $cFormat && 'r' != $cFormat) throw new  \PH7\Framework\Date\Exception('Wrong format for the date! You only need to choose between "r" and "c".');
+        if ('c' != $cFormat && 'r' != $cFormat) {
+            throw new  \PH7\Framework\Date\Exception('Wrong format for the date! You only need to choose between "r" and "c".');
+        }
 
         $iTime = (!empty($sDate)) ? strtotime($sDate) : time();
         return date($cFormat, $iTime);
     }
-
 }

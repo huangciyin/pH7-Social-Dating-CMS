@@ -27,13 +27,13 @@ abstract class WriteDesignCoreModel
 
         echo '<p>', t('Categories:'), '<span class="small italic">';
 
-        foreach ($oCategories as $oCategory)
+        foreach ($oCategories as $oCategory) {
             $sContents .= '<a href="' . Uri::get($sMod, 'main', 'category', $oCategory->name, ',title,asc') . '" data-load="ajax">' . $oCategory->name . '</a> &bull; ';
+        }
 
         unset($oCategories);
 
         echo substr($sContents, 0, -8);
         echo '</span></p>';
     }
-
 }

@@ -22,7 +22,6 @@ abstract class Xss
      */
     protected function clean($sValue)
     {
-
     }
 
     /**
@@ -33,10 +32,10 @@ abstract class Xss
      */
     protected function arrayClean(array $aValues)
     {
-         foreach ($aValues as $sKey => $mVal)
-             $aValues[$sKey] = (is_array($mVal)) ? $this->arrayClean($mVal) : $this->clean($mVal);
+        foreach ($aValues as $sKey => $mVal) {
+            $aValues[$sKey] = (is_array($mVal)) ? $this->arrayClean($mVal) : $this->clean($mVal);
+        }
 
-         return $aValues;
+        return $aValues;
     }
-
 }

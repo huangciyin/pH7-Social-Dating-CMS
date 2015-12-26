@@ -14,10 +14,10 @@ class ChangePasswordCoreForm
 
     public static function display()
     {
-        if (isset($_POST['submit_change_password']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_change_password']))
+        if (isset($_POST['submit_change_password'])) {
+            if (\PFBC\Form::isValid($_POST['submit_change_password'])) {
                 new ChangePasswordCoreFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -34,5 +34,4 @@ class ChangePasswordCoreForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

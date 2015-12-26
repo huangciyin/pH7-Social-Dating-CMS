@@ -133,12 +133,11 @@ abstract class Form extends \PH7\Framework\Core\Core
     {
         $iWaitTime = (int) $iWaitTime;
 
-        if($iWaitTime > 60) {
+        if ($iWaitTime > 60) {
             $iDivide = ($iWaitTime < 1440) ? 60 : 1440;
             $iWaitTime = floor($iWaitTime / $iDivide);
         }
 
         return $iWaitTime;
     }
-
 }

@@ -27,7 +27,9 @@ class Suggestion
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @static
@@ -61,6 +63,7 @@ class Suggestion
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

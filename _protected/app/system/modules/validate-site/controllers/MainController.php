@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Cache\Cache,
 PH7\Framework\Url\Header;
 
@@ -44,12 +43,9 @@ class MainController extends Controller
 
     public function validator($sHash)
     {
-        if ($this->oValidateModel->is())
-        {
+        if ($this->oValidateModel->is()) {
             Header::redirect(PH7_ADMIN_MOD, t('Your site is already validated!'), 'success');
-        }
-        elseif (!empty($sHash) && $this->checkHash($sHash))
-        {
+        } elseif (!empty($sHash) && $this->checkHash($sHash)) {
             // Set the site to "validated" status
             $this->oValidateModel->set();
 
@@ -57,9 +53,7 @@ class MainController extends Controller
             (new Cache)->start(DbConfig::CACHE_GROUP, null, null)->clear();
 
             Header::redirect(PH7_ADMIN_MOD, t('Congrats! Your site has now the Published status and you will be aware by email to any security patches or updates.'), 'success');
-        }
-        else
-        {
+        } else {
             Header::redirect(PH7_ADMIN_MOD, t('The hash is incorrect. Please copy/paste the hash link received in your email in Web browser URL bar.'), 'error');
         }
     }

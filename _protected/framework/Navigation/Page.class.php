@@ -25,7 +25,6 @@ class Page
         $this->_oHttpRequest = new Http;
     }
 
-
     /***** Methods for preparing the paging system *****/
 
     /**
@@ -86,13 +85,10 @@ class Page
         $sCurrentUrl = (new Http)->currentUrl();
         $sUrl = preg_replace('#\?.+$#', '', $sCurrentUrl);
 
-        if (preg_match('#\?(.+[^\./])=(.+[^\./])$#', $sCurrentUrl))
-        {
+        if (preg_match('#\?(.+[^\./])=(.+[^\./])$#', $sCurrentUrl)) {
             $sUrlSlug = (strpos($sCurrentUrl, '&amp;')) ? strstr(strrchr($sCurrentUrl, '?'), '&amp;', true) : strrchr($sCurrentUrl, '?');
             $sPageUrl = $sUrl . $sUrlSlug . '&amp;' . $sVar . '=';
-        }
-        else
-        {
+        } else {
             $sIsSlash = (substr($sUrl, -1) !== PH7_SH && !strstr($sUrl, PH7_PAGE_EXT)) ? PH7_SH : '';
             $sPageUrl = $sUrl . $sIsSlash . '?' . $sVar . '=';
         }
@@ -111,5 +107,4 @@ class Page
             $this->_iFirstItem
         );
     }
-
 }

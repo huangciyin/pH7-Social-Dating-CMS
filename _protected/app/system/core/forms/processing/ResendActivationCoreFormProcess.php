@@ -20,18 +20,12 @@ class ResendActivationCoreFormProcess extends Form
 
         $sMail = $this->httpRequest->post('mail');
 
-        if ( ! (new ExistsCoreModel)->email($sMail, $sTable) )
-        {
+        if ( ! (new ExistsCoreModel)->email($sMail, $sTable) ) {
             \PFBC\Form::setError('form_resend_activation', t('Oops, this "%0%" is not associated with any %site_name% account. Please, make sure that you entered the e-mail address used in creating your account.', escape(substr($sMail,0,PH7_MAX_EMAIL_LENGTH))));
-        }
-        else
-        {
-            if ( !$mHash = (new UserCoreModel)->getHashValidation($sMail) )
-            {
+        } else {
+            if ( !$mHash = (new UserCoreModel)->getHashValidation($sMail) ) {
                 \PFBC\Form::setError('form_resend_activation', t('Oops! Your account is already activated.'));
-            }
-            else
-            {
+            } else {
                 $sMod = ($sTable == 'Affiliates') ? 'affiliate' : 'user';
 
                 $sActivateLink = Uri::get($sMod,'account','activate') . PH7_SH . $mHash->email . PH7_SH . $mHash->hashValidation;
@@ -54,12 +48,12 @@ class ResendActivationCoreFormProcess extends Form
                  'subject' => t('Your new password - %site_name%')
                 ];
 
-                if ( ! (new Mail)->send($aInfo, $sMessageHtml) )
-                   \PFBC\Form::setError('form_resend_activation', Form::errorSendingEmail());
-                else
-                   \PFBC\Form::setSuccess('form_resend_activation', t('Your hash validation has been emailed to you.'));
+                if ( ! (new Mail)->send($aInfo, $sMessageHtml) ) {
+                    \PFBC\Form::setError('form_resend_activation', Form::errorSendingEmail());
+                } else {
+                    \PFBC\Form::setSuccess('form_resend_activation', t('Your hash validation has been emailed to you.'));
+                }
             }
         }
     }
-
 }

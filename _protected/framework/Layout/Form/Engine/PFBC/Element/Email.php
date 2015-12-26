@@ -27,5 +27,4 @@ class Email extends Textbox
             <script src=' . PH7_RELATIVE . 'asset/js/mailcheck.js></script>';
         }
     }
-
 }

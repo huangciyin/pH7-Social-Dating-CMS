@@ -33,11 +33,11 @@ class Ads
 
         // Advertisement Clicks
         $oHttpRequest = new Mvc\Request\Http;
-        if ($oHttpRequest->getExists(static::PARAM_URL) && $oHttpRequest->get(static::PARAM_URL) == $oData->adsId)
+        if ($oHttpRequest->getExists(static::PARAM_URL) && $oHttpRequest->get(static::PARAM_URL) == $oData->adsId) {
             Mvc\Model\Ads::setClick($oData->adsId);
+        }
         unset($oHttpRequest);
 
         return (new \PH7\Framework\Parse\SysVar)->parse($oData->code);
     }
-
 }

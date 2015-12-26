@@ -29,13 +29,10 @@ function get_browser_lang()
  */
 function get_page($sPage)
 {
-    if (is_file($sPage))
-    {
+    if (is_file($sPage)) {
         $sPage = file_get_contents($sPage);
         echo parse_var($sPage);
-    }
-    else
-    {   // Set the Not Found page
+    } else {   // Set the Not Found page
         error_404();
     }
 }
@@ -68,12 +65,9 @@ function parse_var($sContent)
  */
 function get_page_name()
 {
-    if (empty($_GET['p']))
-    {
+    if (empty($_GET['p'])) {
         $sName = SITE_SLOGAN;
-    }
-    else
-    {
+    } else {
         $sPageName = str_replace(array('-','_'), ' ', $_GET['p']);
         $sName = ucfirst($sPageName);
     }
@@ -98,12 +92,11 @@ function get_dir_list($sDir)
 {
     $aDirList = array();
 
-    if ($rHandle = opendir($sDir))
-    {
-        while(false !== ($sFile = readdir($rHandle)))
-        {
-            if ($sFile != '.' && $sFile != '..' && is_dir($sDir . '/' . $sFile))
+    if ($rHandle = opendir($sDir)) {
+        while (false !== ($sFile = readdir($rHandle))) {
+            if ($sFile != '.' && $sFile != '..' && is_dir($sDir . '/' . $sFile)) {
                 $aDirList[] = $sFile;
+            }
         }
         closedir($rHandle);
         asort($aDirList);
@@ -128,21 +121,14 @@ function get_current_url()
  */
 function set_lang()
 {
-    if (!empty($_GET['l']) && is_file(DATA_PATH . $_GET['l'] . '/core/welcome.tpl') && is_file(DATA_PATH . $_GET['l'] . '/core/404-error.tpl'))
-    {
+    if (!empty($_GET['l']) && is_file(DATA_PATH . $_GET['l'] . '/core/welcome.tpl') && is_file(DATA_PATH . $_GET['l'] . '/core/404-error.tpl')) {
         setcookie('pH7_doc_lang', $_GET['l'], time()+60*60*24*365, null, null, false, true);
         $sLang = $_GET['l'];
-    }
-    elseif (isset($_COOKIE['pH7_doc_lang']) && is_dir(DATA_PATH . $_COOKIE['pH7_doc_lang'] . '/core/'))
-    {
+    } elseif (isset($_COOKIE['pH7_doc_lang']) && is_dir(DATA_PATH . $_COOKIE['pH7_doc_lang'] . '/core/')) {
         $sLang = $_COOKIE['pH7_doc_lang'];
-    }
-    elseif (is_dir(DATA_PATH . get_browser_lang() . '/core/'))
-    {
+    } elseif (is_dir(DATA_PATH . get_browser_lang() . '/core/')) {
         $sLang = get_browser_lang();
-    }
-    else
-    {
+    } else {
         $sLang = DEF_LANG;
     }
 

@@ -32,5 +32,4 @@ class GameCoreModel extends Framework\Mvc\Model\Engine\Model
         Db::free($rStmt);
         return $oData;
     }
-
 }

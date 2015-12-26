@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Security\Ban\Ban,
+use PH7\Framework\Security\Ban\Ban,
 PH7\Framework\Navigation\Page,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
@@ -44,14 +43,11 @@ class MainController extends Controller
         $oPosts = $this->oNoteModel->getPosts($this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage(), SearchCoreModel::UPDATED, $this->iApproved);
         $this->setMenuVars();
 
-        if(empty($oPosts))
-        {
+        if (empty($oPosts)) {
             $this->sTitle = t('Empty Note');
             $this->notFound(false); // We disable the HTTP error code 404 for Ajax requests running
             $this->view->error = t('Oops! Empty Note...'); // We change the error message
-        }
-        else
-        {
+        } else {
             $this->view->posts = $oPosts;
         }
 
@@ -60,13 +56,11 @@ class MainController extends Controller
 
     public function read($sUsername, $sPostId)
     {
-        if(isset($sUsername, $sPostId))
-        {
+        if (isset($sUsername, $sPostId)) {
             $iProfileId = (new UserCoreModel)->getId(null, $sUsername);
             $oPost = $this->oNoteModel->readPost($sPostId, $iProfileId, $this->iApproved);
 
-            if(!empty($oPost->postId) && $this->str->equals($sPostId, $oPost->postId))
-            {
+            if (!empty($oPost->postId) && $this->str->equals($sPostId, $oPost->postId)) {
                 $aVars = [
                     /***** META TAGS *****/
                     'page_title' => Ban::filterWord($oPost->pageTitle, false),
@@ -90,15 +84,11 @@ class MainController extends Controller
 
                 // Set Notes Post Views Statistics
                 Framework\Analytics\Statistic::setView($oPost->noteId, 'Notes');
-            }
-            else
-            {
+            } else {
                 $this->sTitle = t('No Note Found.');
                 $this->notFound();
             }
-        }
-        else
-        {
+        } else {
             Header::redirect(Uri::get('note', 'main', 'index'));
         }
 
@@ -119,13 +109,10 @@ class MainController extends Controller
         $this->setMenuVars();
 
         $sCategoryTxt = substr($sCategory,0,60);
-        if(empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('Not "%0%" category found!', $sCategoryTxt);
             $this->notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Search by Category: "%0%" Note', $sCategoryTxt);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -154,14 +141,11 @@ class MainController extends Controller
         $this->setMenuVars();
 
         $sAuthorTxt = substr($sAuthor,0,60);
-        if(empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('None "%0%" author was found!', $sAuthorTxt);
             $this->notFound(false); // For the Ajax profile blocks, we can not put HTTP error code 404, so the attribute is "false"
             $this->view->error = t("No %0%'s post was found.", $sAuthor); // We change the error message
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Search by Author: "%0%" Note', $sAuthorTxt);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -193,13 +177,10 @@ class MainController extends Controller
         $oSearch = $this->oNoteModel->search($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage(), $this->iApproved);
         $this->setMenuVars();
 
-        if(empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('Sorry, Your search returned no results!');
             $this->notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Dating Social Note - Your search returned');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -249,8 +230,9 @@ class MainController extends Controller
 
     public function removeThumb($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->checkUrl())
+        if (!(new Framework\Security\CSRF\Token)->checkUrl()) {
             exit(Form::errorTokenMsg());
+        }
 
         $iProfileId = $this->session->get('member_id');
 
@@ -286,7 +268,9 @@ class MainController extends Controller
      */
     protected function notFound($b404Status = true)
     {
-        if($b404Status) Framework\Http\Http::setHeadersByCode(404);
+        if ($b404Status) {
+            Framework\Http\Http::setHeadersByCode(404);
+        }
         $this->view->page_title = $this->sTitle;
         $this->view->h2_title = $this->sTitle;
         $this->view->error = t('Sorry, we weren\'t able to find the page you requested.<br />
@@ -309,5 +293,4 @@ class MainController extends Controller
     {
         unset($this->oNoteModel, $this->oPage, $this->sTitle, $this->iTotalNotes, $this->iApproved);
     }
-
 }

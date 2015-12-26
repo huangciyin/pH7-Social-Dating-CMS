@@ -81,17 +81,16 @@ class Http extends \PH7\Framework\Http\Http
     {
         $bExists = false; // Default value
 
-        if (is_array($mKey))
-        {
-            foreach ($mKey as $sKey)
-            {
-                if (!$bExists = $this->getExists($sKey, $sParam)) // Recursive method
+        if (is_array($mKey)) {
+            foreach ($mKey as $sKey) {
+                if (!$bExists = $this->getExists($sKey, $sParam)) { // Recursive method
                     break;
+                }
             }
-        }
-        else
-        {
-            if (!$this->validate($this->_aGet, $mKey, $sParam)) return false;
+        } else {
+            if (!$this->validate($this->_aGet, $mKey, $sParam)) {
+                return false;
+            }
 
             $bExists = (!empty($this->_aGet[$mKey])) ? true : false;
         }
@@ -110,17 +109,16 @@ class Http extends \PH7\Framework\Http\Http
     {
         $bExists = false; // Default value
 
-        if (is_array($mKey))
-        {
-            foreach ($mKey as $sKey)
-            {
-                if (!$bExists = $this->postExists($sKey, $sParam)) // Recursive method
+        if (is_array($mKey)) {
+            foreach ($mKey as $sKey) {
+                if (!$bExists = $this->postExists($sKey, $sParam)) { // Recursive method
                     break;
+                }
             }
-        }
-        else
-        {
-            if (!$this->validate($this->_aPost, $mKey, $sParam)) return false;
+        } else {
+            if (!$this->validate($this->_aPost, $mKey, $sParam)) {
+                return false;
+            }
 
             $bExists = (!empty($this->_aPost[$mKey])) ? true : false;
         }
@@ -174,12 +172,9 @@ class Http extends \PH7\Framework\Http\Http
      */
     public function gets($sKey, $sParam = null)
     {
-        if ($this->getExists($sKey, $sParam))
-        {
+        if ($this->getExists($sKey, $sParam)) {
             return $this->get($sKey, $sParam);
-        }
-        elseif ($this->postExists($sKey, $sParam))
-        {
+        } elseif ($this->postExists($sKey, $sParam)) {
             return $this->post($sKey, $sParam);
         }
     }
@@ -195,8 +190,9 @@ class Http extends \PH7\Framework\Http\Http
     {
         //if ($this->_sMethod !== self::METHOD_GET) throw new Exception('GET');
 
-        if (empty($this->_aGet[$sKey]))
+        if (empty($this->_aGet[$sKey])) {
             return '';
+        }
 
         // Clear the CSRF token in the request variable
        /*
@@ -204,8 +200,9 @@ class Http extends \PH7\Framework\Http\Http
         $this->_aGet[$sKey] = $this->_clearCSRFToken($this->_aGet, $sKey);
         */
 
-        if ($sParam === self::NO_CLEAN)
+        if ($sParam === self::NO_CLEAN) {
             return $this->_aGet[$sKey];
+        }
 
         $this->setType($this->_aGet, $sKey, $sParam);
 
@@ -222,13 +219,17 @@ class Http extends \PH7\Framework\Http\Http
      */
     public function post($sKey, $sParam = null)
     {
-        if ($this->_sMethod !== self::METHOD_POST) throw new Exception('POST');
+        if ($this->_sMethod !== self::METHOD_POST) {
+            throw new Exception('POST');
+        }
 
-        if (empty($this->_aPost[$sKey]))
+        if (empty($this->_aPost[$sKey])) {
             return '';
+        }
 
-        if ($sParam === self::NO_CLEAN)
+        if ($sParam === self::NO_CLEAN) {
             return $this->_aPost[$sKey];
+        }
 
         $this->setType($this->_aPost, $sKey, $sParam);
 
@@ -268,7 +269,7 @@ class Http extends \PH7\Framework\Http\Http
      */
     public function currentController()
     {
-       return str_replace('controller', '', strtolower(\PH7\Framework\Registry\Registry::getInstance()->controller));
+        return str_replace('controller', '', strtolower(\PH7\Framework\Registry\Registry::getInstance()->controller));
     }
 
     /**
@@ -276,7 +277,7 @@ class Http extends \PH7\Framework\Http\Http
      */
     public function pH7Url($sUrl)
     {
-      return ($this->isRelativeUrl($sUrl)) ? PH7_URL_ROOT . $sUrl : $sUrl;
+        return ($this->isRelativeUrl($sUrl)) ? PH7_URL_ROOT . $sUrl : $sUrl;
     }
 
     /**
@@ -290,8 +291,11 @@ class Http extends \PH7\Framework\Http\Http
      */
     protected function validate(&$aType, $sKey, $sParam)
     {
-        if (!empty($sParam))
-            if (!\PH7\Framework\Security\Validate::type($aType[$sKey], $sParam)) return false;
+        if (!empty($sParam)) {
+            if (!\PH7\Framework\Security\Validate::type($aType[$sKey], $sParam)) {
+                return false;
+            }
+        }
 
         return true;
     }
@@ -307,8 +311,9 @@ class Http extends \PH7\Framework\Http\Http
      */
     protected function setType(&$aType, $sKey, $sType)
     {
-        if (!empty($sParam) && $sParam !== self::ONLY_XSS_CLEAN)
+        if (!empty($sParam) && $sParam !== self::ONLY_XSS_CLEAN) {
             settype($aType[$sKey], $sParam);
+        }
     }
 
     /**
@@ -323,11 +328,13 @@ class Http extends \PH7\Framework\Http\Http
     protected function cleanData(&$aType, $sKey, $sParam)
     {
         // For space and other in address bar
-        if ($this->_sMethod === self::METHOD_GET)
+        if ($this->_sMethod === self::METHOD_GET) {
             $aType[$sKey] = str_replace(array('%20','%27','%C3','%A9','%C3','%A9','%C3','%A9'), '', $aType[$sKey]);
+        }
 
-        if (!empty($sParam) && $sParam === self::ONLY_XSS_CLEAN)
+        if (!empty($sParam) && $sParam === self::ONLY_XSS_CLEAN) {
             return (new \PH7\Framework\Security\Validate\Filter)->xssClean($aType[$sKey]);
+        }
 
         return (new \PH7\Framework\Str\Str)->escape($aType[$sKey], true);
     }
@@ -369,5 +376,4 @@ class Http extends \PH7\Framework\Http\Http
             $this->_aPost
         );
     }
-
 }

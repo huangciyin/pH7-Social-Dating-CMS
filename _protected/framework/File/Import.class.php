@@ -20,7 +20,9 @@ class Import
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Import only Class or Interface of the "pH7Framework" (without dot).
@@ -117,13 +119,15 @@ class Import
         $sFile .= PH7_DOT . $sExt;
 
         // Hack to remove the backslash
-        if (!empty($sNameSpace))
+        if (!empty($sNameSpace)) {
             $sFile = str_replace($sFile . '\\', '', $sClassName);
+        }
 
-        if (is_file($sFile))
+        if (is_file($sFile)) {
             return require $sFile;
-        else
+        } else {
             throw new Exception('\'' . $sFile . '\' not found!');
+        }
     }
 
     /**
@@ -131,6 +135,7 @@ class Import
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

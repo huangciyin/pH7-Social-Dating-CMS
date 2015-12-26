@@ -10,8 +10,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Math\Measure\Year,
+use PH7\Framework\Math\Measure\Year,
 PH7\Framework\Geo\Ip\Geo,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Session\Session,
@@ -22,7 +21,7 @@ class SearchUserCoreForm
 
     public static function quick($iWidth = 500)
     {
-         // Generate the Quick Search form
+        // Generate the Quick Search form
         $oForm = new \PFBC\Form('form_search', $iWidth);
         $oForm->configure(array('action' => Uri::get('user','browse','index') . PH7_SH, 'method' => 'get'));
         $oForm->addElement(new \PFBC\Element\Hidden('submit_search', 'form_search'));
@@ -41,7 +40,7 @@ class SearchUserCoreForm
 
     public static function advanced($iWidth = 500)
     {
-         // Generate the Advanced Search form
+        // Generate the Advanced Search form
         $oForm = new \PFBC\Form('form_search', $iWidth);
         $oForm->configure(array('action' => Uri::get('user','browse','index') . PH7_SH, 'method' => 'get' ));
         $oForm->addElement(new \PFBC\Element\Hidden('submit_search', 'form_search'));
@@ -72,8 +71,7 @@ class SearchUserCoreForm
         $sUserSex = 'male';
         $sMatchSex = ['male', 'female', 'couple'];
 
-        if(UserCore::auth())
-        {
+        if (UserCore::auth()) {
             $sUserSex = (new UserModel)->getSex((new Session)->get('member_id'));
             $sMatchSex = ($sUserSex == 'male' ? 'female' : ($sUserSex == 'couple' ? 'couple' : 'male'));
         }
@@ -91,8 +89,7 @@ class SearchUserCoreForm
         $iMinAge = (int) DbConfig::getSetting('minAgeRegistration');
         $iMaxAge = (int) DbConfig::getSetting('maxAgeRegistration');
 
-        if(UserCore::auth())
-        {
+        if (UserCore::auth()) {
             $sBirthDate = (new UserModel)->getBirthDate((new Session)->get('member_id'));
             $aAge = explode('-', $sBirthDate);
             $iAge = (new Year($aAge[0], $aAge[1], $aAge[2]))->get();
@@ -102,5 +99,4 @@ class SearchUserCoreForm
 
         return ['min_age' => $iMinAge, 'max_age' => $iMaxAge];
     }
-
 }

@@ -18,5 +18,4 @@ class Exception extends \PDOException
     {
         static::init($sMsg);
     }
-
 }

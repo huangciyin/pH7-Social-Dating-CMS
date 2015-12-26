@@ -28,5 +28,4 @@ class MobApp
     {
         return (new Http)->getExists(static::REQ_NAME);
     }
-
 }

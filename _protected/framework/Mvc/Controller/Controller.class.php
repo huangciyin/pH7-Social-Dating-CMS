@@ -13,8 +13,7 @@
 namespace PH7\Framework\Mvc\Controller;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Security\Ban\Ban,
+use PH7\Framework\Security\Ban\Ban,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Geo\Ip\Geo,
 PH7\Framework\Http\Http,
@@ -29,11 +28,11 @@ abstract class Controller extends \PH7\Framework\Core\Core
         parent::__construct();
 
         /***** Securing the server for DDoS attack only! Not for the attacks DoS *****/
-        if (!isDebug() && M\DbConfig::getSetting('DDoS'))
-        {
+        if (!isDebug() && M\DbConfig::getSetting('DDoS')) {
             $oDDoS = new \PH7\Framework\Security\DDoS\Stop;
-            if ($oDDoS->cookie() || $oDDoS->session())
+            if ($oDDoS->cookie() || $oDDoS->session()) {
                 sleep(PH7_DDOS_DELAY_SLEEP);
+            }
 
             unset($oDDoS);
         }
@@ -48,11 +47,9 @@ abstract class Controller extends \PH7\Framework\Core\Core
         // Site Name
         $this->registry->site_name = M\DbConfig::getSetting('siteName');
 
-
         /***** Internationalization *****/
         // Default path language
         $this->lang->load('global', PH7_PATH_APP_LANG);
-
 
         /***** PH7Tpl Template Engine initialization *****/
         /*** Assign the global variables ***/
@@ -93,7 +90,7 @@ abstract class Controller extends \PH7\Framework\Core\Core
          */
         //if (\PH7\UserCore::auth()) {
             $this->view->count_unread_mail = \PH7\MailCoreModel::countUnreadMsg($this->session->get('member_id'));
-            $this->view->count_pen_friend_request = \PH7\FriendCoreModel::getPending($this->session->get('member_id'));
+        $this->view->count_pen_friend_request = \PH7\FriendCoreModel::getPending($this->session->get('member_id'));
         //}
 
         /***** Display *****/
@@ -102,22 +99,19 @@ abstract class Controller extends \PH7\Framework\Core\Core
         /***** End Template Engine PH7Tpl *****/
 
         // For permission the modules
-        if (is_file($this->registry->path_module_config . 'Permission.php'))
-        {
+        if (is_file($this->registry->path_module_config . 'Permission.php')) {
             require $this->registry->path_module_config . 'Permission.php';
             new \PH7\Permission;
         }
 
         // It displays the banishment page if a banned IP address is found.
-        if (Ban::isIp(Ip::get()))
-        {
+        if (Ban::isIp(Ip::get())) {
             \PH7\Framework\Page\Page::banned();
         }
 
         // The maintenance page is not displayed for the "Admin" module and if the administrator is logged.
         if (M\DbConfig::getSetting('siteStatus') === M\DbConfig::MAINTENANCE_SITE
-            && !\PH7\AdminCore::auth() && $this->registry->module !== PH7_ADMIN_MOD)
-        {
+            && !\PH7\AdminCore::auth() && $this->registry->module !== PH7_ADMIN_MOD) {
             \PH7\Framework\Page\Page::maintenance(3600); // 1 hour for the duration time of the Service Unavailable HTTP status.
         }
     }
@@ -175,7 +169,9 @@ abstract class Controller extends \PH7\Framework\Core\Core
      */
     final public function displayPageNotFound($sMsg = '', $b404Status = true)
     {
-        if ($b404Status) Http::setHeadersByCode(404);
+        if ($b404Status) {
+            Http::setHeadersByCode(404);
+        }
 
         $this->view->page_title = (!empty($sMsg)) ? t('%0% - Page Not Found', $sMsg) : t('Page Not Found');
         $this->view->h1_title = (!empty($sMsg)) ? $sMsg : t('Whoops! The page you requested was not found.');
@@ -184,8 +180,7 @@ abstract class Controller extends \PH7\Framework\Core\Core
         <strong><em>' . t('Suggestions:') . '</em></strong><br />
         <a href="' . $this->registry->site_url . '">' . t('Return home') . '</a><br />';
 
-        if (!\PH7\UserCore::auth())
-        {
+        if (!\PH7\UserCore::auth()) {
             $sErrorDesc .=
             '<a href="' . Uri::get('user','signup','step1') . '">' . t('Join Now') . '</a><br />
              <a href="' . Uri::get('user','main','login') . '">' . t('Login') . '</a><br />';
@@ -209,7 +204,9 @@ abstract class Controller extends \PH7\Framework\Core\Core
      */
     final public function displayPageDenied($b403Status = true)
     {
-        if ($b403Status) Http::setHeadersByCode(403);
+        if ($b403Status) {
+            Http::setHeadersByCode(403);
+        }
 
         $sTitle = t('Access Denied!');
         $this->view->page_title = $sTitle;
@@ -220,5 +217,4 @@ abstract class Controller extends \PH7\Framework\Core\Core
         $this->output();
         exit;
     }
-
 }

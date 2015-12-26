@@ -14,10 +14,10 @@ class AdminBlogForm
 
     public static function display()
     {
-        if (isset($_POST['submit_blog']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_blog']))
+        if (isset($_POST['submit_blog'])) {
+            if (\PFBC\Form::isValid($_POST['submit_blog'])) {
                 new AdminBlogFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -25,8 +25,9 @@ class AdminBlogForm
         $oCategoriesData = (new BlogModel)->getCategory(null, 0, 300);
 
         $aCategoriesName = array();
-        foreach ($oCategoriesData as $oId)
+        foreach ($oCategoriesData as $oId) {
             $aCategoriesName[$oId->categoryId] = $oId->name;
+        }
 
         $oForm = new \PFBC\Form('form_blog', 650);
         $oForm->configure(array('action' => ''));
@@ -53,5 +54,4 @@ class AdminBlogForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="' . PH7_URL_TPL_SYS_MOD . 'blog/' . PH7_TPL . PH7_TPL_MOD_NAME . PH7_SH . PH7_JS . 'common.js"></script>'));
         $oForm->render();
     }
-
 }

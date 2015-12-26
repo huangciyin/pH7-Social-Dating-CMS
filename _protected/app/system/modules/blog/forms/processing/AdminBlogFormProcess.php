@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or die('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
@@ -26,12 +25,9 @@ class AdminBlogFormProcess extends Form
         $oBlog = new Blog;
         $oBlogModel = new BlogModel;
 
-        if (!$oBlog->checkPostId($this->httpRequest->post('post_id')))
-        {
+        if (!$oBlog->checkPostId($this->httpRequest->post('post_id'))) {
             \PFBC\Form::setError('form_blog', t('The ID of the article is invalid or incorrect.'));
-        }
-        else
-        {
+        } else {
             $aData = [
                 'post_id' => $this->httpRequest->post('post_id'),
                 'lang_id' => $this->httpRequest->post('lang_id'),
@@ -49,26 +45,22 @@ class AdminBlogFormProcess extends Form
                 'created_date' => $this->dateTime->get()->dateTime('Y-m-d H:i:s')
             ];
 
-            if (!$oBlogModel->addPost($aData))
-            {
+            if (!$oBlogModel->addPost($aData)) {
                 $this->sMsg = t('An error occurred while adding the article.');
-            }
-            else
-            {
+            } else {
                 /*** Set the categorie(s) ***/
                 /**
                  * WARNING: Be careful, you should use the \PH7\Framework\Mvc\Request\Http::ONLY_XSS_CLEAN constant, otherwise the Http::post() method
                  * removes the special tags and damages the SQL queries for entry into the database.
                  */
                 $iBlogId = Db::getInstance()->lastInsertId();
-                foreach ($this->httpRequest->post('category_id', Http::ONLY_XSS_CLEAN) as $iCategoryId)
+                foreach ($this->httpRequest->post('category_id', Http::ONLY_XSS_CLEAN) as $iCategoryId) {
                     $oBlogModel->addCategory($iCategoryId, $iBlogId);
-
+                }
 
                 /*** Set the thumbnail if there's one ***/
                 $oPost = $oBlogModel->readPost($aData['post_id']);
                 $oBlog->setThumb($oPost, $this->file);
-
 
                 /* Clean BlogModel Cache */
                 (new Framework\Cache\Cache)->start(BlogModel::CACHE_GROUP, null, null)->clear();
@@ -79,5 +71,4 @@ class AdminBlogFormProcess extends Form
             Header::redirect(Uri::get('blog', 'main', 'read', $this->httpRequest->post('post_id')), $this->sMsg);
         }
     }
-
 }

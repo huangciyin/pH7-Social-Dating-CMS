@@ -24,8 +24,9 @@ require_once 'io/Google_REST.php';
  *
  * @author Chris Chabot <chabotc@google.com>
  */
-interface Google_IO {
-  /**
+interface Google_IO
+{
+    /**
    * An utility function that first calls $this->auth->sign($request) and then executes makeRequest()
    * on that signed request. Used for when a request should be authenticated
    * @param Google_HttpRequest $request
@@ -45,5 +46,4 @@ interface Google_IO {
    * @param $options
    */
   public function setOptions($options);
-
 }

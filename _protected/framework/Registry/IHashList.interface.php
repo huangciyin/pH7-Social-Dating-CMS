@@ -21,5 +21,4 @@ interface IHashList
      * @return mixed (boolean | integer | float | string | array | object) Returns the converted value if successful otherwise returns false.
      */
     public function get($sName);
-
 }

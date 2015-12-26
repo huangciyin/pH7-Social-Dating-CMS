@@ -17,10 +17,10 @@ class NotificationForm
         $oUserModel = new UserCoreModel;
         $iProfileId = (int) (new Session)->get('member_id');
 
-        if (isset($_POST['submit_notification']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_notification']))
+        if (isset($_POST['submit_notification'])) {
+            if (\PFBC\Form::isValid($_POST['submit_notification'])) {
                 new NotificationFormProcess($iProfileId, $oUserModel);
+            }
             Framework\Url\Header::redirect();
         }
 
@@ -36,5 +36,4 @@ class NotificationForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

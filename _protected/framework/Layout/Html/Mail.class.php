@@ -122,5 +122,4 @@ class Mail
     {
         return '</div></body></html>';
     }
-
 }

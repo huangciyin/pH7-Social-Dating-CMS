@@ -51,20 +51,15 @@ class AccountController extends Controller
         $this->view->page_title = $this->sTitle;
         $this->view->h2_title = $this->sTitle;
 
-        if ($this->httpRequest->get('delete_status') == 'yesdelete')
-        {
+        if ($this->httpRequest->get('delete_status') == 'yesdelete') {
             $this->session->set('yes_delete', 1);
             Header::redirect(Uri::get('affiliate', 'account', 'yesdelete'));
-        }
-        elseif ($this->httpRequest->get('delete_status') == 'nodelete')
-        {
+        } elseif ($this->httpRequest->get('delete_status') == 'nodelete') {
             $this->view->content = '<span class="bold green1">' . t('Excellent choice!') . '<br />' .
             t('You will see, you will not regret that!') . '<br />' .
             t('At %site_name%, we are working hard to give you one of the best affiliate service!') . '</span>';
             $this->design->setRedirect(Uri::get('affiliate', 'home', 'index'), null, null, 4);
-        }
-        else
-        {
+        } else {
             $this->view->content = '<span class="bold red">' . t('WARNING: If you delete your account you will not receive your money.') .
                 '<br />' . t('Are you really sure you want to delete your account?') . '</span><br /><br />
                 <a class="bold" href="' . Uri::get('affiliate', 'account',
@@ -79,15 +74,15 @@ class AccountController extends Controller
 
     public function yesDelete()
     {
-        if (!$this->session->exists('yes_delete'))
+        if (!$this->session->exists('yes_delete')) {
             Header::redirect(Uri::get('affiliate', 'account', 'delete'));
-        else
+        } else {
             $this->output();
+        }
     }
 
     public function activate($sMail, $sHash)
     {
         (new UserCore)->activateAccount($sMail, $sHash, $this->config, $this->registry, 'affiliate');
     }
-
 }

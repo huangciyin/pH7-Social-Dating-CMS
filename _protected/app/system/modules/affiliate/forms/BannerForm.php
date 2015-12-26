@@ -25,8 +25,7 @@ class BannerForm
         unset($oPage, $oAdsModel);
 
         $oSysVar = new SysVar;
-        foreach ($oAds as $oRow)
-        {
+        foreach ($oAds as $oRow) {
             // Begin ads div tags
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<div id="ad_' . $oRow->adsId . '">'));
 
@@ -41,5 +40,4 @@ class BannerForm
         }
         $oForm->render();
     }
-
 }

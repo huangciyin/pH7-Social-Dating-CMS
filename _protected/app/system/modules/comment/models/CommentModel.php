@@ -16,8 +16,7 @@ class CommentModel extends CommentCoreModel
     {
         $this->cache->start(static::CACHE_GROUP, 'get' . $iCommentId . $iApproved . $sTable, static::CACHE_TIME);
 
-        if(!$oData = $this->cache->get())
-        {
+        if (!$oData = $this->cache->get()) {
             $sTable = CommentCore::checkTable($sTable);
 
             $rStmt = Db::getInstance()->prepare('SELECT c.*, m.username, m.firstName, m.sex FROM' . Db::prefix('Comments' . $sTable) . ' AS c LEFT JOIN' . Db::prefix('Members') . 'AS m ON c.sender = m.profileId WHERE commentId = :commentId AND c.approved =:approved LIMIT 1');
@@ -71,22 +70,21 @@ class CommentModel extends CommentCoreModel
 
     public function idExists($iId, $sTable)
     {
-       $this->cache->start(static::CACHE_GROUP, 'idExists' . $iId . $sTable, static::CACHE_TIME);
+        $this->cache->start(static::CACHE_GROUP, 'idExists' . $iId . $sTable, static::CACHE_TIME);
 
-       if(!$bData = $this->cache->get())
-       {
-           $iId = (int)$iId;
-           $sTable = CommentCore::checkTable($sTable);
-           $sNewTable = Comment::getTable($sTable);
+        if (!$bData = $this->cache->get()) {
+            $iId = (int)$iId;
+            $sTable = CommentCore::checkTable($sTable);
+            $sNewTable = Comment::getTable($sTable);
 
-           $rStmt = Db::getInstance()->prepare('SELECT COUNT(' . lcfirst($sTable) . 'Id) FROM' . Db::prefix($sNewTable) . 'WHERE ' . lcfirst($sTable)  . 'Id = :id LIMIT 1');
-           $rStmt->bindValue(':id',$iId, \PDO::PARAM_INT);
-           $rStmt->execute();
-           $bData = ($rStmt->fetchColumn()==1);
-           Db::free($rStmt);
-           $this->cache->put($bData);
-       }
-       return $bData;
+            $rStmt = Db::getInstance()->prepare('SELECT COUNT(' . lcfirst($sTable) . 'Id) FROM' . Db::prefix($sNewTable) . 'WHERE ' . lcfirst($sTable)  . 'Id = :id LIMIT 1');
+            $rStmt->bindValue(':id',$iId, \PDO::PARAM_INT);
+            $rStmt->execute();
+            $bData = ($rStmt->fetchColumn()==1);
+            Db::free($rStmt);
+            $this->cache->put($bData);
+        }
+        return $bData;
     }
 
     /**
@@ -124,5 +122,4 @@ class CommentModel extends CommentCoreModel
         $rStmt->execute();
         return ($rStmt->rowCount() === 0);
     }
-
 }

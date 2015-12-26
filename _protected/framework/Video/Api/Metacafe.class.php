@@ -32,7 +32,9 @@ class Metacafe extends Api implements IApi
     public function getInfo($sUrl)
     {
         $oDom = new \DOMDocument;
-        if (!@$oDom->load(static::API_URL . $this->getVideoId($sUrl))) return false;
+        if (!@$oDom->load(static::API_URL . $this->getVideoId($sUrl))) {
+            return false;
+        }
 
         $this->oData = new \DOMXPath($oDom);
         $sRootNameSpace = $oDom->lookupNamespaceUri($oDom->namespaceURI);
@@ -50,7 +52,9 @@ class Metacafe extends Api implements IApi
     public function getTitle()
     {
         $oElements = $this->oData->query('//media:title');
-        foreach ($oElements as $oElement) $sTitle = $oElement->nodeValue;
+        foreach ($oElements as $oElement) {
+            $sTitle = $oElement->nodeValue;
+        }
         return (!empty($sTitle) ? $this->oStr->escape($sTitle, true) : false);
     }
 
@@ -63,7 +67,9 @@ class Metacafe extends Api implements IApi
     public function getDescription()
     {
         $oElements = $this->oData->query('//media:description');
-        foreach ($oElements as $oElement) $sDescription = $oElement->nodeValue;
+        foreach ($oElements as $oElement) {
+            $sDescription = $oElement->nodeValue;
+        }
         return (!empty($sDescription) ? $this->oStr->escape($sDescription, true) : false);
     }
 
@@ -76,7 +82,9 @@ class Metacafe extends Api implements IApi
     public function getDuration()
     {
         $oElements = $this->oData->query('//media:content');
-        foreach ($oElements as $oElement) $iDuration = $oElement->getAttribute('duration');
+        foreach ($oElements as $oElement) {
+            $iDuration = $oElement->getAttribute('duration');
+        }
         return (!empty($iDuration) ? (int)$iDuration : false);
     }
 
@@ -85,12 +93,9 @@ class Metacafe extends Api implements IApi
         $sIdVideo = $this->getVideoId($sUrl);
         $sVideoUrl = $this->getEmbedUrl($sUrl);
 
-        if ($sMedia == 'preview')
-        {
+        if ($sMedia == 'preview') {
             return 'http://s' . mt_rand(1,4) . '.mcstatic.com/thumb/' . $sIdVideo . '.jpg';
-        }
-        else
-        {
+        } else {
             $sParam = ($this->bAutoplay) ? 'autoPlay=yes' : 'autoPlay=no';
             return '<embed flashVars="playerVars=showStats=no|' . $sParam . '|" src="' . $sVideoUrl . '" width="' . $iWidth . '" height="' . $iHeight . '" wmode="transparent" allowFullScreen="true" allowScriptAccess="always" name="Metacafe_'. $sIdVideo . '" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>';
         }
@@ -108,9 +113,10 @@ class Metacafe extends Api implements IApi
 
     public function getEmbedUrl($sUrl)
     {    // Checks if the ID is valid, otherwise returns false.
-        if (!$this->getVideoId($sUrl)) return false;
+        if (!$this->getVideoId($sUrl)) {
+            return false;
+        }
 
         return static::PLAYER_URL . $this->getVideoId($sUrl) . '/metacefe.swf';
     }
-
 }

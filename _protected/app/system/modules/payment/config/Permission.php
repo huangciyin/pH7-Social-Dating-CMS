@@ -15,17 +15,13 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (!UserCore::auth() && $this->registry->controller !== 'AdminController')
-        {
+        if (!UserCore::auth() && $this->registry->controller !== 'AdminController') {
             $this->signUpRedirect();
         }
 
-        if (!AdminCore::auth() && $this->registry->controller === 'AdminController')
-        {
+        if (!AdminCore::auth() && $this->registry->controller === 'AdminController') {
             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Framework\Url\Header::redirect(Framework\Mvc\Router\Uri::get('payment', 'main', 'index'), $this->adminSignInMsg(), 'error');
         }
-
     }
-
 }

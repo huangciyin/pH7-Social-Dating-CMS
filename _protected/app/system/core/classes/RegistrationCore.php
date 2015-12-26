@@ -19,9 +19,9 @@ abstract class RegistrationCore extends Core
 
     public function __construct()
     {
-       parent::__construct();
+        parent::__construct();
 
-       $this->iActiveType = DbConfig::getSetting('userActivationType');
+        $this->iActiveType = DbConfig::getSetting('userActivationType');
     }
 
     /**
@@ -33,8 +33,7 @@ abstract class RegistrationCore extends Core
      */
     public function sendMail(array $aInfo, $bIsUniversalLogin = false)
     {
-        switch($this->iActiveType)
-        {
+        switch ($this->iActiveType) {
             case 1:
                 $sEmailMsg = t('Please %0% now to meet new people!', '<a href="' . Uri::get('user','main','login') . '"><b>'.t('log in').'</b></a>');
             break;
@@ -85,8 +84,7 @@ abstract class RegistrationCore extends Core
      */
     public function getMsg()
     {
-        switch($this->iActiveType)
-        {
+        switch ($this->iActiveType) {
             case 1:
                 $sMsg = t('Login now!');
             break;
@@ -105,5 +103,4 @@ abstract class RegistrationCore extends Core
 
         return $sMsg;
     }
-
 }

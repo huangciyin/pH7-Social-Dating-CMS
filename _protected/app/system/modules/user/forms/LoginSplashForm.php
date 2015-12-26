@@ -14,10 +14,10 @@ class LoginSplashForm
 
     public static function display()
     {
-        if (isset($_POST['submit_login_user']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_login_user']))
+        if (isset($_POST['submit_login_user'])) {
+            if (\PFBC\Form::isValid($_POST['submit_login_user'])) {
                 new LoginFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class LoginSplashForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<div class="bt_login_forgot">' . LostPwdDesignCore::link('user', false) . '</div>'));
         $oForm->render();
     }
-
 }

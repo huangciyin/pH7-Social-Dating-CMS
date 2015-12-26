@@ -10,5 +10,4 @@ class Textbox extends \PFBC\Element
     {
         echo 'jQuery("#', $this->attributes['id'], '").outerWidth(jQuery("#', $this->attributes['id'], '").width());';
     }
-
 }

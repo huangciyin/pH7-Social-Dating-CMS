@@ -20,28 +20,23 @@ class Permission extends PermissionCore
         $bAffAuth = AffiliateCore::auth();
         $bAdminAuth = AdminCore::auth();
 
-        if (!$bAffAuth && ($this->registry->controller === 'AdsController' || $this->registry->action === 'logout'))
-        {
+        if (!$bAffAuth && ($this->registry->controller === 'AdsController' || $this->registry->action === 'logout')) {
             Header::redirect(Uri::get('affiliate','signup','step1'), $this->signUpMsg(), 'error');
         }
 
         if ((!$bAffAuth && !$bAdminAuth) && ($this->registry->controller === 'AccountController'
-        && $this->registry->action !== 'activate'))
-        {
+        && $this->registry->action !== 'activate')) {
             Header::redirect(Uri::get('affiliate','signup','step1'), $this->signUpMsg(), 'error');
         }
 
         if ($bAffAuth && ($this->registry->controller === 'SignupController' || $this->registry->action === 'activate'
-        || $this->registry->action === 'resendactivation' || $this->registry->action === 'login'))
-        {
+        || $this->registry->action === 'resendactivation' || $this->registry->action === 'login')) {
             Header::redirect(Uri::get('affiliate','account','index'), $this->alreadyConnectedMsg(), 'error');
         }
 
-        if (!$bAdminAuth && $this->registry->controller === 'AdminController')
-        {
+        if (!$bAdminAuth && $this->registry->controller === 'AdminController') {
             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Header::redirect(Uri::get('affiliate','home','index'), $this->adminSignInMsg(), 'error');
         }
     }
-
 }

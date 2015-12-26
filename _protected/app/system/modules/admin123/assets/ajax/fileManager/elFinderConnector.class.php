@@ -1,13 +1,16 @@
 <?php
 defined('PH7') or exit('Restricted access');
-if(!\PH7\Admin::auth()) exit('Restricted access'); // Only for the Admins
+if (!\PH7\Admin::auth()) {
+    exit('Restricted access');
+} // Only for the Admins
 
 /**
  * Default elFinder connector
  *
  * @author Dmitry (dio) Levashov
  **/
-class elFinderConnector {
+class elFinderConnector
+{
     /**
      * elFinder instance
      *
@@ -29,15 +32,14 @@ class elFinderConnector {
      **/
     protected $header = 'Content-Type: application/json';
 
-
     /**
      * Constructor
      *
      * @return void
      * @author Dmitry (dio) Levashov
      **/
-    public function __construct($elFinder, $debug=false) {
-
+    public function __construct($elFinder, $debug=false)
+    {
         $this->elFinder = $elFinder;
         if ($debug) {
             $this->header = 'Content-Type: text/html; charset=utf-8';
@@ -50,7 +52,8 @@ class elFinderConnector {
      * @return void
      * @author Dmitry (dio) Levashov
      **/
-    public function run() {
+    public function run()
+    {
         $isPost = $_SERVER["REQUEST_METHOD"] == 'POST';
         $src    = $_SERVER["REQUEST_METHOD"] == 'POST' ? $_POST : $_GET;
         $cmd    = isset($src['cmd']) ? $src['cmd'] : '';
@@ -102,7 +105,8 @@ class elFinderConnector {
      * @return void
      * @author Dmitry (dio) Levashov
      **/
-    protected function output(array $data) {
+    protected function output(array $data)
+    {
         $header = isset($data['header']) ? $data['header'] : $this->header;
         unset($data['header']);
         if ($header) {
@@ -129,7 +133,6 @@ class elFinderConnector {
                 exit(json_encode($data));
             }
         }
-
     }
-
 }// END class
+

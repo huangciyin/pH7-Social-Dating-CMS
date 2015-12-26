@@ -75,10 +75,10 @@ class Record
     public function getErrors()
     {
         $sErrMsg = '';
-        if (count($this->_aErrors) > 1)
-        {
-            foreach ($this->_aErrors as $sError)
+        if (count($this->_aErrors) > 1) {
+            foreach ($this->_aErrors as $sError) {
                 $sErrMsg .= $sError . "\r\n";
+            }
         }
         return $sErrMsg;
     }
@@ -93,8 +93,7 @@ class Record
      */
     public function delete($sTable, $sField, $sId)
     {
-        try
-        {
+        try {
             $oDb = Db::getInstance();
 
             // We start the transaction.
@@ -110,9 +109,7 @@ class Record
 
             Db::free($rStmt);
             return $bStatus;
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
 
             // We cancel the transaction if an error occurs.
@@ -135,23 +132,22 @@ class Record
 
         $oCachingIterator = new \CachingIterator(new \ArrayIterator($aValues));
 
-        try
-        {
+        try {
             $oDb = Db::getInstance();
 
             // We start the transaction.
             $oDb->beginTransaction();
 
-            foreach ($oCachingIterator as $sField => $sValue)
-            {
+            foreach ($oCachingIterator as $sField => $sValue) {
                 $this->_sSql .= $sField . ' = :' . $sField;
                 $this->_sSql .= $oCachingIterator->hasNext() ? ',' : '';
             }
 
             $rStmt = $oDb->prepare($this->_sSql);
 
-            foreach ($aValues as $sField => $sValue)
+            foreach ($aValues as $sField => $sValue) {
                 $rStmt->bindParam(':' . $sField, $sValue);
+            }
 
             $rStmt->execute($aValues);
 
@@ -160,9 +156,7 @@ class Record
 
             Db::free($rStmt);
             return $oDb->lastInsertId();
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
 
             // We cancel the transaction if an error occurs.
@@ -183,8 +177,7 @@ class Record
      */
     public function update($sTable, $sField, $sValue, $sPk = null, $sId = null)
     {
-        try
-        {
+        try {
             $oDb = Db::getInstance();
 
             // We start the transaction.
@@ -194,12 +187,15 @@ class Record
 
             $this->_sSql = 'UPDATE' . Db::prefix($sTable) . "SET $sField = :value";
 
-            if ($bIsWhere)
+            if ($bIsWhere) {
                 $this->_sSql .= " WHERE $sPk = :id";
+            }
 
             $rStmt = $oDb->prepare($this->_sSql);
             $rStmt->bindParam(':value', $sValue);
-            if ($bIsWhere) $rStmt->bindParam(':id', $sId);
+            if ($bIsWhere) {
+                $rStmt->bindParam(':id', $sId);
+            }
             $rStmt->execute();
             $iRow = $rStmt->rowCount();
 
@@ -208,9 +204,7 @@ class Record
 
             Db::free($rStmt);
             return $iRow;
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
 
             // We cancel the transaction if an error occurs.
@@ -228,8 +222,7 @@ class Record
      */
     public function query($sSql)
     {
-        try
-        {
+        try {
             $oDb = Db::getInstance();
 
             // We start the transaction.
@@ -244,9 +237,7 @@ class Record
 
             Db::free($rStmt);
             return $oRow;
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
 
             // We cancel the transaction if an error occurs.
@@ -302,48 +293,49 @@ class Record
      */
     public function getAllInOne($mTable, $sField = null, $sId = null, $mWhat = '*', array $aJoin = null, $sOptions = null)
     {
-        try
-        {
-            if (is_array($mTable))
-            {
+        try {
+            if (is_array($mTable)) {
                 $sTable = '';
-                foreach ($mTable as $sTable)
+                foreach ($mTable as $sTable) {
                     $sTable .= Db::prefix($sTable, true) . ',';
+                }
 
                 $sTable = substr($sTable, 0, -1);
-            }
-            else
-            {
+            } else {
                 $sTable = Db::prefix($mTable, true);
             }
 
-            if (is_array($mWhat))
+            if (is_array($mWhat)) {
                 $sWhat = (count($mWhat)) ? implode(',', $mWhat) : '*';
-            else
+            } else {
                 $sWhat = $mWhat;
+            }
 
             $bIsWhere = isset($sField, $sId);
 
             $this->_sSql = "SELECT $sWhat FROM " . $sTable;
 
-            if (!empty($aJoin) && count($aJoin) == 2)
+            if (!empty($aJoin) && count($aJoin) == 2) {
                 $this->_sSql .= " LEFT JOIN $aJoin[0] ON $sTable.$aJoin[1] = $aJoin[0].$aJoin[1]";
+            }
 
-            if ($bIsWhere)
+            if ($bIsWhere) {
                 $this->_sSql .= " WHERE $sField = :id";
+            }
 
-            if (!empty($sOptions))
+            if (!empty($sOptions)) {
                 $this->_sSql .= " $sOptions";
+            }
 
             $rStmt = Db::getInstance()->prepare($this->_sSql);
-            if ($bIsWhere) $rStmt->bindParam(':id', $sId);
+            if ($bIsWhere) {
+                $rStmt->bindParam(':id', $sId);
+            }
             $rStmt->execute();
             $oRow = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             return $oRow;
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
         }
     }
@@ -361,29 +353,30 @@ class Record
      */
     public function getOne($sTable, $sField = null, $sId = null, $sWhat = '*', $sOptions = null)
     {
-        try
-        {
+        try {
             $bIsWhere = isset($sField, $sId);
 
             $this->_sSql = 'SELECT ' . $sWhat . ' FROM' . Db::prefix($sTable);
 
-            if ($bIsWhere)
+            if ($bIsWhere) {
                 $this->_sSql .= "WHERE $sField = :id ";
+            }
 
-            if (!empty($sOptions))
+            if (!empty($sOptions)) {
                 $this->_sSql .= " $sOptions ";
+            }
 
             $this->_sSql .= 'LIMIT 0,1'; // Get only one column
 
             $rStmt = Db::getInstance()->prepare($this->_sSql);
-            if ($bIsWhere) $rStmt->bindParam(':id', $sId);
+            if ($bIsWhere) {
+                $rStmt->bindParam(':id', $sId);
+            }
             $rStmt->execute();
             $mRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             return $mRow;
-        }
-        catch (Exception $oE)
-        {
+        } catch (Exception $oE) {
             $this->_aErrors[] = $oE->getMessage();
         }
     }
@@ -403,8 +396,7 @@ class Record
 
         $oCachingIterator = new \CachingIterator(new \ArrayIterator($aValues));
 
-        foreach ($oCachingIterator as $sField => $sValue)
-        {
+        foreach ($oCachingIterator as $sField => $sValue) {
             $this->_sSql .= $sField . ' = ' . $this->escape($sValue);
             $this->_sSql .= $oCachingIterator->hasNext() ? ',' : '';
         }
@@ -613,5 +605,4 @@ class Record
         $this->_sSql .= " $sClsName $sField $sOpt $sVal";
         return $this;
     }
-
 }

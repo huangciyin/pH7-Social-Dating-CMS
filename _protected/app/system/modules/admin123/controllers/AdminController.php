@@ -9,8 +9,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Navigation\Page,
+use PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -44,13 +43,10 @@ class AdminController extends Controller
             getFirstItem(), $oPage->getNbItemsByPage());
         unset($oPage);
 
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->design->setRedirect(Uri::get(PH7_ADMIN_MOD, 'admin', 'browse'));
             $this->displayPageNotFound(t('Sorry, Your search returned no results!'));
-        }
-        else
-        {
+        } else {
             // Adding the JS form file
             $this->design->addJs(PH7_STATIC . PH7_JS, 'form.js');
 
@@ -96,14 +92,10 @@ class AdminController extends Controller
 
     public function deleteAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('admin_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('admin_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $aData = explode('_', $sAction);
                 $iId = (int) $aData[0];
                 $sUsername = (string) $aData[1];
@@ -120,5 +112,4 @@ class AdminController extends Controller
     {
         unset($this->oAdminModel, $this->sTitle, $this->sMsg, $this->iTotalAdmins);
     }
-
 }

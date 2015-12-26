@@ -7,4 +7,6 @@
  */
 namespace PH7;
 
-class Registration extends RegistrationCore {}
+class Registration extends RegistrationCore
+{
+}

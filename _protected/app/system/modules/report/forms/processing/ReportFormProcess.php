@@ -30,19 +30,12 @@ class ReportFormProcess extends Form
 
         unset($aData);
 
-
-        if ($mReport === 'already_reported')
-        {
+        if ($mReport === 'already_reported') {
             \PFBC\Form::setError('form_report', t('You have already reported abuse about this profile.'));
-        }
-        elseif (!$mReport)
-        {
+        } elseif (!$mReport) {
             \PFBC\Form::setError('form_report', t('Unable to report abuse.'));
-        }
-        else
-        {
+        } else {
             \PFBC\Form::setSuccess('form_report', t('You have successfully reported abuse about this profile.'));
         }
     }
-
 }

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Navigation\Page,
+use PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -54,13 +53,10 @@ class AdminController extends Controller
         $oSearch = $this->oAffModel->searchAff($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $oPage->getFirstItem(), $oPage->getNbItemsByPage());
         unset($oPage);
 
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->design->setRedirect(Uri::get('affiliate', 'admin', 'browse'));
             $this->displayPageNotFound(t('Sorry, Your search returned no results!'));
-        }
-        else
-        {
+        } else {
             // Adding the JS form file
             $this->design->addJs(PH7_STATIC . PH7_JS, 'form.js');
 
@@ -147,14 +143,10 @@ class AdminController extends Controller
 
     public function approveAll($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->check('aff_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('aff_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
                 $this->sMsg = $this->_moderateRegistration($iId, 1);
             }
@@ -165,14 +157,10 @@ class AdminController extends Controller
 
     public function disapproveAll($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->check('aff_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('aff_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
                 $this->sMsg = $this->_moderateRegistration($iId, 0);
             }
@@ -185,13 +173,10 @@ class AdminController extends Controller
     {
         $iId = $this->httpRequest->post('id');
 
-        if ($this->oAffModel->ban($iId, 1, 'Affiliates'))
-        {
+        if ($this->oAffModel->ban($iId, 1, 'Affiliates')) {
             $this->oAff->clearReadProfileCache($iId, 'Affiliates');
             $this->sMsg = t('The affiliate has been banned.');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! An error has occurred while banishment the affiliate.');
         }
 
@@ -202,13 +187,10 @@ class AdminController extends Controller
     {
         $iId = $this->httpRequest->post('id');
 
-        if ($this->oAffModel->ban($iId, 0, 'Affiliates'))
-        {
+        if ($this->oAffModel->ban($iId, 0, 'Affiliates')) {
             $this->oAff->clearReadProfileCache($iId, 'Affiliates');
             $this->sMsg = t('The affiliate has been unbanned.');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! An error has occurred while unban the affiliate.');
         }
 
@@ -227,14 +209,10 @@ class AdminController extends Controller
 
     public function banAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('aff_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('aff_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
 
                 $this->oAffModel->ban($iId, 1, 'Affiliates');
@@ -248,14 +226,10 @@ class AdminController extends Controller
 
     public function unBanAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('aff_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('aff_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
 
                 $this->oAffModel->ban($iId, 0, 'Affiliates');
@@ -269,14 +243,10 @@ class AdminController extends Controller
 
     public function deleteAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('aff_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('aff_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $aData = explode('_', $sAction);
                 $iId = (int) $aData[0];
                 $sUsername = (string) $aData[1];
@@ -291,18 +261,13 @@ class AdminController extends Controller
 
     private function _moderateRegistration($iId, $iStatus)
     {
-        if (isset($iId, $iStatus))
-        {
-            if ($oUser = $this->oAffModel->readProfile($iId, 'Affiliates'))
-            {
-                if ($iStatus == 0)
-                {
+        if (isset($iId, $iStatus)) {
+            if ($oUser = $this->oAffModel->readProfile($iId, 'Affiliates')) {
+                if ($iStatus == 0) {
                     // We leave the user in disapproval, after we can ban or delete it.
                     $sSubject = t('Your membership account has been declined');
                     $this->sMsg = t('Sorry, Your membership account has been declined.');
-                }
-                elseif ($iStatus == 1)
-                {
+                } elseif ($iStatus == 1) {
                     // Approve User
                     $this->oAffModel->approve($oUser->profileId, 1, 'Affiliates');
 
@@ -313,15 +278,12 @@ class AdminController extends Controller
                     $this->sMsg = t('Congratulations! Your account has been approved by our team of administrators.<br />You can now %0% to meeting new people!',
                         '<a href="' . Uri::get('affiliate', 'home', 'login') . '"><b>' . t('log in') .
                         '</b></a>');
-                }
-                else
-                {
+                } else {
                     // Error...
                     $this->sMsg = null;
                 }
 
-                if (!empty($this->sMsg))
-                {
+                if (!empty($this->sMsg)) {
                     // Set message
                     $this->view->content = t('Dear %0%,', $oUser->firstName) . '<br />' . $this->sMsg;
                     $this->view->footer = t('You are receiving this mail because we received an application for registration with the email "%0%" has been provided in the form of %site_name% (%site_url%).', $oUser->email) . '<br />' .
@@ -335,19 +297,13 @@ class AdminController extends Controller
                     $this->oAff->clearReadProfileCache($oUser->profileId, 'Affiliates');
 
                     $sOutputMsg = t('Done!');
-                }
-                else
-                {
+                } else {
                     $sOutputMsg = t('Error! Bad argument in the url.');
                 }
-            }
-            else
-            {
+            } else {
                 $sOutputMsg = t('The user is not found!');
             }
-        }
-        else
-        {
+        } else {
             $sOutputMsg = t('Error! Missing argument in the url.');
         }
 
@@ -358,5 +314,4 @@ class AdminController extends Controller
     {
         unset($this->oAff, $this->oAffModel, $this->sMsg, $this->sTitle, $this->iTotalUsers);
     }
-
 }

@@ -7,4 +7,6 @@
  */
 namespace PH7;
 
-class BirthdayModel extends BirthdayCoreModel {}
+class BirthdayModel extends BirthdayCoreModel
+{
+}

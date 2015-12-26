@@ -13,8 +13,7 @@
 namespace PH7\Framework\Url;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Http\Http,
+use PH7\Framework\Http\Http,
 PH7\Framework\Mvc\Request\Http as HttpRequest;
 
 class Header
@@ -32,7 +31,9 @@ class Header
      */
     public static function redirect($sUrl = null, $sMessage = null, $sType = 'success', $iRedirectCode = null)
     {
-        if (!Http::getStatusCodes($iRedirectCode)) $iRedirectCode = 301;
+        if (!Http::getStatusCodes($iRedirectCode)) {
+            $iRedirectCode = 301;
+        }
         Http::setHeadersByCode(Http::getStatusCodes($iRedirectCode));
 
         $oHttpRequest = new HttpRequest;
@@ -40,8 +41,9 @@ class Header
         $sUrl = $oHttpRequest->pH7Url($sUrl);
         unset($oHttpRequest);
 
-        if (!empty($sMessage))
+        if (!empty($sMessage)) {
             (new \PH7\Framework\Layout\Html\Design)->setFlashMsg($sMessage, $sType);
+        }
 
         header('Location: ' . $sUrl);
         exit;
@@ -64,5 +66,4 @@ class Header
 
         return $sProtocol . '://' . $_SERVER['SERVER_NAME'] . $mPort . $_SERVER['REQUEST_URI'];
     }
-
 }

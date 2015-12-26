@@ -14,10 +14,10 @@ class ScriptForm
 
     public static function display()
     {
-        if (isset($_POST['submit_script']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_script']))
+        if (isset($_POST['submit_script'])) {
+            if (\PFBC\Form::isValid($_POST['submit_script'])) {
                 new ScriptFormProcess;
+            }
             Framework\Url\Header::redirect();
         }
 
@@ -29,5 +29,4 @@ class ScriptForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

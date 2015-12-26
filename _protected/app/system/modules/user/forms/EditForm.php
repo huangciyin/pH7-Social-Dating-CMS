@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Date\CDateTime;
@@ -18,10 +17,10 @@ class EditForm
 
     public static function display()
     {
-        if (isset($_POST['submit_user_edit_account']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_user_edit_account']))
+        if (isset($_POST['submit_user_edit_account'])) {
+            if (\PFBC\Form::isValid($_POST['submit_user_edit_account'])) {
                 new EditFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -42,17 +41,16 @@ class EditForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_user_edit_account', 'form_user_edit_account'));
         $oForm->addElement(new \PFBC\Element\Token('edit_account'));
 
-        if ($bAdminLogged && $oHR->getExists('profile_id'))
-        {
+        if ($bAdminLogged && $oHR->getExists('profile_id')) {
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<p class="center"><a class="m_button" href="' . Uri::get(PH7_ADMIN_MOD, 'user', 'browse') . '">' . t('Back to Browse Users') . '</a></p>'));
 
             $oGroupId = (new AdminCoreModel)->getMemberships();
             $aGroupName = array();
-            foreach ($oGroupId as $oId)
-            {
+            foreach ($oGroupId as $oId) {
                 // Retrieve only the activated memberships
-                if ($oId->enable == 1)
+                if ($oId->enable == 1) {
                     $aGroupName[$oId->groupId] = $oId->name;
+                }
             }
             $oForm->addElement(new \PFBC\Element\Select(t('Membership Group:'), 'group_id', $aGroupName, array('value'=>$oUser->groupId, 'required'=>1)));
             unset($aGroupName);
@@ -72,12 +70,12 @@ class EditForm
 
         // Generate dynamic fields
         $oFields = $oUserModel->getInfoFields($iProfileId);
-        foreach ($oFields as $sColumn => $sValue)
+        foreach ($oFields as $sColumn => $sValue) {
             $oForm = (new DynamicFieldCoreForm($oForm, $sColumn, $sValue))->generate();
+        }
 
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script><script src="'.PH7_URL_STATIC.PH7_JS.'geo/autocompleteCity.js"></script>'));
         $oForm->render();
     }
-
 }

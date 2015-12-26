@@ -97,11 +97,11 @@ defined('PH7') or exit('Restricted access');
      {
          $sFlag = (!empty($sFlag)) ? (string) $sFlag : '';
 
-         if (!empty($sFilter))
-         {
+         if (!empty($sFilter)) {
              $aFilters = explode(',', $sFilter);
-             foreach ($aFilters as $sF)
+             foreach ($aFilters as $sF) {
                  $sText = str_replace($sF, $sFlag, $sText);
+             }
          }
 
          $sText = preg_replace('/[\r\n\t]+/', '', $sText); // Remove new lines, spaces, tabs
@@ -152,8 +152,9 @@ defined('PH7') or exit('Restricted access');
      {
          $mPos = strpos($sText, $sFindText, $iOffset);
 
-         if (!is_int($mPos))
+         if (!is_int($mPos)) {
              return -1;
+         }
 
          return $mPos;
      }
@@ -170,8 +171,9 @@ defined('PH7') or exit('Restricted access');
      {
          $mPos = strrpos($sText, $sFindText, $iOffset);
 
-         if (!is_int($mPos))
+         if (!is_int($mPos)) {
              return -1;
+         }
 
          return $mPos;
      }
@@ -199,22 +201,20 @@ defined('PH7') or exit('Restricted access');
       */
      public function extract($sText, $iStart = 0, $iLength = 150, $sTrimMarker = '...')
      {
-         if (function_exists('mb_strimwidth'))
-         {
+         if (function_exists('mb_strimwidth')) {
              $sText = mb_strimwidth($sText, $iStart, $iLength, $sTrimMarker, PH7_ENCODING);
-         }
-         else
-         {
+         } else {
              // Recovers a portion of our content.
              $sExtract = substr($sText, $iStart, $iLength);
 
              // Find the last space after the last word of the extract.
-             if ($iLastSpace = strrpos($sExtract, ' '))
+             if ($iLastSpace = strrpos($sExtract, ' ')) {
                  // Cut the chain to the last space.
                  $sText = substr($sText, $iStart, $iLastSpace);
-             else
+             } else {
                  // If the string contains any spaces, we cut the chain with the maximum number of characters given.
                  $sText = substr($sText, $iStart, $iLength);
+             }
 
              $sText .= $sTrimMarker;
          }
@@ -245,12 +245,13 @@ defined('PH7') or exit('Restricted access');
      {
          preg_match_all(self::_regexNormalize($sPattern), $sText, $aMatches, PREG_PATTERN_ORDER);
 
-         if (!empty($aMatches[1]))
+         if (!empty($aMatches[1])) {
              $mRet = $aMatches[1];
-         elseif (!empty($aMatches[0]))
+         } elseif (!empty($aMatches[0])) {
              $mRet = $aMatches[0];
-         else
+         } else {
              $mRet = null;
+         }
 
          return $mRet;
      }
@@ -277,8 +278,9 @@ defined('PH7') or exit('Restricted access');
       */
      protected function arrayEscape(array $aData, $bStrip)
      {
-         foreach ($aData as $sKey => $mValue)
+         foreach ($aData as $sKey => $mValue) {
              $aData[$sKey] = (is_array($mValue)) ? $this->arrayEscape($mValue, $bStrip) : $this->cEscape($mValue, $bStrip);
+         }
 
          return $aData;
      }
@@ -318,7 +320,6 @@ defined('PH7') or exit('Restricted access');
      {
          return self::$_sRegexDelimiter . trim($sPattern, self::$_sRegexDelimiter) . self::$_sRegexDelimiter;
      }
-
  }
 
 }

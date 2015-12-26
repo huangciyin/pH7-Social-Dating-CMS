@@ -29,9 +29,15 @@ class ForumCoreModel extends Framework\Mvc\Model\Engine\Model
         $sSqlForumId = (!empty($iForumId)) ? 'WHERE forumId = :forumId ' : '';
 
         $rStmt = Db::getInstance()->prepare('SELECT * FROM' . Db::prefix('Forums') . $sSqlForumId . 'ORDER BY ' . $sOrder . $sSqlLimit);
-        if (!empty($iForumId)) $rStmt->bindParam(':forumId', $iForumId, \PDO::PARAM_INT);
-        if ($bIsLimit) $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
-        if ($bIsLimit) $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
+        if (!empty($iForumId)) {
+            $rStmt->bindParam(':forumId', $iForumId, \PDO::PARAM_INT);
+        }
+        if ($bIsLimit) {
+            $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
+        }
+        if ($bIsLimit) {
+            $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
+        }
         $rStmt->execute();
         return (!empty($iForumId)) ? $rStmt->fetch(\PDO::FETCH_OBJ) : $rStmt->fetchAll(\PDO::FETCH_OBJ);
     }
@@ -46,13 +52,16 @@ class ForumCoreModel extends Framework\Mvc\Model\Engine\Model
         $rStmt = Db::getInstance()->prepare('SELECT f.name, t.title, t.forumId, msg.*, m.username, m.firstName, m.sex FROM' . Db::prefix('Forums') . 'AS f INNER JOIN' . Db::prefix('ForumsTopics') . 'AS t ON f.forumId = t.forumId INNER JOIN ' . Db::prefix('ForumsMessages') . 'AS msg ON t.topicId = msg.topicId LEFT JOIN' . Db::prefix('Members') . 'AS m
             ON msg.profileId = m.profileId WHERE msg.topicId = :topicId ' . $sSqlMessageId . $sSqlProfileId . ' AND msg.approved = :approved ORDER BY msg.createdDate ' . $sSort . ' LIMIT :offset, :limit');
         $rStmt->bindValue(':topicId', $iTopicId, \PDO::PARAM_INT);
-        if (!empty($iMessageId)) $rStmt->bindValue(':messageId', $iMessageId, \PDO::PARAM_INT);
-        if (!empty($iProfileId)) $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        if (!empty($iMessageId)) {
+            $rStmt->bindValue(':messageId', $iMessageId, \PDO::PARAM_INT);
+        }
+        if (!empty($iProfileId)) {
+            $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        }
         $rStmt->bindValue(':approved', $iApproved, \PDO::PARAM_INT);
         $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         $rStmt->execute();
         return (!empty($iProfileId)) ? $rStmt->fetch(\PDO::FETCH_OBJ) : $rStmt->fetchAll(\PDO::FETCH_OBJ);
     }
-
 }

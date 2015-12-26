@@ -74,5 +74,4 @@ abstract class Predefined
      * @return object this
      */
     abstract public function assign();
-
 }

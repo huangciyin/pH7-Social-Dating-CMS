@@ -33,8 +33,7 @@ class Api
     public function getVideo($sUrl)
     {
         $sClass = $this->clear($sUrl);
-        switch ($sClass)
-        {
+        switch ($sClass) {
             case 'youtube':
             case 'youtu':
                 $sClass = (new Api\Youtube)->getVideo($sUrl);
@@ -68,8 +67,7 @@ class Api
     {
         $sClass = $this->clear($sUrl);
 
-        switch ($sClass)
-        {
+        switch ($sClass) {
             case 'youtube':
             case 'youtu':
                 $sClass = (new Api\Youtube)->getInfo($sUrl);
@@ -111,8 +109,7 @@ class Api
         $iWidth = ( isset($iWidth) ? $iWidth : $this->iWidth );
         $iHeight = (isset($iHeight) ? $iHeight : $this->iHeight );
 
-        switch ($sClass)
-        {
+        switch ($sClass) {
             case 'youtube':
             case 'youtu':
                 $sClass = (new Api\Youtube)->getMeta($sUrl, $sMedia, $iWidth, $iHeight);
@@ -145,8 +142,7 @@ class Api
     protected function clear($sUrl)
     {
         $oHttp = new Http;
-        if ($oHttp->detectSubdomain($sUrl))
-        {
+        if ($oHttp->detectSubdomain($sUrl)) {
             // Removes the subdomain with its dot (e.g. mysub.domain.com becomes domain.com).
             $sUrl = str_replace($oHttp->getSubdomain($sUrl) . PH7_DOT, '', $sUrl);
         }
@@ -154,5 +150,4 @@ class Api
 
         return preg_replace('#(^https?://|www\.|\.[a-z]{2,4}/?(.+)?$)#i', '', $sUrl);
     }
-
 }

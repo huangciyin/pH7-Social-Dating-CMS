@@ -17,10 +17,10 @@ class ReportForm
     {
         $oHttpRequest = new Http;
 
-        if ($oHttpRequest->postExists('submit_report'))
-        {
-            if (\PFBC\Form::isValid($oHttpRequest->post('submit_report')))
+        if ($oHttpRequest->postExists('submit_report')) {
+            if (\PFBC\Form::isValid($oHttpRequest->post('submit_report'))) {
                 new ReportFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -39,5 +39,4 @@ class ReportForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'str.js"></script>'));
         $oForm->render();
     }
-
 }

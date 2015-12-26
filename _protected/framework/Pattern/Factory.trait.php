@@ -35,11 +35,10 @@ trait Factory
         $sClass = get_called_class();//remove it for static::class
         $aArgs = func_get_args();
 
-        if (class_exists($sClass))
+        if (class_exists($sClass)) {
             return (new \ReflectionClass($sClass))->newInstanceArgs($aArgs);
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7RuntimeException('The "' . $sClass . '" was not found or is not defined.');
+        }
     }
-
 }
-

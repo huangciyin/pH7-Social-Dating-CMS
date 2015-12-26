@@ -38,5 +38,4 @@ class Security
     {
         echo '<input type="hidden" name="security_token" value="', (new Token)->generate($sName), '" />';
     }
-
 }

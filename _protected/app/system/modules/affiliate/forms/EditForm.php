@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Date\CDateTime;
@@ -18,10 +17,10 @@ class EditForm
 
     public static function display()
     {
-        if (isset($_POST['submit_aff_edit_account']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_aff_edit_account']))
+        if (isset($_POST['submit_aff_edit_account'])) {
+            if (\PFBC\Form::isValid($_POST['submit_aff_edit_account'])) {
                 new EditFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -34,7 +33,6 @@ class EditForm
 
         $oAff = $oAffModel->readProfile($iProfileId, 'Affiliates');
 
-
         // Birth date with the date format for the date picker
         $sBirthDate = (new CDateTime)->get($oAff->birthDate)->date('m/d/Y');
 
@@ -43,8 +41,7 @@ class EditForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_aff_edit_account', 'form_aff_edit_account'));
         $oForm->addElement(new \PFBC\Element\Token('edit_account'));
 
-        if ($bAdminLogged && $oHR->getExists('profile_id'))
-        {
+        if ($bAdminLogged && $oHR->getExists('profile_id')) {
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<p class="center"><a class="m_button" href="' . Uri::get('affiliate', 'admin', 'browse') . '">' . t('Back to Browse Affiliates') . '</a></p>'));
         }
         unset($oHR);
@@ -64,12 +61,12 @@ class EditForm
 
         // Generate dynamic fields
         $oFields = $oAffModel->getInfoFields($iProfileId, 'AffiliatesInfo');
-        foreach ($oFields as $sColumn => $sValue)
+        foreach ($oFields as $sColumn => $sValue) {
             $oForm = (new DynamicFieldCoreForm($oForm, $sColumn, $sValue))->generate();
+        }
 
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

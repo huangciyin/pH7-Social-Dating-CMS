@@ -13,8 +13,7 @@
 namespace PH7\Framework\Video\Api;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\File\File,
+use PH7\Framework\File\File,
 PH7\Framework\Str\Str,
 PH7\Framework\Mvc\Model\DbConfig;
 
@@ -69,7 +68,9 @@ abstract class Api
      */
     public function getEmbedUrl($sUrl)
     {
-        if (!$this->getVideoId($sUrl)) return false;
+        if (!$this->getVideoId($sUrl)) {
+            return false;
+        }
 
         return static::PLAYER_URL . $this->getVideoId($sUrl);
     }
@@ -104,5 +105,4 @@ abstract class Api
         $oData = json_decode($sData);
         return $oData;
     }
-
 }

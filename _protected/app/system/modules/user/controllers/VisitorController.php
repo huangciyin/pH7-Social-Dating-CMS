@@ -62,15 +62,12 @@ class VisitorController extends Controller
 
         $this->view->user_views_setting = (UserCore::auth()) ? $this->oUserModel->getPrivacySetting($this->session->get('member_id'))->userSaveViews : '';
 
-        if (empty($oVisitor))
-        {
+        if (empty($oVisitor)) {
             $this->sTitle = t('No Visitors found for the profile of "%0%"', $this->sUsername);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
             $this->view->error = t('Not found visitor.');
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('%0%\'s Visitors:', $this->sUsername);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -89,5 +86,4 @@ class VisitorController extends Controller
         $this->view->h2_title = $this->sTitle;
         $this->output();
     }
-
 }

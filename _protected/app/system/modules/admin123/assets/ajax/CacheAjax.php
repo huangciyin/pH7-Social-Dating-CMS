@@ -15,16 +15,16 @@ class CacheAjax extends Framework\Core\Kernel
     {
         parent::__construct();
 
-        if (!(new Framework\Security\CSRF\Token)->check('cache'))
-        exit(jsonMsg(0, Form::errorTokenMsg()));
+        if (!(new Framework\Security\CSRF\Token)->check('cache')) {
+            exit(jsonMsg(0, Form::errorTokenMsg()));
+        }
 
         $this->clearCache();
     }
 
     protected function clearCache()
     {
-        switch ($this->httpRequest->post('type'))
-        {
+        switch ($this->httpRequest->post('type')) {
             case 'general':
                 $this->file->deleteDir(PH7_PATH_CACHE . Framework\Cache\Cache::CACHE_DIR);
             break;
@@ -48,9 +48,9 @@ class CacheAjax extends Framework\Core\Kernel
 
         echo jsonMsg(1, t('The cache has been deleted!'));
     }
-
 }
 
 // Only for Admins
-if (Admin::auth())
+if (Admin::auth()) {
     new CacheAjax;
+}

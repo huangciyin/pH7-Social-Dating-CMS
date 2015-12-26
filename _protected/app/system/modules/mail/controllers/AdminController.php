@@ -22,12 +22,9 @@ class AdminController extends MainController
         $this->view->current_page = $this->oPage->getCurrentPage();
         $oAllMsg = $this->oMailModel->search($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
 
-        if (empty($oAllMsg))
-        {
+        if (empty($oAllMsg)) {
             $this->displayPageNotFound(t('No messages found!'));
-        }
-        else
-        {
+        } else {
             $this->design->addJs(PH7_STATIC . PH7_JS, 'divShow.js');
 
             $this->sTitle = t('Email List');
@@ -39,6 +36,4 @@ class AdminController extends MainController
             $this->output();
         }
     }
-
 }
-

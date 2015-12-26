@@ -24,5 +24,4 @@ class AdsAdminFormProcess extends Form
 
         Header::redirect(Uri::get('affiliate', 'admin', 'ads'), t('The Advertisements has been successfully added!'));
     }
-
 }

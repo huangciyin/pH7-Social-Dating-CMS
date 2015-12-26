@@ -18,19 +18,15 @@ class Permission extends PermissionCore
         // Level for Blogs
         $bAdminAuth = AdminCore::auth();
 
-        if (!$bAdminAuth)
-        {
-            if (!$this->checkMembership() || ($this->registry->action === 'read' && !$this->group->read_blog_posts))
-            {
+        if (!$bAdminAuth) {
+            if (!$this->checkMembership() || ($this->registry->action === 'read' && !$this->group->read_blog_posts)) {
                 $this->paymentRedirect();
             }
         }
 
-        if (!$bAdminAuth && $this->registry->controller === 'AdminController')
-        {
+        if (!$bAdminAuth && $this->registry->controller === 'AdminController') {
             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Framework\Url\Header::redirect(Framework\Mvc\Router\Uri::get('blog','main','index'), $this->adminSignInMsg(), 'error');
         }
     }
-
 }

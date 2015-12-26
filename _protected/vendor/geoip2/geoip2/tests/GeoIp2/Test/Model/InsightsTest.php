@@ -9,7 +9,6 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
 
     public function testFull()
     {
-
         $raw = array(
             'city' => array(
                 'confidence' => 76,
@@ -241,7 +240,6 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
             'raw method returns raw input with no added empty values'
         );
     }
-
 
     public function testUnknown()
     {

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Security\Ban\Ban,
+use PH7\Framework\Security\Ban\Ban,
 PH7\Framework\Http\Http,
 PH7\Framework\Navigation\Page,
 PH7\Framework\Mvc\Router\Uri;
@@ -57,16 +56,13 @@ class CommentController extends Controller
         $oComment = $this->oCommentModel->read($this->iId, 1, $oPage->getFirstItem(), $oPage->getNbItemsByPage(), $this->sTable);
         unset($oPage);
 
-        if (!empty($oComment))
-        {
+        if (!empty($oComment)) {
             $this->view->avatarDesign = new AvatarDesignCore(); // Avatar Design Class
             $this->view->member_id = $this->session->get('member_id');
             $this->view->csrf_token = (new Framework\Security\CSRF\Token)->generate('comment');
 
             $this->view->comment = $oComment;
-        }
-        else
-        {
+        } else {
             $this->_notFound();
         }
         $this->output();
@@ -76,8 +72,7 @@ class CommentController extends Controller
     {
         $oComment = $this->oCommentModel->get($this->iId, 1, $this->sTable);
 
-        if (!empty($oComment))
-        {
+        if (!empty($oComment)) {
             $this->sTitle = t('Read this comment of <span class="pH1">%0%</span>', $oComment->firstName);
             $this->view->page_title = $this->sTitle;
             $this->view->meta_description = t('Read comment of %0%, %1%. %2%', $oComment->firstName, $oComment->username, substr(Ban::filterWord($oComment->comment, false), 0, 150));
@@ -88,9 +83,7 @@ class CommentController extends Controller
             $this->view->member_id = $this->session->get('member_id');
 
             $this->view->com = $oComment;
-        }
-        else
-        {
+        } else {
             $this->_notFound();
             // Modified the message error
             $this->view->error = t('No comments yet, please return to the <a href="%0%">previous page</a>.', 'javascript:history.back();');
@@ -112,24 +105,18 @@ class CommentController extends Controller
 
     public function delete()
     {
-        if ((($this->session->get('member_id') == $this->httpRequest->post('recipient_id')) || ($this->session->get('member_id') == $this->httpRequest->post('sender_id'))) || AdminCore::auth())
-        {
+        if ((($this->session->get('member_id') == $this->httpRequest->post('recipient_id')) || ($this->session->get('member_id') == $this->httpRequest->post('sender_id'))) || AdminCore::auth()) {
             $this->sTable = $this->httpRequest->post('table');
 
-            if ($this->oCommentModel->delete($this->httpRequest->post('id'), $this->httpRequest->post('recipient_id'), $this->httpRequest->post('sender_id'), $this->sTable))
-            {
+            if ($this->oCommentModel->delete($this->httpRequest->post('id'), $this->httpRequest->post('recipient_id'), $this->httpRequest->post('sender_id'), $this->sTable)) {
                 /* Clean All Data of CommentModel Cache */
                 (new Framework\Cache\Cache)->start(CommentCoreModel::CACHE_GROUP, null, null)->clear();
 
                 $this->sMsg = t('The comment has been deleted!');
-            }
-            else
-            {
+            } else {
                 $this->sMsg = t('Your comment does not exist anymore.');
             }
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Whoops! The comment could not be removed!');
         }
 
@@ -152,5 +139,4 @@ class CommentController extends Controller
     {
         unset($this->oComment, $this->oCommentModel, $this->sTable, $this->sTitle, $this->sMsg, $this->iId);
     }
-
 }

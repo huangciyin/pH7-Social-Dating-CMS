@@ -15,10 +15,10 @@ class InviteForm
 
     public static function display()
     {
-        if (isset($_POST['submit_invite']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_invite']))
+        if (isset($_POST['submit_invite'])) {
+            if (\PFBC\Form::isValid($_POST['submit_invite'])) {
                 new InviteFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -39,5 +39,4 @@ class InviteForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script><script src="'.PH7_URL_STATIC.PH7_JS.'str.js"></script>'));
         $oForm->render();
     }
-
 }

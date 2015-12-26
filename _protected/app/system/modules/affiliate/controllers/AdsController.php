@@ -28,5 +28,4 @@ class AdsController extends Controller
         $this->view->h3_title = nt('%n% Banner', '%n% Banners', $iTotalAds);
         $this->output();
     }
-
 }

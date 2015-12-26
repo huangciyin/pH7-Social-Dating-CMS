@@ -12,18 +12,23 @@ class Button extends \PFBC\Element
 
     public function __construct($sLabel = '', $sType = '', array $aProperties = null)
     {
-        if(empty($sLabel)) $sLabel = t('Submit'); // Default translation value
+        if (empty($sLabel)) {
+            $sLabel = t('Submit');
+        } // Default translation value
 
         $this->attributes = array('type' => 'submit', 'value' => t('Submit'));
 
-        if(!is_array($aProperties))
+        if (!is_array($aProperties)) {
             $aProperties = array();
+        }
 
-        if(!empty($sType))
+        if (!empty($sType)) {
             $aProperties['type'] = $sType;
+        }
 
-        if(empty($aProperties['value']))
+        if (empty($aProperties['value'])) {
             $aProperties['value'] = $sLabel;
+        }
 
         parent::__construct($sLabel, '', $aProperties);
     }
@@ -32,13 +37,14 @@ class Button extends \PFBC\Element
     {
         /*Unless explicitly prevented, jQueryUI's button widget functionality is applied to
         the each Button element.*/
-        if(!in_array('jQueryUIButtons', $this->form->getPrevent())) {
+        if (!in_array('jQueryUIButtons', $this->form->getPrevent())) {
             echo 'jQuery("#', $this->attributes['id'], '").button(';
             /*Any of the jQueryUI framework icons can be added to your buttons via the icon
             property.  See http://jqueryui.com/themeroller/ for a complete list of available
             icons.*/
-            if(!empty($this->icon))
+            if (!empty($this->icon)) {
                 echo '{ icons: { primary: "ui-icon-', $this->icon, '" } }';
+            }
             echo ');';
         }
     }
@@ -49,5 +55,4 @@ class Button extends \PFBC\Element
         button widget - specifically the icon option.*/
         echo '<button', $this->getAttributes(), '>', $this->label, '</button>';
     }
-
 }

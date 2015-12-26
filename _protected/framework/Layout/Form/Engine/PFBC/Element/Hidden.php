@@ -12,16 +12,17 @@ class Hidden extends \PFBC\Element
 
     public function __construct($sName, $sValue = '', array $aProperties = null)
     {
-        if(!is_array($aProperties))
+        if (!is_array($aProperties)) {
             $aProperties = array();
+        }
 
-        if(!empty($sValue))
+        if (!empty($sValue)) {
             $aProperties['value'] = $sValue;
+        }
 
         // We remove the session of the hidden fields
         unset($_SESSION['pfbc'][\PFBC\Form::getFormId()]['values'][$sName]);
 
         parent::__construct('', $sName, $aProperties);
     }
-
 }

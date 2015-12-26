@@ -22,5 +22,4 @@ class PH7RuntimeException extends \RuntimeException
     {
         static::init($sMsg);
     }
-
 }

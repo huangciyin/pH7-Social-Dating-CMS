@@ -17,5 +17,4 @@ class AdminController extends MainController
         $this->view->h2_title = $this->sTitle;
         $this->output();
     }
-
 }

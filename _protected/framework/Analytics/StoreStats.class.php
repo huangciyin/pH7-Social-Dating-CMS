@@ -27,8 +27,9 @@ class StoreStats
     {
         $sFullPath = PH7_PATH_TMP . static::DIR . $sFileName . static::EXT;
 
-        if (!$aGetData = @file_get_contents($sFullPath))
+        if (!$aGetData = @file_get_contents($sFullPath)) {
             throw new \PH7\Framework\Cache\Exception('Couldn\'t get cache file: \'' . $sFullPath . '\'');
+        }
 
         $aData = (!empty($aGetData)) ? unserialize($aGetData) : array();
 
@@ -49,25 +50,24 @@ class StoreStats
         $sExceptMsg = 'Couldn\'t write cache file: \'' . $sFullPath . '\'';
         $aData = array();
 
-        if (!is_file($sFullPath))
-        {
-            if (!@file_put_contents($sFullPath, serialize($aData)))
+        if (!is_file($sFullPath)) {
+            if (!@file_put_contents($sFullPath, serialize($aData))) {
                 throw new \PH7\Framework\Cache\Exception($sExceptMsg);
-        }
-        else
-        {
+            }
+        } else {
             $aLine = file($sFullPath);
             $aData = unserialize($aLine[0]);
             $sContents = strtolower($sContents); // Case-insensitive
 
-            if (!empty($aData[$sContents]))
+            if (!empty($aData[$sContents])) {
                 $aData[$sContents]++;
-            else
+            } else {
                 $aData[$sContents] = 1;
+            }
 
-            if (!@file_put_contents($sFullPath, serialize($aData), FILE_APPEND))
+            if (!@file_put_contents($sFullPath, serialize($aData), FILE_APPEND)) {
                 throw new \PH7\Framework\Cache\Exception($sExceptMsg);
+            }
         }
     }
-
 }

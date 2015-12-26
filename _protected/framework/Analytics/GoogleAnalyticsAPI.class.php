@@ -16,7 +16,8 @@ defined('PH7') or exit('Restricted access');
 *  @ version         30/04/2011
 */
 
-class GoogleAnalyticsAPI {
+class GoogleAnalyticsAPI
+{
 
     /** Google account login (email) **/
     private $login;
@@ -53,7 +54,6 @@ class GoogleAnalyticsAPI {
 
     /** The number of max results to display (default=1000) **/
     private $maxResults;
-
 
     /**
      * Class constructor
@@ -397,7 +397,4 @@ class GoogleAnalyticsAPI {
             return null;
         }
     }
-
 }
-
-?>

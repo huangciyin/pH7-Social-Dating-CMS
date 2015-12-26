@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Config\Config,
+use PH7\Framework\Config\Config,
 PH7\Framework\Str\Str,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
@@ -18,10 +17,10 @@ class AdminEditForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit']))
+        if (isset($_POST['submit_edit'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit'])) {
                 new AdminEditFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -33,14 +32,14 @@ class AdminEditForm
 
         $oCategoriesData = $oGameModel->getCategory(null, 0, 500);
         $aCategoriesName = array();
-        foreach ($oCategoriesData as $oId)
-             $aCategoriesName[$oId->categoryId] = $oId->name;
+        foreach ($oCategoriesData as $oId) {
+            $aCategoriesName[$oId->categoryId] = $oId->name;
+        }
         unset($oHttpRequest, $oGameModel);
 
         $sTitlePattern = Config::getInstance()->values['module.setting']['url_title.pattern'];
 
-        if (!empty($oGame) && (new Str)->equals($iGameId, $oGame->gameId))
-        {
+        if (!empty($oGame) && (new Str)->equals($iGameId, $oGame->gameId)) {
             $oForm = new \PFBC\Form('form_edit', 650);
             $oForm->configure(array('action' => '' ));
             $oForm->addElement(new \PFBC\Element\Hidden('submit_edit', 'form_edit'));
@@ -52,12 +51,8 @@ class AdminEditForm
             $oForm->addElement(new \PFBC\Element\Textbox(t('Keywords:'), 'keywords', array('value'=>$oGame->keywords, 'validation'=>new \PFBC\Validation\Str(2,255), 'required'=>1)));
             $oForm->addElement(new \PFBC\Element\Button);
             $oForm->render();
-        }
-        else
-        {
+        } else {
             echo '<p class="center bold">' . t('Game Not Found!') . '</p>';
         }
     }
-
 }
-

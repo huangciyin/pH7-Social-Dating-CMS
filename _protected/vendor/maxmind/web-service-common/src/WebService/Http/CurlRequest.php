@@ -60,7 +60,6 @@ class CurlRequest implements Request
         $opts[CURLOPT_SSL_VERIFYPEER] = true;
         $opts[CURLOPT_RETURNTRANSFER] = true;
 
-
         $opts[CURLOPT_HTTPHEADER] = $this->options['headers'];
         $opts[CURLOPT_USERAGENT] = $this->options['userAgent'];
 

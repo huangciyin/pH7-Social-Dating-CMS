@@ -14,10 +14,10 @@ class EditCategoryForm
 
     public static function display()
     {
-        if (isset($_POST['submit_category_edit']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_category_edit']))
+        if (isset($_POST['submit_category_edit'])) {
+            if (\PFBC\Form::isValid($_POST['submit_category_edit'])) {
                 new EditCategoryFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class EditCategoryForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

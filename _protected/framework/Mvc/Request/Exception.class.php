@@ -23,5 +23,4 @@ class Exception extends \PH7\Framework\Error\CException\UserException
     {
         parent::__construct( Form::wrongRequestMethodMsg($sMethodName) );
     }
-
 }

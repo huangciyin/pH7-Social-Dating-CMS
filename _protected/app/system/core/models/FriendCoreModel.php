@@ -45,5 +45,4 @@ class FriendCoreModel extends Framework\Mvc\Model\Engine\Model
 
         return (int) $oRow->totalFds;
     }
-
 }

@@ -7,4 +7,6 @@
  */
 namespace PH7;
 
-class VideoDesign extends VideoDesignCore {}
+class VideoDesign extends VideoDesignCore
+{
+}

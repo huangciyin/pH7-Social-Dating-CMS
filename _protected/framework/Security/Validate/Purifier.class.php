@@ -28,5 +28,4 @@ class Purifer extends Xss
     {
         return (is_array($mStr)) ? $this->arrayClean($mStr) : $this->clean($mStr);
     }
-
 }

@@ -39,7 +39,6 @@ defined('PH7') or exit('Restricted access');
          $aArgs = func_get_args();
          return implode("\t", $aArgs) . \PH7\Framework\File\File::EOL;
      }
-
  }
 
 }

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Config\Config,
+use PH7\Framework\Config\Config,
 PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http;
 
@@ -17,10 +16,10 @@ class EditMsgForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_msg']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_msg']))
+        if (isset($_POST['submit_edit_msg'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_msg'])) {
                 new EditMsgFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -42,5 +41,4 @@ class EditMsgForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

@@ -86,5 +86,4 @@ class ExistsCoreModel extends Framework\Mvc\Model\Engine\Model
         $rExists->execute();
         return ($rExists->fetchColumn() == 1);
     }
-
 }

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Config\Config,
+use PH7\Framework\Config\Config,
 PH7\Framework\Str\Str,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
@@ -18,10 +17,10 @@ class EditMembershipForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_membership']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_membership']))
+        if (isset($_POST['submit_edit_membership'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_membership'])) {
                 new EditMembershipFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -38,8 +37,7 @@ class EditMembershipForm
         $aDefPerms = include dirname(__DIR__) . PH7_DS . PH7_CONFIG . 'perms.inc.php';
         $aDbPerms = unserialize($oMembership->permissions);
         $aPerms = array_merge($aDefPerms, $aDbPerms); // Update new permissions from perms.inc.php file
-        foreach($aPerms as $sKey => $sVal)
-        {
+        foreach ($aPerms as $sKey => $sVal) {
             $sLabel = (new Str)->upperFirstWords( str_replace('_', ' ', $sKey) );
             $oForm->addElement(new \PFBC\Element\Select($sLabel, 'perms[' . $sKey . ']', array(1=>t('Yes'), 0=>t('No')), array('value'=>$sVal)));
         }
@@ -51,5 +49,4 @@ class EditMembershipForm
         $oForm->addElement(new \PFBC\Element\Button(t('Update')));
         $oForm->render();
     }
-
 }

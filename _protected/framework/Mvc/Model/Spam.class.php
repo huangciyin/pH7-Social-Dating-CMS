@@ -13,8 +13,7 @@
 namespace PH7\Framework\Mvc\Model;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Security\Spam\Spam as SecMsg;
 
 class Spam
@@ -39,10 +38,12 @@ class Spam
 
         $rStmt->bindValue(':id', $iFindId, \PDO::PARAM_INT);
         $rStmt->execute();
-        while ($oRow = $rStmt->fetch(\PDO::FETCH_OBJ))
-            if ($bReturn = SecMsg::detectDuplicate($sCheckContent, $oRow->content)) break; // TRUE = Duplicate content detected, FALSE otherwise.
+        while ($oRow = $rStmt->fetch(\PDO::FETCH_OBJ)) {
+            if ($bReturn = SecMsg::detectDuplicate($sCheckContent, $oRow->content)) {
+                break;
+            }
+        } // TRUE = Duplicate content detected, FALSE otherwise.
 
         return $bReturn;
     }
-
 }

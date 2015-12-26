@@ -50,5 +50,4 @@ class Contact extends Core
 
         return (new Mail)->send($aInfo, $sMessageHtml);
     }
-
 }

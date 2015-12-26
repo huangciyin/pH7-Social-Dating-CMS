@@ -29,8 +29,7 @@ class Lang
     {
         $oCache = (new Cache)->start(self::CACHE_GROUP, 'list' . $bOnlyActive, 172800);
 
-        if (!$oData = $oCache->get())
-        {
+        if (!$oData = $oCache->get()) {
             $sSqlWhere = ($bOnlyActive) ? 'WHERE active=\'1\'' : '';
             $rStmt = Db::getInstance()->prepare('SELECT * FROM ' . DB::prefix('LanguagesInfo') . $sSqlWhere . ' ORDER BY name ASC');
             $rStmt->execute();
@@ -42,5 +41,4 @@ class Lang
 
         return $oData;
     }
-
 }

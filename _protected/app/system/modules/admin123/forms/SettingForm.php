@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\File\File,
 PH7\Framework\Ip\Ip;
@@ -18,10 +17,10 @@ class SettingForm
 
     public static function display()
     {
-        if (isset($_POST['submit_setting']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_setting']))
+        if (isset($_POST['submit_setting'])) {
+            if (\PFBC\Form::isValid($_POST['submit_setting'])) {
                 new SettingFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -39,11 +38,12 @@ class SettingForm
         $aLangsId = $oFile->getDirList(PH7_PATH_APP_LANG);
 
         $aTpls = array();
-        foreach ($aTplsId as $sTpl) $aTpls[$sTpl] = ucfirst($sTpl);
+        foreach ($aTplsId as $sTpl) {
+            $aTpls[$sTpl] = ucfirst($sTpl);
+        }
 
         $aLangs = array();
-        foreach ($aLangsId as $sLang)
-        {
+        foreach ($aLangsId as $sLang) {
             $sAbbrLang = substr($sLang,0,2);
             $aLangs[$sLang] = t($sAbbrLang) . ' (' . $sLang . ')';
         }
@@ -79,7 +79,9 @@ class SettingForm
 
         $oGroupId = (new AdminCoreModel)->getMemberships();
         $aGroupName = array();
-        foreach ($oGroupId as $iId) $aGroupName[$iId->groupId] = $iId->name;
+        foreach ($oGroupId as $iId) {
+            $aGroupName[$iId->groupId] = $iId->name;
+        }
         $oForm->addElement(new \PFBC\Element\Select(t('Default Membership Group:'), 'default_membership_group_id', $aGroupName, array('value'=>DbConfig::getSetting('defaultMembershipGroupId'), 'required'=>1)));
         unset($aGroupName);
 
@@ -171,5 +173,4 @@ class SettingForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

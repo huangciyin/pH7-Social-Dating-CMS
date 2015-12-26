@@ -158,5 +158,4 @@ class DataCoreModel extends Framework\Mvc\Model\Engine\Model
     {
         return (new GameCoreModel)->get(null, null, 0, static::MAX_ITEMS, SearchCoreModel::ADDED_DATE);
     }
-
 }

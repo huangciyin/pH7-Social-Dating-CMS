@@ -11,8 +11,7 @@
 
 namespace PH7;
 
-use
-PH7\Framework\Security\Ban\Ban,
+use PH7\Framework\Security\Ban\Ban,
 PH7\Framework\Http\Http,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Mail\Mail;
@@ -63,12 +62,13 @@ class Logger extends Core
         // Creates the log message and adds it to the list of logs.
         $this->setLogMsg()->writeFile();
 
-        if ($this->config->values['module.setting']['report_email.enable'])
+        if ($this->config->values['module.setting']['report_email.enable']) {
             $this->sendMessage();
+        }
 
-        if ($this->config->values['module.setting']['auto_banned_ip.enable'])
+        if ($this->config->values['module.setting']['auto_banned_ip.enable']) {
             $this->blockIp();
-
+        }
     }
 
     /**
@@ -79,13 +79,13 @@ class Logger extends Core
      */
      protected function setLogMsg()
      {
-        $sReferer = (null !== ($mReferer = $this->browser->getHttpReferer() )) ? $mReferer : 'NO HTTP REFERER';
-        $sAgent = (null !== ($mAgent = $this->browser->getUserAgent() )) ? $mAgent : 'NO USER AGENT';
-        $sQuery = (null !== ($mQuery = (new Http)->getQueryString() )) ? $mQuery : 'NO QUERY STRING';
+         $sReferer = (null !== ($mReferer = $this->browser->getHttpReferer() )) ? $mReferer : 'NO HTTP REFERER';
+         $sAgent = (null !== ($mAgent = $this->browser->getUserAgent() )) ? $mAgent : 'NO USER AGENT';
+         $sQuery = (null !== ($mQuery = (new Http)->getQueryString() )) ? $mQuery : 'NO QUERY STRING';
 
-        $this->_sIp = Ip::get();
+         $this->_sIp = Ip::get();
 
-        $this->_sContents =
+         $this->_sContents =
         t('Date: %0%', $this->dateTime->get()->dateTime()) . "\n" .
         t('IP: %0%', $this->_sIp) . "\n" .
         t('QUERY: %0%', $sQuery) . "\n" .
@@ -93,8 +93,8 @@ class Logger extends Core
         t('Referer: %0%', $sReferer) . "\n" .
         t('LOGIN - Email: %0% - Username: %1% - Password: %2%', $this->_aData['mail'], $this->_aData['username'], $this->_aData['password']) . "\n\n\n";
 
-        return $this;
-    }
+         return $this;
+     }
 
     /**
      * Write a log file with the hacher information.
@@ -139,5 +139,4 @@ class Logger extends Core
 
         return (new Mail)->send($aInfo, $this->_sContents, false);
     }
-
 }

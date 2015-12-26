@@ -66,7 +66,6 @@ class CountryTest extends \PHPUnit_Framework_TestCase
 
     public function testValues()
     {
-
         $this->assertEquals(
             42,
             $this->model->continent->geonameId,

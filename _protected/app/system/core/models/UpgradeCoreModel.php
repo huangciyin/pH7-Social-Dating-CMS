@@ -22,5 +22,4 @@ class UpgradeCoreModel extends Framework\Mvc\Model\Engine\Model
     {
         return Various::execQueryFile($sSqlUpgradeFile);
     }
-
 }

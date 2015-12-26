@@ -38,5 +38,4 @@ interface Api
      * @return boolean
      */
     public function valid($sOptionalParam1 = '', $sOptionalParam2 = '');
-
 }

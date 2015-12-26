@@ -113,7 +113,6 @@ class PaymentDesign extends Framework\Core\Core
      */
     public function buttonCCBill($oMembership)
     {
-
     }
 
     /**
@@ -127,5 +126,4 @@ class PaymentDesign extends Framework\Core\Core
     {
         return t('Buy %0% with %1%!', $sMembershipName, '<b>' . $sProvider . '</b>');
     }
-
 }

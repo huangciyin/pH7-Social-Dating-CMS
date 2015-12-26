@@ -26,14 +26,15 @@ class CArray
      */
     public static function merge(array $aFrom, array $aTo)
     {
-        foreach ($aTo as $mKey => $mVal)
-        {
-            if (is_int($mKey))
+        foreach ($aTo as $mKey => $mVal) {
+            if (is_int($mKey)) {
                 $aFrom[] = $mVal;
-            elseif (is_array($mVal) && isset($aFrom[$mKey]) && is_array($aFrom[$mKey]))
-                $aFrom[$mKey] = self::merge($aFrom[$mKey], $mVal); // Recursive method
-            else
+            } elseif (is_array($mVal) && isset($aFrom[$mKey]) && is_array($aFrom[$mKey])) {
+                $aFrom[$mKey] = self::merge($aFrom[$mKey], $mVal);
+            } // Recursive method
+            else {
                 $aFrom[$mKey] = $mVal;
+            }
         }
         return $aFrom;
     }
@@ -90,5 +91,4 @@ class CArray
     {
         return ($mKey !== false) ? $mKey : null;
     }
-
 }

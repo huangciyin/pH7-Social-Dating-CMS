@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\File\Import,
+use PH7\Framework\File\Import,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Config\Config,
 PH7\Framework\Mvc\Model\DbConfig,
@@ -46,23 +45,20 @@ class Facebook extends Api implements IApi
         );
 
         $sUserId = $oFb->getUser();
-        if($sUserId)
-        {
+        if ($sUserId) {
             try {
                 // Proceed knowing you have a logged in user who's authenticated.
                 $aProfile = $oFb->api('/me');
-            } catch(\FacebookApiException $oE) {
+            } catch (\FacebookApiException $oE) {
                 Framework\Error\CException\PH7Exception::launch($oE);
                 $sUserId = null;
             }
 
-            if($aProfile)
-            {
+            if ($aProfile) {
                 // User info is ok? Here we will be connect the user and/or adding the login and registering routines...
                 $oUserModel = new UserCoreModel;
 
-                if(!$iId = $oUserModel->getId($aProfile['email']))
-                {
+                if (!$iId = $oUserModel->getId($aProfile['email'])) {
                     // Add User if it does not exist in our database
                     $this->add(escape($aProfile, true), $oUserModel);
 
@@ -71,24 +67,18 @@ class Facebook extends Api implements IApi
 
                     $this->oDesign->setFlashMsg( t('You have now been registered! %0%', (new Registration)->sendMail($this->_aUserInfo, true)->getMsg()) );
                     $this->sUrl = Uri::get('connect','main','register');
-                }
-                else
-                {   // Login
+                } else {   // Login
                     $this->setLogin($iId, $oUserModel);
                     $this->sUrl = Uri::get('connect','main','home');
                 }
 
                 unset($oUserModel);
-            }
-            else
-            {
+            } else {
                 // For testing purposes, if there was an error, let's kill the script
                 $this->oDesign->setFlashMsg(t('Oops! An error has occurred. Please try again later.'));
                 $this->sUrl = Uri::get('connect','main','index');
             }
-        }
-        else
-        {
+        } else {
             // There's no active session, let's generate one
             $this->sUrl = $oFb->getLoginUrl(array('scope' => 'email,user_birthday,user_relationships,user_relationship_details,user_hometown,user_location,user_interests,user_about_me,user_likes,user_website'));
         }
@@ -151,14 +141,12 @@ class Facebook extends Api implements IApi
     {
         $this->_sAvatarFile = $this->getAvatar(static::GRAPH_URL . $sUserId . '/picture?type=large');
 
-         if($this->_sAvatarFile)
-         {
-             $iApproved = (DbConfig::getSetting('avatarManualApproval') == 0) ? '1' : '0';
-             (new UserCore)->setAvatar($this->_iProfileId, $this->_sUsername, $this->_sAvatarFile, $iApproved);
-         }
+        if ($this->_sAvatarFile) {
+            $iApproved = (DbConfig::getSetting('avatarManualApproval') == 0) ? '1' : '0';
+            (new UserCore)->setAvatar($this->_iProfileId, $this->_sUsername, $this->_sAvatarFile, $iApproved);
+        }
 
          // Remove the temporary avatar
          (new File)->deleteFile($this->_sAvatarFile);
     }
-
 }

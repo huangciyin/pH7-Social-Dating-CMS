@@ -29,5 +29,4 @@ interface IController
      * @return void
      */
     public function displayPageNotFound($sMsg = '', $b404Status = true);
-
 }

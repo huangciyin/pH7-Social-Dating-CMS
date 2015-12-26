@@ -22,8 +22,7 @@ class Resource
      */
     public function __set($sName, $sValue)
     {
-        switch ($sName)
-        {
+        switch ($sName) {
             case 'sName':
             case 'aAllowed':
                 $this->$sName = $sValue;
@@ -40,8 +39,7 @@ class Resource
      */
     public function __get($sName)
     {
-        switch ($sName)
-        {
+        switch ($sName) {
             case 'sName':
             case 'aAllowed':
                 return $this->$sName;
@@ -51,5 +49,4 @@ class Resource
                 throw new Exception("Unable to get \"$sName\".");
         }
     }
-
 }

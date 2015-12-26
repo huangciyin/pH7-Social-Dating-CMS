@@ -61,8 +61,9 @@ class SettingController extends Controller
         $this->view->page_title = t('Photo of profile');
         $this->view->h2_title = t('Change your Avatar');
 
-        if ($this->httpRequest->postExists('del'))
+        if ($this->httpRequest->postExists('del')) {
             $this->_removeAvatar();
+        }
 
         $this->output();
     }
@@ -73,8 +74,9 @@ class SettingController extends Controller
         $this->view->page_title = $this->_sTitle;
         $this->view->h2_title = $this->_sTitle;
 
-        if ($this->httpRequest->postExists('del'))
+        if ($this->httpRequest->postExists('del')) {
             $this->_removeWallpaper();
+        }
 
         $this->output();
     }
@@ -109,20 +111,15 @@ class SettingController extends Controller
         $this->view->page_title = $this->_sTitle;
         $this->view->h2_title = $this->_sTitle;
 
-        if ($this->httpRequest->get('delete_status') == 'yesdelete')
-        {
+        if ($this->httpRequest->get('delete_status') == 'yesdelete') {
             $this->session->set('yes_delete', 1);
             Header::redirect(Uri::get('user', 'setting', 'yesdelete'));
-        }
-        elseif ($this->httpRequest->get('delete_status') == 'nodelete')
-        {
+        } elseif ($this->httpRequest->get('delete_status') == 'nodelete') {
             $this->view->content = '<span class="bold green1">' . t('Excellent choice!') . '<br />' .
             t('You will see, you will not regret that!') . '<br />' .
             t('At %site_name%, we are working hard to give you one of the best social service!') . '</span>';
             $this->design->setRedirect(Uri::get('user', 'main', 'index'), null, null, 4);
-        }
-        else
-        {
+        } else {
             $this->view->content = '<span class="bold red">' . t('Are you really sure you want to delete your account?') . '</span><br /><br />
                 <a class="bold" href="' . Uri::get('user', 'setting', 'delete', 'nodelete') . '">' . t('No I changed my mind and I stay with you!') .
                 '</a> &nbsp; ' . t('OR') . ' &nbsp; <a href="' . Uri::get('user',
@@ -134,12 +131,12 @@ class SettingController extends Controller
 
     public function yesDelete()
     {
-        if (!$this->session->exists('yes_delete'))
+        if (!$this->session->exists('yes_delete')) {
             Header::redirect(Uri::get('user', 'setting', 'delete'));
-        else
+        } else {
             $this->output();
+        }
     }
-
 
     private function _removeAvatar()
     {
@@ -160,5 +157,4 @@ class SettingController extends Controller
         (new UserCore)->deleteBackground($this->_iProfileId, $this->_sUsername);
         Header::redirect(null, t('Your wallpaper has been deleted successfully!'));
     }
-
 }

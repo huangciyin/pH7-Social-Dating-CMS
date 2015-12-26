@@ -15,7 +15,9 @@ class AdsCore extends Framework\Ads\Ads
     /**
      * Block constructing to prevent instantiation of class since it's a private class.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Gets Ads Table.
@@ -38,8 +40,7 @@ class AdsCore extends Framework\Ads\Ads
      */
     public static function checkTable($sTable)
     {
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'Ads':
             case 'AdsAffiliates':
                 return $sTable;
@@ -59,8 +60,7 @@ class AdsCore extends Framework\Ads\Ads
      */
     public static function convertTableToId($sTable)
     {
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'Ads':
             case 'AdsAffiliates':
                 $sId = 'adsId';
@@ -72,5 +72,4 @@ class AdsCore extends Framework\Ads\Ads
 
         return $sId;
     }
-
 }

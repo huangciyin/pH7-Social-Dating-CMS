@@ -134,10 +134,11 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
      */
     public function setTemplateDir($sDir)
     {
-        if (is_dir($sDir))
+        if (is_dir($sDir)) {
             $this->sTemplateDir = $this->file->checkExtDir($sDir);
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('<strong>' . self::NAME . '</strong> Template Engine cannot found the "' . $sDir . '" template directory.');
+        }
     }
 
     /**
@@ -149,10 +150,11 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
      */
     public function setCompileDir($sDir)
     {
-        if (is_dir($sDir))
+        if (is_dir($sDir)) {
             $this->sCompileDir = $this->file->checkExtDir($sDir);
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('<strong>' . self::NAME . '</strong> Template Engine cannot found the "' . $sDir . '" compile directory.');
+        }
     }
 
     /**
@@ -164,10 +166,11 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
      */
     public function setCacheDir($sDir)
     {
-        if (is_dir($sDir))
+        if (is_dir($sDir)) {
             $this->sCacheDir = $this->file->checkExtDir($sDir);
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('<strong>' . self::NAME . '</strong> Template Engine cannot found the "' . $sDir . '" cache directory.');
+        }
     }
 
     /**
@@ -287,8 +290,9 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         // Create compile folder
         $this->file->createDir($this->sCompileDir2);
 
-        if (!$this->sCode = $this->file->getFile($this->sTemplateDirFile))
+        if (!$this->sCode = $this->file->getFile($this->sTemplateDirFile)) {
             throw new Exception('Template Fetch Error: \'' . $this->sTemplateDirFile . '\'');
+        }
 
         // Parser the predefined variables
         $this->sCode = (new Predefined\Variable($this->sCode))->assign()->get();
@@ -302,30 +306,35 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         $sPhpHeader = $this->getHeaderContents();
 
         // Check if the "$design" variable is actually part of the \PH7\Framework\Layout\Html\Design class
-        if (!$this->checkDesignInstance()) $this->setErrMsg();
+        if (!$this->checkDesignInstance()) {
+            $this->setErrMsg();
+        }
 
-        if ($this->isMainCompilePage())
-        {
-            if (!$this->bLicense)
+        if ($this->isMainCompilePage()) {
+            if (!$this->bLicense) {
                 $this->sCode = preg_replace('#<title>(.*?)</title>#is', '<title>$1 (<?php echo t(\'Powered by\') ?>' . ' ' . self::SOFTWARE_NAME . ')</title>', $this->sCode);
+            }
 
             // It is forbidden to violate the copyright!
             // Thought for those who have spent years for developing a professional, high-quality software and done their best to help developers!
-            if (!$this->isMarkCopyright())
+            if (!$this->isMarkCopyright()) {
                 $this->setErrMsg();
+            }
         }
 
-        if ($this->isXmlSitemapCompilePage())
-            if (!$this->isSmallMarkCopyright() && !$this->bLicense)
+        if ($this->isXmlSitemapCompilePage()) {
+            if (!$this->isSmallMarkCopyright() && !$this->bLicense) {
                 $this->setErrMsg();
+            }
+        }
 
-        if ($this->bPhpCompressor)
+        if ($this->bPhpCompressor) {
             $this->sCode = (new \PH7\Framework\Compress\Compress)->parsePhp($this->sCode);
+        }
 
         $this->sCode = '<?php ' . $sPhpHeader . '?>' . $this->sCode;
 
-        if ($rHandle = @fopen($this->sCompileDirFile, 'wb'))
-        {
+        if ($rHandle = @fopen($this->sCompileDirFile, 'wb')) {
             fwrite($rHandle, $this->sCode);
             fclose($rHandle);
             return true;
@@ -358,8 +367,9 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         $this->classicSyntax();
 
         /***** XML Syntax *****/
-        if ($this->bXmlTags)
-           $this->xmlSyntax();
+        if ($this->bXmlTags) {
+            $this->xmlSyntax();
+        }
 
         /***** Variables *****/
         $this->sCode = preg_replace('#{([a-z0-9_]+)}#i', '<?php echo $$1; ?>', $this->sCode);
@@ -384,8 +394,9 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
     {
         $this->sTplFile = $sTplFile;
 
-        if (!empty($sDirPath))
+        if (!empty($sDirPath)) {
             $this->setTemplateDir($sDirPath);
+        }
 
         $this->sTemplateDirFile = $this->sTemplateDir . 'tpl' . PH7_DS . $this->sTplFile;
 
@@ -397,32 +408,27 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         $this->sCompileDirFile = ($this->isMainDir($sDirPath)) ? $this->sCompileDir2 . $this->file->getFileWithoutExt($this->sTplFile) . static::COMPILE_FILE_EXT : $this->sCompileDir2 .
                 str_replace($this->getCurrentController(), '', $this->file->getFileWithoutExt($this->sTplFile)) . static::COMPILE_FILE_EXT;
 
-        if (!$this->file->existFile($this->sTemplateDirFile))
+        if (!$this->file->existFile($this->sTemplateDirFile)) {
             throw new Exception('File \'' . $this->sTemplateDirFile . '\' does no exist');
-
+        }
 
         /*** If the file does not exist or if the template has been modified, recompile the makefiles ***/
         if ($this->file->getModifTime($this->sTemplateDirFile) > $this->file->
-                        getModifTime($this->sCompileDirFile))
+                        getModifTime($this->sCompileDirFile)) {
             $this->compile();
+        }
 
-        if (!empty($_bInclude))
-        {
+        if (!empty($_bInclude)) {
             $bCaching = (bool) $this->config->values['cache']['enable.html.tpl'];
 
-            if ($this->isEnableCache() === true && $bCaching === true && !$this->isMainCompilePage())
-            {
+            if ($this->isEnableCache() === true && $bCaching === true && !$this->isMainCompilePage()) {
                 $this->cache();
-            }
-            else
-            {
+            } else {
                 // Extraction Variables
                 extract($this->_aVars);
                 require $this->sCompileDirFile;
             }
-        }
-        else
-        {
+        } else {
             return $this->sCompileDirFile;
         }
     }
@@ -440,22 +446,24 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         /**
          * If the template doesn't contain theme for emails, we retrieve the emails default themes.
          */
-        if (!is_file($sMailTplFile) && defined('PH7_TPL_NAME'))
+        if (!is_file($sMailTplFile) && defined('PH7_TPL_NAME')) {
             $sMailTplFile = str_replace(PH7_TPL_NAME, PH7_DEFAULT_THEME, $sMailTplFile);
+        }
 
-        if (!$sCode = $this->file->getFile($sMailTplFile))
+        if (!$sCode = $this->file->getFile($sMailTplFile)) {
             throw new Exception('Can\'t open file: \'' . $sMailTplFile . '\'');
+        }
 
         /***** Other variables in file "/framework/Parse/SysVar.class.php" with syntax %var% *****/
         $sCode = (new \PH7\Framework\Parse\SysVar)->parse($sCode);
 
-        foreach ($this->_aVars as $sKey => $sValue)
-        {
+        foreach ($this->_aVars as $sKey => $sValue) {
             /*** Variables ***/
 
             // We can't convert an object to a string with str_replace, which we tested the variables with is_object function
-            if (!is_object($sValue))
+            if (!is_object($sValue)) {
                 $sCode = str_replace('{' . $sKey . '}', $sValue, $sCode);
+            }
 
             // Email Address
             //$sCode = str_replace('{email}', $sEmailAddress, $sCode);
@@ -535,8 +543,9 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
      */
     public function assign($sName, $mValue, $bEscape = false, $bEscapeStrip = false)
     {
-        if ($bEscape === true)
+        if ($bEscape === true) {
             $mValue = $this->str->escape($mValue, $bEscapeStrip);
+        }
 
         $this->_aVars[$sName] = $mValue;
     }
@@ -553,8 +562,9 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
      */
     public function assigns(array $aVars, $bEscape = false, $bEscapeStrip = false)
     {
-        foreach ($aVars as $sKey => $sValue)
-            $this->assign($sKey, $sValue, $bEscape = false, $bEscapeStrip = false); // Assign a string variable
+        foreach ($aVars as $sKey => $sValue) {
+            $this->assign($sKey, $sValue, $bEscape = false, $bEscapeStrip = false);
+        } // Assign a string variable
     }
 
     /**
@@ -635,8 +645,7 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
 
         // If the cache has expired
         if ($this->file->getModifTime($this->sCompileDirFile) > $this->file->getModifTime($this->sCacheDirFile) || (!empty($this->mCacheExpire) && $this->
-                file->getModifTime($this->sCacheDirFile) < time() - $this->mCacheExpire))
-        {
+                file->getModifTime($this->sCacheDirFile) < time() - $this->mCacheExpire)) {
             ob_start();
 
             // Extraction Variables
@@ -646,16 +655,16 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
             $sOutput = ob_get_contents();
             ob_end_clean();
 
-            if ($this->bHtmlCompressor)
+            if ($this->bHtmlCompressor) {
                 $sOutput = (new \PH7\Framework\Compress\Compress)->parseHtml($sOutput);
+            }
 
-            if (!$this->file->putFile($this->sCacheDirFile, $sOutput))
+            if (!$this->file->putFile($this->sCacheDirFile, $sOutput)) {
                 throw new Exception('Unable to write to cache file: \'' . $this->sCacheDirFile . '\'');
+            }
 
             echo $sOutput;
-        }
-        else
-        {
+        } else {
             readfile($this->sCacheDirFile);
         }
     }
@@ -672,10 +681,11 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         $this->sCode = str_replace('{{', '<?php ', $this->sCode);
 
         /***** ?> *****/
-        if (!preg_match('#(;[\s]+}} | ;[\s]+%})#', $this->sCode))
+        if (!preg_match('#(;[\s]+}} | ;[\s]+%})#', $this->sCode)) {
             $this->sCode = str_replace(array('}}', '%}'), ';?>', $this->sCode);
-        else
+        } else {
             $this->sCode = str_replace(array('}}', '%}'), '?>', $this->sCode);
+        }
 
         /***** <?php echo *****/
         $this->sCode = str_replace('{%', '<?php echo ', $this->sCode);
@@ -726,10 +736,11 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
         $this->sCode = str_replace('<ph:code>', '<?php ', $this->sCode);
 
         /***** ?> *****/
-        if (!preg_match('#;[\s]+</ph:code>$#', $this->sCode))
+        if (!preg_match('#;[\s]+</ph:code>$#', $this->sCode)) {
             $this->sCode = str_replace('</ph:code>', ';?>', $this->sCode);
-        else
+        } else {
             $this->sCode = str_replace('</ph:code>', '?>', $this->sCode);
+        }
 
         /***** <?php ?> *****/
         $this->sCode = preg_replace('#<ph:code value=(?:"|\')(.+)(?:"|\') ?/?>#', '<?php $1 ?>', $this->sCode);
@@ -748,7 +759,6 @@ class PH7Tpl extends \PH7\Framework\Core\Kernel
 
         /***** if equal *****/
         $this->sCode = preg_replace('#<ph:if-equal test=(?:"|\')([^\{\},"\n]+)(?:"|\'),(?:"|\')([^\{\},"\n]+)(?:"|\')>#', '<?php if($1 == $2) { ?>', $this->sCode);
-
 
         /***** elseif *****/
         $this->sCode = preg_replace('#<ph:else-if test=(?:"|\')([^\<\>"\n]+)(?:"|\')>#', '<?php elseif($1) { ?>', $this->sCode);
@@ -908,8 +918,9 @@ Template Engine: ' . self::NAME . ' version ' . self::VERSION . ' by ' . self::A
     final private function isMarkCopyright()
     {
         // "design->smartLink()" can be removed ONLY if you bought a license
-        if (!$this->bLicense && false === strpos($this->sCode, 'design->smartLink()'))
+        if (!$this->bLicense && false === strpos($this->sCode, 'design->smartLink()')) {
             return false;
+        }
 
         // "design->link()" can never be removed. Copyright notices won't be displayed if you bought a license
         return
@@ -977,5 +988,4 @@ Template Engine: ' . self::NAME . ' version ' . self::VERSION . ' by ' . self::A
           $this->bXmlTags
         );
     }
-
 }

@@ -41,39 +41,42 @@ class Db
     /**
      * The constructor is set to private, so nobody can create a new instance using new.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @return object Returns the PDO instance class or create initial connection.
      */
     public static function getInstance($sDsn = NULL, $sUsername = NULL, $sPassword = NULL, $aDriverOptions = NULL, $sPrefix = NULL)
     {
-        if(NULL === self::$_oInstance)
-        {
-            if(!empty($sDsn))
+        if (NULL === self::$_oInstance) {
+            if (!empty($sDsn)) {
                 self::$_sDsn = $sDsn;
+            }
 
-            if(!empty($sUsername))
+            if (!empty($sUsername)) {
                 self::$_sUsername = $sUsername;
+            }
 
-            if(!empty($sPassword))
+            if (!empty($sPassword)) {
                 self::$_sPassword = $sPassword;
+            }
 
-            if(!empty($aDriverOptions))
+            if (!empty($aDriverOptions)) {
                 self::$_aDriverOptions = $aDriverOptions;
+            }
 
-            if(!empty($sPrefix))
+            if (!empty($sPrefix)) {
                 self::$_sPrefix = $sPrefix;
+            }
 
             self::$_oInstance = new static;
 
-            try
-            {
+            try {
                 self::$_oDb = new \PDO(self::$_sDsn, self::$_sUsername, self::$_sPassword, self::$_aDriverOptions);
                 self::$_oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            }
-            catch (Exception $oE)
-            {
+            } catch (Exception $oE) {
                 exit('Error Establishing a Database Connection');
             }
 
@@ -331,15 +334,15 @@ class Db
     public static function free(\PDOStatement &$rStmt = NULL, $bCloseConnection = FALSE)
     {
         // Close Cursor
-        if(NULL !== $rStmt)
-        {
+        if (NULL !== $rStmt) {
             $rStmt->closeCursor();
             unset($rStmt);
         }
 
         // Free instance of the PDO object
-        if(TRUE === $bCloseConnection)
+        if (TRUE === $bCloseConnection) {
             self::$_oDb = NULL;
+        }
     }
 
     /**
@@ -350,7 +353,9 @@ class Db
     public static function optimize()
     {
         $oAllTables = static::showTables();
-        while($aTableNames = $oAllTables->fetch()) static::getInstance()->query('OPTIMIZE TABLE '. $aTableNames[0]);
+        while ($aTableNames = $oAllTables->fetch()) {
+            static::getInstance()->query('OPTIMIZE TABLE '. $aTableNames[0]);
+        }
         unset($oAllTables);
     }
 
@@ -362,7 +367,9 @@ class Db
     public static function repair()
     {
         $oAllTables = static::showTables();
-        while($aTableNames = $oAllTables->fetch()) static::getInstance()->query('REPAIR TABLE '. $aTableNames[0]);
+        while ($aTableNames = $oAllTables->fetch()) {
+            static::getInstance()->query('REPAIR TABLE '. $aTableNames[0]);
+        }
         unset($oAllTables);
     }
 
@@ -374,8 +381,9 @@ class Db
     public static function checkMySqlVersion()
     {
         $sMySQLVer = self::$_oDb->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        if(version_compare($sMySQLVer, PH7_REQUIRE_SQL_VERSION, '<'))
+        if (version_compare($sMySQLVer, PH7_REQUIRE_SQL_VERSION, '<')) {
             exit('ERROR: Your MySQL version is ' . $sMySQLVer . '. pH7CMS requires MySQL ' . PH7_REQUIRE_SQL_VERSION . ' or newer.');
+        }
     }
 
     /**
@@ -406,5 +414,4 @@ class Db
     private function __clone()
     {
     }
-
 }

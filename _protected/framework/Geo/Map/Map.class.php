@@ -26,5 +26,4 @@ class Map extends MapAPI
         $this->setMapType(DbConfig::getSetting('mapType'));
         $this->setLang(PH7_LANG_NAME);
     }
-
 }

@@ -15,5 +15,4 @@ interface IConfig
     public function load($sFile);
 
     public function getValue($sKey);
-
 }

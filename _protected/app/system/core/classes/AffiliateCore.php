@@ -42,7 +42,9 @@ class AffiliateCore extends UserCore
      */
     public static function updateJoinCom($iAffId, Config $oConfig, Registry $oRegistry)
     {
-        if ($iAffId < 1) return; // If there is no valid ID, we stop the method.
+        if ($iAffId < 1) {
+            return;
+        } // If there is no valid ID, we stop the method.
 
         // Load the Affiliate config file
         $oConfig->load(PH7_PATH_SYS_MOD . 'affiliate' . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE);
@@ -50,8 +52,9 @@ class AffiliateCore extends UserCore
         $sType = ($oRegistry->module == 'newsletter' ? 'newsletter' : ($oRegistry->module == 'affiliate' ? 'affiliate' : 'user'));
         $iAffCom = $oConfig->values['module.setting']['commission.join_' . $sType . '_money'];
 
-        if ($iAffCom > 0)
+        if ($iAffCom > 0) {
             (new AffiliateCoreModel)->updateUserJoinCom($iAffId, $iAffCom);
+        }
     }
 
     /**
@@ -65,5 +68,4 @@ class AffiliateCore extends UserCore
     {
         (new AffiliateCoreModel)->delete($iProfileId, $sUsername);
     }
-
 }

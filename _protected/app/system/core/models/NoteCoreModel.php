@@ -30,8 +30,7 @@ class NoteCoreModel extends Framework\Mvc\Model\Engine\Model
         // We do not have a long duration of the cache for the changes of positions to be easily updated on the list of Notes of the home page.
         $this->cache->start(self::CACHE_GROUP, 'posts' . $iOffset . $iLimit . $sOrder . $iApproved, 3600);
 
-        if (!$oData = $this->cache->get())
-        {
+        if (!$oData = $this->cache->get()) {
             $iOffset = (int) $iOffset;
             $iLimit = (int) $iLimit;
 
@@ -40,7 +39,9 @@ class NoteCoreModel extends Framework\Mvc\Model\Engine\Model
             $rStmt = Db::getInstance()->prepare('SELECT n.*, m.username, m.firstName, m.sex FROM' . Db::prefix('Notes') . ' AS n INNER JOIN ' . Db::prefix('Members') . 'AS m ON n.profileId = m.profileId' . $sSqlApproved . $sOrderBy . 'LIMIT :offset, :limit');
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
-            if (isset($iApproved)) $rStmt->bindParam(':approved', $iApproved, \PDO::PARAM_INT);
+            if (isset($iApproved)) {
+                $rStmt->bindParam(':approved', $iApproved, \PDO::PARAM_INT);
+            }
             $rStmt->execute();
             $oData = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
@@ -60,8 +61,7 @@ class NoteCoreModel extends Framework\Mvc\Model\Engine\Model
     {
         $this->cache->start(self::CACHE_GROUP, 'totalPosts', static::CACHE_TIME);
 
-        if (!$iData = $this->cache->get())
-        {
+        if (!$iData = $this->cache->get()) {
             $iDay = (int) $iDay;
             $sSqlWhere = (isset($iApproved)) ? 'WHERE' : '';
             $sSqlAnd = (isset($iApproved) && $iDay > 0 ? ' AND' : ($iDay > 0 ? 'WHERE' : ''));
@@ -69,7 +69,9 @@ class NoteCoreModel extends Framework\Mvc\Model\Engine\Model
             $sSqlDay = ($iDay > 0) ? ' (createdDate + INTERVAL ' . $iDay . ' DAY) > NOW()' : '';
 
             $rStmt = Db::getInstance()->prepare('SELECT COUNT(postId) AS totalPosts FROM' . Db::prefix('Notes') . $sSqlWhere . $sSqlApproved . $sSqlAnd . $sSqlDay);
-            if (isset($iApproved)) $rStmt->bindValue(':approved', $iApproved, \PDO::PARAM_INT);
+            if (isset($iApproved)) {
+                $rStmt->bindValue(':approved', $iApproved, \PDO::PARAM_INT);
+            }
             $rStmt->execute();
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
@@ -79,5 +81,4 @@ class NoteCoreModel extends Framework\Mvc\Model\Engine\Model
         }
         return $iData;
     }
-
 }

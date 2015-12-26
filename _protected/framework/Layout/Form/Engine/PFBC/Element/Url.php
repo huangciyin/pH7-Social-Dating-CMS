@@ -14,5 +14,4 @@ class Url extends Textbox
         $this->validation[] = new \PFBC\Validation\Url;
         parent::render();
     }
-
 }

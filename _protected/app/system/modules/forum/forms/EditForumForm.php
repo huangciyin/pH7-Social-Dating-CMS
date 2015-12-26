@@ -14,10 +14,10 @@ class EditForumForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_forum']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_forum']))
+        if (isset($_POST['submit_edit_forum'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_forum'])) {
                 new EditForumFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -27,8 +27,9 @@ class EditForumForm
 
         $oCategoriesData = $oForumModel->getCategory();
         $aCategoriesName = array();
-        foreach ($oCategoriesData as $oId)
+        foreach ($oCategoriesData as $oId) {
             $aCategoriesName[$oId->categoryId] = $oId->title;
+        }
         unset($oForumModel, $oCategoriesData);
 
         $sTitlePattern = Config::getInstance()->values['module.setting']['url_title.pattern'];
@@ -46,5 +47,4 @@ class EditForumForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

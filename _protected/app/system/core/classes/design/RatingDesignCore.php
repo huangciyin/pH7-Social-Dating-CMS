@@ -16,7 +16,9 @@ class RatingDesignCore
      * @desc Block constructing to prevent instantiation of class since it is a private class.
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @desc Generates design the voting system.
@@ -35,8 +37,6 @@ class RatingDesignCore
         // Note: The rating.css style file is included by default in the CMS
         (new Design)->staticFiles('js', PH7_STATIC . PH7_JS, 'jquery/rating.js');
 
-
-
         $fRate = ($iVotes > 0) ? number_format( $fScore / $iVotes, 1) : 0;
 
         $sPHSClass = 'pHS' . $iId . $sTable;
@@ -48,11 +48,9 @@ class RatingDesignCore
          * Redirectionne the member to the registration page if not logged.
          * For security, a check on the server side ajax is already present, but javascript code allows this purpose the visitor to enter more Easily.
          */
-        if(!UserCore::auth())
-        {
+        if (!UserCore::auth()) {
             $sUrl = Framework\Mvc\Router\Uri::get('user','signup','step1','?msg=' . t('Please register for free in order to vote.'), false);
             echo '<script>$(".', $sPHSClass, '").click(function(){window.location=\'', $sUrl, '\'});</script>';
         }
     }
-
 }

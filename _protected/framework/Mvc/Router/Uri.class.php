@@ -28,7 +28,9 @@ class Uri
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Load route file.
@@ -42,12 +44,13 @@ class Uri
         $sPathLangName = PH7_PATH_APP_CONFIG . 'routes/' . PH7_LANG_CODE . '.xml';
         $sPathDefaultLang = PH7_PATH_APP_CONFIG . 'routes/' . PH7_DEFAULT_LANG_CODE . '.xml';
 
-        if (is_file($sPathLangName))
+        if (is_file($sPathLangName)) {
             $sRoutePath = $sPathLangName;
-        elseif (is_file($sPathDefaultLang))
+        } elseif (is_file($sPathDefaultLang)) {
             $sRoutePath = $sPathDefaultLang;
-        else
+        } else {
             throw new \PH7\Framework\File\Exception('File route xml not found: ' . $sPathDefaultLang);
+        }
 
         $sContents = file_get_contents($sRoutePath); // Get the XML contents
         $sContents = static::_parseVariable($sContents); // Parse the variables
@@ -84,25 +87,22 @@ class Uri
         $sAction = $aParams['action'];
         $sVars = ''; // Default value
 
-        if (!empty($aParams['vars']))
-        {
+        if (!empty($aParams['vars'])) {
             // Omit the commas which may be part of a sentence in the URL parameters
             $aParams['vars'] = str_replace(array(', ', ' ,'), '', $aParams['vars']);
 
             $aVars = explode(',', $aParams['vars']);
-            foreach ($aVars as $sVar)
+            foreach ($aVars as $sVar) {
                 $sVars .= PH7_SH . $sVar;
+            }
             unset($aVars);
 
             $sVars = Url::clean($sVars, static::$_bFullClean);
-
         }
 
         $oUrl = static::loadFile(new \DOMDocument);
-        foreach ($oUrl->getElementsByTagName('route') as $oRoute)
-        {
-            if (preg_match('#^' . $oRoute->getAttribute('module') . '$#', $sModule) && preg_match('#^' . $oRoute->getAttribute('controller') . '$#', $sController) && preg_match('#^' . $oRoute->getAttribute('action') . '$#', $sAction))
-            {
+        foreach ($oUrl->getElementsByTagName('route') as $oRoute) {
+            if (preg_match('#^' . $oRoute->getAttribute('module') . '$#', $sModule) && preg_match('#^' . $oRoute->getAttribute('controller') . '$#', $sController) && preg_match('#^' . $oRoute->getAttribute('action') . '$#', $sAction)) {
                 // Strip the special characters
                 $sUri = $oRoute->getAttribute('url');
                 $sUri = str_replace('\\', '', $sUri);
@@ -139,5 +139,4 @@ class Uri
 
         return $sContents;
     }
-
 }

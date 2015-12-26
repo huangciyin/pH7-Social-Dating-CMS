@@ -145,7 +145,6 @@ class Reader
         throw new InvalidDatabaseException("Something bad happened");
     }
 
-
     private function startNode($length)
     {
         // Check if we are looking up an IPv4 address in an IPv6 tree. If this

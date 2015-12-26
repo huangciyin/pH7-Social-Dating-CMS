@@ -50,5 +50,4 @@ class Stream
     {
         return @fopen('php://stderr', 'w');
     }
-
 }

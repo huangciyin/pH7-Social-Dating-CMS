@@ -20,8 +20,7 @@ class LicenseFormProcess extends Form
         $oLicense = new License;
         $sKey = $this->httpRequest->post('copyright_key');
 
-        if (!$this->str->equals($sKey, $oLicense->get($iLicenseId)))
-        {
+        if (!$this->str->equals($sKey, $oLicense->get($iLicenseId))) {
             $oLicense->save($sKey, $iLicenseId);
 
             // Clean caches to remove the copyright notices
@@ -30,5 +29,4 @@ class LicenseFormProcess extends Form
         }
         unset($oLicense);
     }
-
 }

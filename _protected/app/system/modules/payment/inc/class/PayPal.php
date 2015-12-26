@@ -19,5 +19,4 @@ class PayPal extends Framework\Payment\Gateway\Api\PayPal
     {
         parent::__construct($bSandbox);
     }
-
 }

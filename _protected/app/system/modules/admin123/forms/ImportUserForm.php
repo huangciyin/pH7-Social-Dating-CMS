@@ -14,10 +14,10 @@ class ImportUserForm
 
     public static function display()
     {
-        if (isset($_POST['submit_import_user']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_import_user']))
+        if (isset($_POST['submit_import_user'])) {
+            if (\PFBC\Form::isValid($_POST['submit_import_user'])) {
                 new ImportUserFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -33,5 +33,4 @@ class ImportUserForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

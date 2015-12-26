@@ -27,8 +27,7 @@ class BlogCoreModel extends Framework\Mvc\Model\Engine\Model
         // We do not have a long duration of the cache for the changes of positions to be easily updated on the list of Blogs of the home page.
         $this->cache->start(self::CACHE_GROUP, 'posts' . $iOffset . $iLimit . $sOrder, 3600);
 
-        if (!$oData = $this->cache->get())
-        {
+        if (!$oData = $this->cache->get()) {
             $iOffset = (int) $iOffset;
             $iLimit = (int) $iLimit;
 
@@ -54,23 +53,21 @@ class BlogCoreModel extends Framework\Mvc\Model\Engine\Model
      */
     public function totalPosts($iDay = 0)
     {
-         $this->cache->start(self::CACHE_GROUP, 'totalPosts', static::CACHE_TIME);
+        $this->cache->start(self::CACHE_GROUP, 'totalPosts', static::CACHE_TIME);
 
-         if (!$iData = $this->cache->get())
-         {
-             $iDay = (int) $iDay;
-             $sSqlDay = ($iDay > 0) ? ' WHERE (createdDate + INTERVAL ' . $iDay . ' DAY) > NOW()' : '';
+        if (!$iData = $this->cache->get()) {
+            $iDay = (int) $iDay;
+            $sSqlDay = ($iDay > 0) ? ' WHERE (createdDate + INTERVAL ' . $iDay . ' DAY) > NOW()' : '';
 
-             $rStmt = Db::getInstance()->prepare('SELECT COUNT(postId) AS totalPosts FROM' . Db::prefix('Blogs') . $sSqlDay);
-             $rStmt->execute();
-             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
-             Db::free($rStmt);
-             $iData = (int) $oRow->totalPosts;
-             unset($oRow);
-             $this->cache->put($iData);
-         }
+            $rStmt = Db::getInstance()->prepare('SELECT COUNT(postId) AS totalPosts FROM' . Db::prefix('Blogs') . $sSqlDay);
+            $rStmt->execute();
+            $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
+            Db::free($rStmt);
+            $iData = (int) $oRow->totalPosts;
+            unset($oRow);
+            $this->cache->put($iData);
+        }
 
-         return $iData;
+        return $iData;
     }
-
 }

@@ -15,5 +15,4 @@ class ContactController extends Controller
         $this->view->h1_title = t('Contact %site_name%');
         $this->output();
     }
-
 }

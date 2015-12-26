@@ -44,12 +44,14 @@ abstract class Controller implements IController
         global $LANG;
 
         // PHP session initialization
-        if (empty($_SESSION))
+        if (empty($_SESSION)) {
             @session_start();
+        }
 
         // Verify and correct the time zone if necessary
-        if (!ini_get('date.timezone'))
+        if (!ini_get('date.timezone')) {
             date_default_timezone_set(PH7_DEFAULT_TIMEZONE);
+        }
 
         // Language initialization
         $this->sCurrentLang = (new Language)->get();
@@ -79,5 +81,4 @@ abstract class Controller implements IController
         $this->oView->assign('tpl_name', self::DEFAULT_THEME);
         $this->oView->assign('current_lang', $this->sCurrentLang);
     }
-
 }

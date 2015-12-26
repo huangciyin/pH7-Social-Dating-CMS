@@ -11,8 +11,7 @@ defined('PH7') or exit('Restricted access');
 use PH7\Framework\Layout\Html\Design;
 
 // Show the form only if nobody is logged!
-if(!User::auth())
-{
+if (!User::auth()) {
     // Ok nobody no one is connected, it displays the login form box!
     $oDesign = new Design;
     $oDesign->htmlHeader();

@@ -22,8 +22,7 @@ class Role
      */
     public function __set($sName, $sValue)
     {
-        switch ($sName)
-        {
+        switch ($sName) {
             case 'sName':
             case 'sPermissions':
                 $this->$sName = $sValue;
@@ -41,8 +40,7 @@ class Role
      */
     public function __get($sName)
     {
-        switch ($sName)
-        {
+        switch ($sName) {
             case 'sName':
             case 'sPermissions':
                 return $this->sName;
@@ -52,5 +50,4 @@ class Role
                 throw new Exception("Unable to get \"$sName\".");
         }
     }
-
 }

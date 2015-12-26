@@ -15,5 +15,4 @@ class Username extends Textbox
         $this->attributes['pattern'] = PH7_USERNAME_PATTERN.'{'.DbConfig::getSetting('minUsernameLength').','.DbConfig::getSetting('maxUsernameLength').'}';
         parent::render();
     }
-
 }

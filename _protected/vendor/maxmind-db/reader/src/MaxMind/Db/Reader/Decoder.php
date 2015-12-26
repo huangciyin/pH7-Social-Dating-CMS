@@ -45,7 +45,6 @@ class Decoder
         $this->switchByteOrder = $this->isPlatformLittleEndian();
     }
 
-
     public function decode($offset)
     {
         list(, $ctrlByte) = unpack(
@@ -186,7 +185,6 @@ class Decoder
 
     private function decodeMap($size, $offset)
     {
-
         $map = array();
 
         for ($i = 0; $i < $size; $i++) {

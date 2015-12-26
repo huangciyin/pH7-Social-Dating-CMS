@@ -30,5 +30,4 @@ class Ads extends Engine\Model
         $rStmt->execute();
         Db::free($rStmt);
     }
-
 }

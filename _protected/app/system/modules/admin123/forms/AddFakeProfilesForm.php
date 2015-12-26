@@ -14,10 +14,10 @@ class AddFakeProfilesForm
 
     public static function display()
     {
-        if (isset($_POST['submit_add_fake_profiles']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_add_fake_profiles']))
+        if (isset($_POST['submit_add_fake_profiles'])) {
+            if (\PFBC\Form::isValid($_POST['submit_add_fake_profiles'])) {
                 new AddFakeProfilesFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -30,5 +30,4 @@ class AddFakeProfilesForm
         $oForm->addElement(new \PFBC\Element\Button(t('Add Fake Profiles!')));
         $oForm->render();
     }
-
 }

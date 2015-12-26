@@ -29,7 +29,9 @@ class AdsCoreModel extends Framework\Mvc\Model\Ads
 
         $sSqlActive = (!empty($mActive)) ? 'WHERE active= :active' : '';
         $rStmt = Db::getInstance()->prepare('SELECT * FROM'.Db::prefix($sTable) . $sSqlActive . ' ORDER BY active ASC, name ASC LIMIT :offset, :limit');
-        if (!empty($mActive)) $rStmt->bindValue(':active', $mActive, \PDO::PARAM_INT);
+        if (!empty($mActive)) {
+            $rStmt->bindValue(':active', $mActive, \PDO::PARAM_INT);
+        }
         $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         $rStmt->execute();
@@ -90,8 +92,7 @@ class AdsCoreModel extends Framework\Mvc\Model\Ads
     {
         $this->cache->start(self::CACHE_GROUP, 'total' . $sTable, 604800);
 
-        if (!$iData = $this->cache->get())
-        {
+        if (!$iData = $this->cache->get()) {
             AdsCore::checkTable($sTable);
 
             $rStmt = Db::getInstance()->prepare('SELECT COUNT(adsId) AS totalAds FROM' . Db::prefix($sTable));
@@ -105,5 +106,4 @@ class AdsCoreModel extends Framework\Mvc\Model\Ads
 
         return $iData;
     }
-
 }

@@ -18,5 +18,4 @@ class Password extends Textbox
 
         parent::render();
     }
-
 }

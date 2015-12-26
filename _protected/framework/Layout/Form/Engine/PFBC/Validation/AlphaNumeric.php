@@ -13,5 +13,4 @@ class AlphaNumeric extends RegExp
         $this->message = t('Error: %element% must be alphanumeric (contain only numbers, letters, underscores, and/or hyphens).');
         parent::__construct('/^[a-zA-Z0-9_-]+$/', $sMessage);
     }
-
 }

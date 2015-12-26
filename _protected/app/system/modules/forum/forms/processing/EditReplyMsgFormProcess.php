@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Request\Http,
+use PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
 
@@ -27,5 +26,4 @@ class EditReplyMsgFormProcess extends Form
         (new ForumModel)->updateMessage($this->session->get('member_id'), $iMessageId, $this->httpRequest->post('message', Http::ONLY_XSS_CLEAN), $this->dateTime->get()->dateTime('Y-m-d H:i:s'));
         Header::redirect(Uri::get('forum', 'forum', 'post', $this->httpRequest->get('forum_name').','.$iForumId.','.$this->httpRequest->get('topic_name').','.$iTopicId), t('Your message has been updated successfully!'));
     }
-
 }

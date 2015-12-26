@@ -325,7 +325,6 @@ class _smarty_template_buffer extends _smarty_parsetree
         }
         return $code;
     }
-
 }
 
 /**

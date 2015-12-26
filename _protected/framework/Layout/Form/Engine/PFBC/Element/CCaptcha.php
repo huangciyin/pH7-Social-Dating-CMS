@@ -17,5 +17,4 @@ class CCaptcha extends Textbox
         echo (new Captcha)->display();
         parent::render();
     }
-
 }

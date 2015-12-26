@@ -23,10 +23,11 @@ class BirthdayCore extends Core
         $oBirths = (new BirthdayCoreModel)->get();
         $oMail = new Mail;
 
-        foreach ($oBirths as $oBirth)
-        {
+        foreach ($oBirths as $oBirth) {
             // Do not send any emails at the same time to avoid overloading the mail server.
-            if (self::$_iTotalSent > 300) sleep(10);
+            if (self::$_iTotalSent > 300) {
+                sleep(10);
+            }
 
             $this->view->content = t('Hello %0%!', $oBirth->firstName) . '<br />' .
             t("All %site_name%'s team wish you a very happy birthday!") . '<br />' .
@@ -46,5 +47,4 @@ class BirthdayCore extends Core
 
         return self::$_iTotalSent;
     }
-
 }

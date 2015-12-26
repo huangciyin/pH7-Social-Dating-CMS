@@ -15,8 +15,9 @@ defined('PH7') or exit('Restricted access');
 
 use PH7\Framework\Util\Various;
 
-if (version_compare(PHP_VERSION, '5.5.0', '<'))
+if (version_compare(PHP_VERSION, '5.5.0', '<')) {
     require __DIR__ . PH7_DS . 'crypt.inc.php';
+}
 
 final class Security
 {
@@ -31,7 +32,9 @@ final class Security
     /**
      * Private constructor to prevent instantiation of class since it's a static class.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Generate Random Salt for Password encryption.
@@ -66,11 +69,11 @@ final class Security
      */
     public static function pwdNeedsRehash($sPwd, $sHash)
     {
-        if (password_needs_rehash($sHash, self::PWD_ALGORITHM, self::$_aPwdOptions))
+        if (password_needs_rehash($sHash, self::PWD_ALGORITHM, self::$_aPwdOptions)) {
             return self::hashPwd($sPwd);
+        }
         return false;
     }
-
 
     /**
      * Generate a hash for Cookie Password encryption.
@@ -106,11 +109,11 @@ final class Security
      */
     public static function userHash($sVal, $iLength, $sAlgo = 'whirlpool')
     {
-        if ($sAlgo !== 'whirlpool' && $sAlgo !== 'sha512')
+        if ($sAlgo !== 'whirlpool' && $sAlgo !== 'sha512') {
             exit('Wrong algorithm! Please choose between "whirlpool" or "sha512"');
+        }
 
         $sSalt = self::PREFIX_SALT . \PH7\Framework\Ip\Ip::get() . self::SUFFIX_SALT . (new \PH7\Framework\Navigation\Browser)->getUserAgent();
         return hash_pbkdf2($sAlgo, $sVal, $sSalt, 10000, $iLength);
     }
-
 }

@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Request\Http as HttpRequest,
+use PH7\Framework\Mvc\Request\Http as HttpRequest,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
 
@@ -24,10 +23,10 @@ class ImportUserFormProcess
         $oHR = new HttpRequest;
         $aData = (new ImportUser($_FILES['csv_file'], $oHR->post('delimiter'), $oHR->post('enclosure')))->getResponse();
 
-        if (!$aData['status'])
+        if (!$aData['status']) {
             \PFBC\Form::setError('form_import_user', $aData['msg']);
-        else
+        } else {
             Header::redirect(Uri::get(PH7_ADMIN_MOD, 'user', 'browse'), $aData['msg']);
+        }
     }
-
 }

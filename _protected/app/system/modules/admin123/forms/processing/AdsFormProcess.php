@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Request\Http,
+use PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
 
@@ -38,5 +37,4 @@ class AdsFormProcess extends Form
         $sSlug = ($iIsAff) ? 'affiliate' : '';
         Header::redirect(Uri::get(PH7_ADMIN_MOD, 'setting', 'ads', $sSlug), t('The Advertisement has been successfully added!'));
     }
-
 }

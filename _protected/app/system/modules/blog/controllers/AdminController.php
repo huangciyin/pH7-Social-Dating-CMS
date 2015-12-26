@@ -50,12 +50,12 @@ class AdminController extends MainController
 
     private function removeThumb($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->checkUrl())
+        if (!(new Framework\Security\CSRF\Token)->checkUrl()) {
             exit(Form::errorTokenMsg());
+        }
 
         (new Blog)->deleteThumb($iId, 'blog', $this->file);
 
         Header::redirect(Uri::get('blog', 'admin', 'edit', $iId), t('The thumbnail has been deleted successfully!'));
     }
-
 }

@@ -16,14 +16,14 @@ class ReportAjax
 
     public function __construct()
     {
-        if (!(new Framework\Security\CSRF\Token)->check('report'))
-        exit(jsonMsg(0, Form::errorTokenMsg()));
+        if (!(new Framework\Security\CSRF\Token)->check('report')) {
+            exit(jsonMsg(0, Form::errorTokenMsg()));
+        }
 
         $this->_oHttpRequest = new Http;
         $this->_oReportModel = new ReportModel;
 
-        switch ($this->_oHttpRequest->post('type'))
-        {
+        switch ($this->_oHttpRequest->post('type')) {
             case 'delete':
                 $this->delete();
             break;
@@ -44,9 +44,9 @@ class ReportAjax
     {
         unset($this->_oHttpRequest, $this->_oReportModel, $this->_bStatus);
     }
-
 }
 
 // Only for Admins
-if (AdminCore::auth())
+if (AdminCore::auth()) {
     new ReportAjax;
+}

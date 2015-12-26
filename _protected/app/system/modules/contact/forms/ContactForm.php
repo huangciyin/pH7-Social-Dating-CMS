@@ -13,10 +13,10 @@ class ContactForm
     public static function display()
     {
         // Display the contact form on the template
-        if (isset($_POST['submit_contact']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_contact']))
+        if (isset($_POST['submit_contact'])) {
+            if (\PFBC\Form::isValid($_POST['submit_contact'])) {
                 new ContactFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -45,5 +45,4 @@ class ContactForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

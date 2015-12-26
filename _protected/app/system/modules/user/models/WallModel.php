@@ -50,7 +50,9 @@ class WallModel extends Framework\Mvc\Model\Engine\Model
 
         $rStmt = Db::getInstance()->prepare('SELECT * FROM'.Db::prefix('MembersWall') . ' AS w LEFT JOIN'.Db::prefix('Members') . 'AS m ON w.profileId = m.profileId WHERE :profileId=:profileId ' . $sSqlWallId . ' ORDER BY dateTime DESC LIMIT :offset, :limit');
         $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
-        if (!empty($iWallId)) $rStmt->bindValue(':wallId', $iWallId, \PDO::PARAM_INT);
+        if (!empty($iWallId)) {
+            $rStmt->bindValue(':wallId', $iWallId, \PDO::PARAM_INT);
+        }
         $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         $rStmt->execute();
@@ -63,5 +65,4 @@ class WallModel extends Framework\Mvc\Model\Engine\Model
     {
         return (new CommentCoreModel)->read($iProfileId, 1, $iOffset, $iLimit, 'profile');
     }
-
 }

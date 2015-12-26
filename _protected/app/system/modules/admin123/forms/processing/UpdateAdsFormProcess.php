@@ -25,5 +25,4 @@ class UpdateAdsFormProcess extends Form
 
         \PFBC\Form::setSuccess('form_update_ads', t('The Advertisements was saved successfully!'));
     }
-
 }

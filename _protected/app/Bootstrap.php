@@ -13,8 +13,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Server\Server,
+use PH7\Framework\Server\Server,
 PH7\Framework\Navigation\Browser,
 PH7\Framework\Registry\Registry,
 PH7\Framework\Mvc\Router\FrontController,
@@ -28,16 +27,15 @@ require 'configs/constants.php';
 require 'includes/helpers/misc.php';
 
 // Set a default timezone if it is not already configured
-if (!ini_get('date.timezone'))
+if (!ini_get('date.timezone')) {
     ini_set('date.timezone', PH7_DEFAULT_TIMEZONE);
+}
 
-try
-{
+try {
     /**
      * First off, check it the server is connected to the Internet.
      */
-    if (!is_internet())
-    {
+    if (!is_internet()) {
         $sMsg = '<p class="warning">No Internet Connection</p>
         <p>Whoops! Your server has to be connect to the Internet in order to get your website working.</p>';
 
@@ -67,12 +65,10 @@ try
 
     // We expect that this function is simply used // Import::pH7FwkClass('Structure.General');
 
-
     /*** End Loading Files ***/
 
     //** Temporary code. In the near future, pH7CMS will be usable without mod_rewrite
-    if (!Server::isRewriteMod())
-    {
+    if (!Server::isRewriteMod()) {
         $sMsg = '<p class="warning"><a href="' . Framework\Core\Kernel::SOFTWARE_WEBSITE . '">pH7CMS</a> requires Apache "mod_rewrite".</p>
         <p>Please install it so that pH7CMS can works.<br /> Click <a href="http://ph7cms.com/doc/en/how-to-install-rewrite-module" target="_blank">here</a> if you want to get more information on how to install the rewrite module.<br /><br />
         After doing this, please <a href="' . PH7_URL_ROOT . '">retry</a>.</p>';
@@ -106,20 +102,17 @@ try
 }
 
 # \PH7\Framework\Error\CException\UserException
-catch (Except\UserException $oE)
-{
+catch (Except\UserException $oE) {
     echo $oE->getMessage(); // Simple User Error with Exception
 }
 
 # \PH7\Framework\Error\CException\PH7Exception
-catch (Except\PH7Exception $oE)
-{
+catch (Except\PH7Exception $oE) {
     Except\PH7Exception::launch($oE);
 }
 
 # \Exception and other...
-catch (\Exception $oE)
-{
+catch (\Exception $oE) {
     Except\PH7Exception::launch($oE);
 }
 
@@ -132,6 +125,8 @@ finally
 }*/
 
 # Finally Block Emulator because PHP does not support finally block.
-if ('' !== session_id()) session_write_close();
+if ('' !== session_id()) {
+    session_write_close();
+}
 ob_end_flush();
 exit(0);

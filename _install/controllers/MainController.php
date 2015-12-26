@@ -20,5 +20,4 @@ class MainController extends Controller
     {
         $this->oView->display('error_404.tpl');
     }
-
 }

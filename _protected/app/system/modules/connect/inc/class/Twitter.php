@@ -12,8 +12,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\File\Import,
+use PH7\Framework\File\Import,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Config\Config,
 PH7\Framework\Mvc\Model\DbConfig,
@@ -48,39 +47,30 @@ class Twitter extends Api implements IApi
         // default to 0
         $this->_iState = 0;
 
-        if(isset($_COOKIE['access_token'], $_COOKIE['access_token_secret']))
-        {
+        if (isset($_COOKIE['access_token'], $_COOKIE['access_token_secret'])) {
             // 2 (authenticated) if the cookies are set
             $this->_iState = 2;
-        }
-        elseif(isset($_SESSION['authstate']))
-        {
+        } elseif (isset($_SESSION['authstate'])) {
             // otherwise use value stored in session
             $this->_iState = (int)$_SESSION['authstate'];
         }
 
-        if($this->_iState == 1)
-        {
+        if ($this->_iState == 1) {
             // if we are in the process of authentication we continue
             $this->auth();
-        }
-        elseif($this->_iState == 2 && !$this->auth())
-        {
+        } elseif ($this->_iState == 2 && !$this->auth()) {
             // verify authentication, clearing cookies if it fails
             $this->endSession();
         }
 
-        if ($this->auth())
-        {
+        if ($this->auth()) {
             $aProfile = $this->_oTwOAuth->extract_params($this->_oTwOAuth->response['response']);
 
-            if(empty($aProfile['error']))
-            {
+            if (empty($aProfile['error'])) {
                 // User info is ok? Here we will be connect the user and/or adding the login and registering routines...
                 $oUserModel = new UserCoreModel;
 
-                if(!$iId = $oUserModel->getId($aProfile['email']))
-                {
+                if (!$iId = $oUserModel->getId($aProfile['email'])) {
                     // Add User if it does not exist in our database
                     $this->add(escape($aProfile, true), $oUserModel);
 
@@ -89,25 +79,19 @@ class Twitter extends Api implements IApi
 
                     $this->oDesign->setFlashMsg( t('You have now been registered! %0%', (new Registration)->sendMail($this->_aUserInfo, true)->getMsg()) );
                     $this->sUrl = Uri::get('connect','main','register');
-                }
-                else
-                {
+                } else {
                     // Login
                     $this->setLogin($iId, $oUserModel);
                     $this->sUrl = Uri::get('connect','main','home');
                 }
 
                 unset($oUserModel);
-            }
-            else
-            {
+            } else {
                 // For testing purposes, if there was an error, let's kill the script
                 $this->oDesign->setFlashMsg(t('Oops! An error has occurred. Please try again later.'));
                 $this->sUrl = Uri::get('connect','main','index');
             }
-        }
-        else
-        {
+        } else {
             $this->sUrl = Uri::get('connect','main','index');
         }
     }
@@ -120,16 +104,16 @@ class Twitter extends Api implements IApi
     public function auth()
     {
         // state 1 requires a GET variable to exist
-        if($this->_iState == 1 && !isset($_GET['oauth_verifier'])) {
+        if ($this->_iState == 1 && !isset($_GET['oauth_verifier'])) {
             $this->_iState = 0;
         }
 
         // Step 1: Get a request token
-        if($this->_iState == 0) {
+        if ($this->_iState == 0) {
             return $this->_getRequestToken();
         }
         // Step 2: Get an access token
-        elseif($this->_iState == 1) {
+        elseif ($this->_iState == 1) {
             return $this->_getAccessToken();
         }
 
@@ -234,19 +218,15 @@ class Twitter extends Api implements IApi
         ));
 
         // Try to get the URL for the avatar size standard
-        if($this->_oTwOAuth->response['code'] == 302)
-        {
+        if ($this->_oTwOAuth->response['code'] == 302) {
             // the direct URL is in the Location header
             $this->_sAvatarFile = $this->getAvatar($this->_oTwOAuth->response['headers']['location']);
-        }
-        else
-        {
+        } else {
             // If this does not work, we try to recover the URL for the original image in full size
             $this->_sAvatarFile = $this->getAvatar($aUserData['profile_image_url']);
         }
 
-        if($this->_sAvatarFile)
-        {
+        if ($this->_sAvatarFile) {
             $iApproved = (DbConfig::getSetting('avatarManualApproval') == 0) ? '1' : '0';
             (new UserCore)->setAvatar($this->_iProfileId, $this->_sUsername, $this->_sAvatarFile, $iApproved);
         }
@@ -268,8 +248,7 @@ class Twitter extends Api implements IApi
             'oauth_callback' => \tmhUtilities::php_self()
         ));
 
-        if($this->_oTwOAuth->response['code'] == 200)
-        {
+        if ($this->_oTwOAuth->response['code'] == 200) {
             // get and store the request token
             $aResponse = $this->_oTwOAuth->extract_params($this->_oTwOAuth->response['response']);
             $_SESSION['authtoken'] = $aResponse['oauth_token'];
@@ -302,7 +281,7 @@ class Twitter extends Api implements IApi
             'oauth_verifier' => $_GET['oauth_verifier']
         ));
 
-        if($this->_oTwOAuth->response['code'] == 200) {
+        if ($this->_oTwOAuth->response['code'] == 200) {
 
             // get the access token and store it in a cookie
             $aResponse = $this->_oTwOAuth->extract_params($this->_oTwOAuth->response['response']);
@@ -338,5 +317,4 @@ class Twitter extends Api implements IApi
         // HTTP 200 means we were successful
         return ($this->_oTwOAuth->response['code'] == 200);
     }
-
 }

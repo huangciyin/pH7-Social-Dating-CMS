@@ -32,5 +32,4 @@ class Spam
 
         return (false !== stripos($sText1, $sText2));
     }
-
 }

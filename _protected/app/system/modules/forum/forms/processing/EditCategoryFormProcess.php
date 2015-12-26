@@ -22,5 +22,4 @@ class EditCategoryFormProcess extends Form
         (new ForumModel)->updateCategory($iCategoryId, $this->httpRequest->post('title'));
         Header::redirect(Uri::get('forum', 'forum', 'index'), t('The Category has been updated successfully!'));
     }
-
 }

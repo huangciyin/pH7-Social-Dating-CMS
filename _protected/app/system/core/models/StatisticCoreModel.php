@@ -71,8 +71,12 @@ class StatisticCoreModel extends Framework\Mvc\Model\Statistic
         $sSqlGender = $bIsGenger ? ' AND sex = :gender' : '';
 
         $rStmt = Db::getInstance()->prepare('SELECT COUNT(profileId) AS totalLogins FROM' . Db::prefix($sTable) . 'WHERE username <> \''.PH7_GHOST_USERNAME.'\'' . $sSqlDay . $sSqlGender);
-        if($bIsDay) $rStmt->bindValue(':day', $iDay, \PDO::PARAM_INT);
-        if($bIsGenger) $rStmt->bindValue(':gender', $sGenger, \PDO::PARAM_STR);
+        if ($bIsDay) {
+            $rStmt->bindValue(':day', $iDay, \PDO::PARAM_INT);
+        }
+        if ($bIsGenger) {
+            $rStmt->bindValue(':gender', $sGenger, \PDO::PARAM_STR);
+        }
         $rStmt->execute();
         $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
         return (int) $oRow->totalLogins;
@@ -154,5 +158,4 @@ class StatisticCoreModel extends Framework\Mvc\Model\Statistic
         $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
         return (int) $oRow->totalComments;
     }
-
 }

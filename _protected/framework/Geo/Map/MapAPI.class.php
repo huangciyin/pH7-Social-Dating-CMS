@@ -164,7 +164,6 @@ class MapAPI
         }
     }
 
-
     /**
      * Set the ID of the default gmap DIV
      *
@@ -345,7 +344,8 @@ class MapAPI
      *
      * @return void
      */
-    public function setDisplayTextBubble($bDisplay) {
+    public function setDisplayTextBubble($bDisplay)
+    {
         $this->bDisplayTextBubble = $bDisplay;
     }
 
@@ -357,14 +357,16 @@ class MapAPI
 
     public function getMap()
     {
-        if ($this->bCompressor)
+        if ($this->bCompressor) {
             $this->content = (new \PH7\Framework\Compress\Compress)->parseJs($this->content);
+        }
 
         $returnContent = '';
         $returnContent .= '<script src="//maps.google.com/maps/api/js?sensor=false&amp;language='.$this->lang.'"></script>';
         // Clusterer JS
-        if ($this->useClusterer == true)
+        if ($this->useClusterer == true) {
             $returnContent .= '<script src="'.$this->clustererLibraryPath.'"></script>';
+        }
 
         $returnContent .= '<script>'.$this->content.'</script>';
 
@@ -413,7 +415,6 @@ class MapAPI
         return $text;
     }
 
-
     /**
      * Geocoding an address (address -> lat,lng)
      *
@@ -427,10 +428,11 @@ class MapAPI
         $encodeAddress = urlencode($this->withoutSpecialChars($address));
         $url = '//maps.google.com/maps/geo?q=' . $encodeAddress . '&output=csv';
 
-        if (function_exists('curl_init'))
+        if (function_exists('curl_init')) {
             $data = $this->getContent($url);
-        else
+        } else {
             $data = file_get_contents($url);
+        }
 
         $csvSplit = preg_split("/,/", $data);
         $status = $csvSplit[0];
@@ -459,8 +461,9 @@ class MapAPI
 
     public function addMarkerByCoords($lat, $lng, $title, $html = '', $category = '', $icon = '')
     {
-        if ($icon == '')
+        if ($icon == '') {
             $icon = '//maps.gstatic.com/intl/fr_ALL/mapfiles/markers/marker_sprite.png';
+        }
 
         // Save the lat/lon to enable the automatic center/zoom
         $this->maxLng = (float)max((float)$lng, $this->maxLng);
@@ -577,33 +580,36 @@ class MapAPI
 
     public function addOpenInfoWindowHtml($point, $string = '', $link = '', $icon = '', $title = '', $alt = '')
     {
-        if ($string !== '')
+        if ($string !== '') {
             $string .= '<br />';
+        }
 
-        if ($link !== '')
-        {
+        if ($link !== '') {
             $href = '<a href="' . $link . '"';
 
-            if ($title !== '')
+            if ($title !== '') {
                 $href .= ' title="' . $title . '"';
+            }
 
             $href .= '>';
 
-            if ($icon === '')
+            if ($icon === '') {
                 $href .= ($title !== '' ? $title : $link) . '</a>';
+            }
         }
 
-        if ($icon !== '')
-        {
+        if ($icon !== '') {
             $img = '<br /><img src="' . $img . '" alt="' . $alt . '"';
 
-            if ($title !== '')
+            if ($title !== '') {
                 $img .= ' title="' . $title . '"';
+            }
 
             $img .= ' />';
 
-            if ($link !== '')
-                  $img .= '</a>';
+            if ($link !== '') {
+                $img .= '</a>';
+            }
         }
 
         $this->openInfoWindowHtml = '
@@ -779,8 +785,9 @@ class MapAPI
         $this->content .= "\t\t" . 'ctaLayer.setMap(map);' . "\n";
         $this->content .= "\t" . '}' . "\n";
         // openInfoWindowHtml
-        if (!empty($this->openInfoWindowHtml))
+        if (!empty($this->openInfoWindowHtml)) {
             $this->content .= "\t" . $this->openInfoWindowHtml;
+        }
     }
 
     public function generate()
@@ -835,7 +842,5 @@ class MapAPI
 
         // Chargement de la map a la fin du HTML
         $this->content .= "\t" . 'window.onload=initialize;' . "\n";
-
     }
-
 }

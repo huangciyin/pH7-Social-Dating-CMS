@@ -14,7 +14,9 @@ class CommentCore
      * @desc Block constructing.
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Check table.
@@ -28,8 +30,7 @@ class CommentCore
     {
         $sTable = strtolower($sTable); // Case insensitivity
 
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'profile':
             case 'picture':
             case 'video':
@@ -55,5 +56,4 @@ class CommentCore
         $iCommentNumber = (new CommentCoreModel)->total($iId, $sTable);
         return nt('%n% Comment', '%n% Comments', $iCommentNumber);
     }
-
 }

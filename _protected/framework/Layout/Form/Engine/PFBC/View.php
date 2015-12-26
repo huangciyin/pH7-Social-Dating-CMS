@@ -19,18 +19,18 @@ abstract class View extends Base
         $label = $element->getLabel();
         $id = $element->getID();
         $description = $element->getDescription();
-        if(!empty($label) || !empty($description))
-        {
+        if (!empty($label) || !empty($description)) {
             echo '<div class="pfbc-label">';
-            if(!empty($label))
-            {
+            if (!empty($label)) {
                 echo '<label for="', $id, '">';
-                if($element->isRequired())
+                if ($element->isRequired()) {
                     echo '<strong>*</strong> ';
+                }
                 echo $label, '</label>';
             }
-            if(!empty($description))
+            if (!empty($description)) {
                 echo '<em>', $description, '</em>';
+            }
             echo '</div>';
         }
     }
@@ -46,15 +46,16 @@ abstract class View extends Base
         echo 'jQuery("#', $this->form->getId(), ' .pfbc-element:last").css({ "margin-bottom": "0", "padding-bottom": "0", "border-bottom": "none" });';
     }
 
-    public function render() {}
+    public function render()
+    {
+    }
 
     public function renderCSS()
     {
         $id = $this->form->getId();
 
         /*For ease-of-use, default styles are applied to form elements.*/
-        if(!in_array('style', $this->form->getPrevent()))
-        {
+        if (!in_array('style', $this->form->getPrevent())) {
             echo <<<CSS
 #$id .pfbc-label label{font-weight:bold}
 #$id em{font-size:.9em;color:#888}
@@ -64,5 +65,7 @@ CSS;
         }
     }
 
-    public function renderJS() {}
+    public function renderJS()
+    {
+    }
 }

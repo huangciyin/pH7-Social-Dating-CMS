@@ -44,8 +44,7 @@ class RssController extends MainController
         $this->view->current_date = DateFormat::getRss(); // Date format for RSS feed
 
         // RSS router
-        switch ($sAction)
-        {
+        switch ($sAction) {
             case 'blog':
             case 'note':
             case 'forum-topic':
@@ -74,5 +73,4 @@ class RssController extends MainController
 
         $this->xmlOutput();
     }
-
 }

@@ -71,7 +71,6 @@ class MainController extends Controller
         // Get the since date of the website
         $this->view->since_date = $this->dateTime->get(StatisticCoreModel::getSiteSinceDate())->date();
 
-
         //---------- Number of Logins Members ----------//
 
         // All Members
@@ -102,7 +101,6 @@ class MainController extends Controller
         $this->view->year_login_couple_members = $oStatModel->totalLogins('Members', 365, 'couple');
         $this->view->login_couple_members = $oStatModel->totalLogins('Members', 0, 'couple');
 
-
         //---------- Number of Logins Affiliates ----------//
 
         // All Affiliates
@@ -126,7 +124,6 @@ class MainController extends Controller
         $this->view->year_login_female_affiliate = $oStatModel->totalLogins('Affiliates', 365, 'female');
         $this->view->login_female_affiliate = $oStatModel->totalLogins('Affiliates', 0, 'female');
 
-
         //---------- Number of Logins Admins ----------//
 
         // All Admins
@@ -149,7 +146,6 @@ class MainController extends Controller
         $this->view->month_login_female_admins = $oStatModel->totalLogins('Admins', 31, 'female');
         $this->view->year_login_female_admins = $oStatModel->totalLogins('Admins', 365, 'female');
         $this->view->login_female_admins = $oStatModel->totalLogins('Admins', 0, 'female');
-
 
         //---------- Members Registrations ----------//
 
@@ -181,7 +177,6 @@ class MainController extends Controller
         $this->view->year_total_couple_members = $oStatModel->totalMembers(365, 'couple');
         $this->view->total_couple_members = $oStatModel->totalMembers(0, 'couple');
 
-
         //---------- Affiliates Registrations ----------//
 
         // All Affiliates
@@ -204,7 +199,6 @@ class MainController extends Controller
         $this->view->month_total_female_affiliate = $oStatModel->totalAffiliates(31, 'female');
         $this->view->year_total_female_affiliate = $oStatModel->totalAffiliates(365, 'female');
         $this->view->total_female_affiliate = $oStatModel->totalAffiliates(0, 'female');
-
 
         //---------- Admins Registrations ----------//
 
@@ -229,7 +223,6 @@ class MainController extends Controller
         $this->view->year_total_female_admins = $oStatModel->totalAdmins(365, 'female');
         $this->view->total_female_admins = $oStatModel->totalAdmins(0, 'female');
 
-
         //---------- Blogs ----------//
 
         $this->view->today_total_blogs = $oStatModel->totalBlogs(1);
@@ -237,7 +230,6 @@ class MainController extends Controller
         $this->view->month_total_blogs = $oStatModel->totalBlogs(31);
         $this->view->year_total_blogs = $oStatModel->totalBlogs(365);
         $this->view->total_blogs = $oStatModel->totalBlogs();
-
 
         //---------- Notes ----------//
 
@@ -247,7 +239,6 @@ class MainController extends Controller
         $this->view->year_total_notes = $oStatModel->totalNotes(365);
         $this->view->total_notes = $oStatModel->totalNotes();
 
-
         //---------- Messages ----------//
 
         $this->view->today_total_mails = $oStatModel->totalMails(1);
@@ -255,7 +246,6 @@ class MainController extends Controller
         $this->view->month_total_mails = $oStatModel->totalMails(31);
         $this->view->year_total_mails = $oStatModel->totalMails(365);
         $this->view->total_mails = $oStatModel->totalMails();
-
 
         //---------- Comments ----------//
 
@@ -301,19 +291,16 @@ class MainController extends Controller
         $this->view->year_total_game_comments = $oStatModel->totalGameComments(365);
         $this->view->total_game_comments = $oStatModel->totalGameComments();
 
-
         unset($oStatModel);
     }
 
     protected function checkUpdates()
     {
-        if (Framework\Security\Version::isUpdates())
-        {
+        if (Framework\Security\Version::isUpdates()) {
             $aLatestVerInfo = Framework\Security\Version::getLatestInfo();
             $sLatestVer = t('%0% build %1%', $aLatestVerInfo['version'], $aLatestVerInfo['build']);
 
             $this->design->setMessage(t('%software_name% <strong>%0%</strong> is available! Please <a href="%1%" target="_blank">update it now</a> and keep your site safe and stable.', $sLatestVer, Framework\Core\Kernel::SOFTWARE_LICENSE_KEY_URL));
         }
     }
-
 }

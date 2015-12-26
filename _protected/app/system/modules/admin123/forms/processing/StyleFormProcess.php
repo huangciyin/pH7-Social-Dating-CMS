@@ -18,8 +18,7 @@ class StyleFormProcess extends Form
         parent::__construct();
 
         $sCode = $this->httpRequest->post('code', Http::NO_CLEAN);
-        if (!$this->str->equals($sCode, (new Design)->customCode('css')))
-        {
+        if (!$this->str->equals($sCode, (new Design)->customCode('css'))) {
             (new AdminModel)->updateCustomCode($sCode, 'css');
 
             /* Clean Model\Design for STATIC / customCodecss data */
@@ -27,5 +26,4 @@ class StyleFormProcess extends Form
         }
         \PFBC\Form::setSuccess('form_style', t('Your CSS code was saved successfully!'));
     }
-
 }

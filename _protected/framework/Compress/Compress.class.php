@@ -75,22 +75,21 @@ class Compress
         $sHtml = preg_replace('/>[\s]+</', '> <', $sHtml); # Remove new lines, spaces, tabs
         $sHtml = preg_replace('/[\s]+/', ' ', $sHtml); # Remove new lines, spaces, tabs
         $sHtml = preg_replace('#(?ix)(?>[^\S ]\s*|\s{2,})(?=(?:(?:[^<]++|<(?!/?(?:textarea|pre)\b))*+)(?:<(?>textarea|pre)\b|\z))#', '', $sHtml);
-        if (!empty($aPre[0]))
-            foreach ($aPre[0] as $sTag)
-                $sHtml = preg_replace('!#pre#!', $sTag, $sHtml, 1);# Putting back pre|code tags
+        if (!empty($aPre[0])) {
+            foreach ($aPre[0] as $sTag) {
+                $sHtml = preg_replace('!#pre#!', $sTag, $sHtml, 1);
+            }
+        }# Putting back pre|code tags
         return $sHtml;
     }
 
     public function parseCss($sContent)
     {
-        if ($this->_bJavaCompiler)
-        {
+        if ($this->_bJavaCompiler) {
             file_put_contents($this->_sTmpFilePath, $sContent);
             $sCssMinified = exec("java -jar $this->_sYuiCompressorPath $this->_sTmpFilePath --type css --charset utf-8");
             unlink($this->_sTmpFilePath);
-        }
-        else
-        {
+        } else {
             // Backup any values within single or double quotes
             preg_match_all('/(\'[^\']*?\'|"[^"]*?")/ims', $sContent, $aHit, PREG_PATTERN_ORDER);
 
@@ -137,14 +136,11 @@ class Compress
 
     public function parseJs($sContent)
     {
-        if ($this->_bJavaCompiler)
-        {
+        if ($this->_bJavaCompiler) {
             file_put_contents($this->_sTmpFilePath, $sContent);
             $sJsMinified = exec("java -jar $this->_sYuiCompressorPath $this->_sTmpFilePath --type js --charset utf-8");
             unlink($this->_sTmpFilePath);
-        }
-        else
-        {
+        } else {
             // If we can open connection to Google Closure
             // Google Closure has a max limit of 200KB POST size, and will break JS with eval-command
 
@@ -153,8 +149,7 @@ class Compress
             // Closure Host
             $sHost = 'closure-compiler.appspot.com';
 
-            if (strlen($sContentEncoded) < 200000 && preg_match('/[^a-z]eval\(/ism', $sContent) == 0 && $rSocket = @pfsockopen($sHost, 80))
-            {
+            if (strlen($sContentEncoded) < 200000 && preg_match('/[^a-z]eval\(/ism', $sContent) == 0 && $rSocket = @pfsockopen($sHost, 80)) {
                 // Working vars
                 $sJsMinified = '';
                 $sServiceUri = '/compile';
@@ -169,13 +164,14 @@ class Compress
 
                 fputs($rSocket, "POST $sServiceUri  HTTP/1.0\r\n");
                 fputs($rSocket, $sHeader . $sVars);
-                while (!feof($rSocket)) $sJsMinified .= fgets($rSocket);
+                while (!feof($rSocket)) {
+                    $sJsMinified .= fgets($rSocket);
+                }
                 fclose($rSocket);
                 $sJsMinified = preg_replace('/^HTTP.+[\r\n]{2}/ims', '', $sJsMinified);
             }
             // Switching over to Douglas Crockford's JSMin (which in turn breaks IE's conditional compilation)
-            else
-            {
+            else {
                 // remove comments
                 //$sContent = preg_replace("/((?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\/\/.*))/", "", $sContent);
 
@@ -194,5 +190,4 @@ class Compress
 
         return $sJsMinified;
     }
-
 }

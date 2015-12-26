@@ -14,10 +14,10 @@ class EditFieldForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_field']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_field']))
+        if (isset($_POST['submit_edit_field'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_field'])) {
                 new EditFieldFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class EditFieldForm
         $oForm->addElement(new \PFBC\Element\Button(t('Edit')));
         $oForm->render();
     }
-
 }

@@ -15,14 +15,10 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (!UserCore::auth())
-        {
+        if (!UserCore::auth()) {
             $this->signUpRedirect();
-        }
-        elseif (!$this->checkMembership() || !$this->group->love_calculator)
-        {
+        } elseif (!$this->checkMembership() || !$this->group->love_calculator) {
             $this->paymentRedirect();
         }
     }
-
 }

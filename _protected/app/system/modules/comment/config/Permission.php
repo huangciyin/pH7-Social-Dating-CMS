@@ -17,22 +17,16 @@ class Permission extends PermissionCore
 
         $bAdminAuth = AdminCore::auth();
 
-        if ((!UserCore::auth() && !$bAdminAuth) && ($this->registry->action === 'add' || $this->registry->action === 'delete'))
-        {
+        if ((!UserCore::auth() && !$bAdminAuth) && ($this->registry->action === 'add' || $this->registry->action === 'delete')) {
             $this->signInRedirect();
         }
 
-        if (!$bAdminAuth)
-        {
-            if (!$this->checkMembership() || !$this->group->view_comments)
-            {
+        if (!$bAdminAuth) {
+            if (!$this->checkMembership() || !$this->group->view_comments) {
                 $this->paymentRedirect();
-            }
-            elseif ($this->registry->action === 'add' && !$this->group->write_comments)
-            {
+            } elseif ($this->registry->action === 'add' && !$this->group->write_comments) {
                 $this->paymentRedirect();
             }
         }
     }
-
 }

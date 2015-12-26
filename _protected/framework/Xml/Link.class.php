@@ -39,11 +39,13 @@ class Link
      */
     public function get()
     {
-        if (!@$this->_oXml->load($this->_sPath))
+        if (!@$this->_oXml->load($this->_sPath)) {
             throw new Exception('The file \'' . $this->_sPath . '\' does not exist.');
+        }
 
-        foreach ($this->_oXml->getElementsByTagName('link') as $oTag)
+        foreach ($this->_oXml->getElementsByTagName('link') as $oTag) {
             $this->_aRet[$oTag->getAttribute('url')] = $oTag->getAttribute('title');
+        }
 
         return $this->_aRet;
     }
@@ -52,5 +54,4 @@ class Link
     {
         unset($this->_oXml, $this->_sPath, $this->_aRet);
     }
-
 }

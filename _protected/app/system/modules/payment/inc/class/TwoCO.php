@@ -19,5 +19,4 @@ class TwoCO extends Framework\Payment\Gateway\Api\TwoCheckOut
     {
         parent::__construct($bSandbox);
     }
-
 }

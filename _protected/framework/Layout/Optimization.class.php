@@ -33,7 +33,6 @@ class Optimization
         return "data:$sMimeType;base64,$sBase64";
     }
 
-
     /**
      * Scan the path ($sDir) of all file-references found.
      * Note: This function is a slightly modified version from Christian Schepp Schaefer's function (CSS JS booster).
@@ -49,8 +48,7 @@ class Optimization
 
         preg_match_all($sRegexUrl, $sFile, $aHit, PREG_PATTERN_ORDER);
 
-        for ($i=0, $iCountHit = count($aHit[0]); $i < $iCountHit; $i++)
-        {
+        for ($i=0, $iCountHit = count($aHit[0]); $i < $iCountHit; $i++) {
             $sSearch = $aHit[1][$i] . $aHit[2][$i] . $aHit[3][$i];
 
             $sReplace = $sDir . $aHit[1][$i];
@@ -63,9 +61,10 @@ class Optimization
                 substr(str_replace(array('"', "'"), '', $aHit[2][$i]),0,6) != 'mhtml:' &&
                 substr(str_replace(array('"', "'"), '', $aHit[2][$i]),0,1) != '/' &&
                 substr(str_replace(array('"', "'"), '', $aHit[2][$i]),strlen(str_replace(array('"',"'"),'', $aHit[2][$i])) - 4,4) != '.htc'
-            ) $sFile = str_replace($sSearch, $sReplace, $sFile);
+            ) {
+                $sFile = str_replace($sSearch, $sReplace, $sFile);
+            }
         }
         return $sFile;
     }
-
 }

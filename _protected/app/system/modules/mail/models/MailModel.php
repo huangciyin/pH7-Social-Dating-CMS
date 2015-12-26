@@ -107,15 +107,17 @@ class MailModel extends MailCoreModel
      */
     public function setTo($iProfileId, $iMessageId, $sMode)
     {
-        if ($sMode !== 'trash' && $sMode !== 'restor' && $sMode !== 'delete')
+        if ($sMode !== 'trash' && $sMode !== 'restor' && $sMode !== 'delete') {
             Framework\Error\CException\PH7InvalidArgumentException('Bad set mode: "' . $sMode . '"!');
+        }
 
         $oData = $this->getMsg($iMessageId);
         $sFieldId = ($oData->sender == $iProfileId) ? 'sender' : 'recipient';
-        if ($sMode == 'restor')
+        if ($sMode == 'restor') {
             $sTrashVal = str_replace(array($sFieldId, ','), '', $oData->trash);
-        else
+        } else {
             $sTrashVal = ($oData->sender == $oData->recipient) ? 'sender,recipient' : $sFieldId . ',' . $oData->trash;
+        }
         unset($oData);
 
         $sField = ($sMode == 'delete') ? 'toDelete' : 'trash';
@@ -137,8 +139,7 @@ class MailModel extends MailCoreModel
         $sSqlFind = ' ' . (ctype_digit($mLooking) ? '(messageId = :looking)' : '(title LIKE :looking OR message LIKE :looking OR username LIKE :looking OR firstName LIKE :looking OR lastName LIKE :looking)');
         $sSqlOrder = SearchCoreModel::order($sOrderBy, $sSort);
 
-        switch ($sType)
-        {
+        switch ($sType) {
             case self::INBOX:
                 $sSql = 'msg.sender = m.profileId WHERE (msg.recipient = :profileId) AND (NOT FIND_IN_SET(\'recipient\', msg.toDelete)) AND';
             break;
@@ -161,23 +162,20 @@ class MailModel extends MailCoreModel
 
         (ctype_digit($mLooking)) ? $rStmt->bindValue(':looking', $mLooking, \PDO::PARAM_INT) : $rStmt->bindValue(':looking', '%' . $mLooking . '%', \PDO::PARAM_STR);
 
-        if (!empty($iProfileId))
+        if (!empty($iProfileId)) {
             $rStmt->bindParam(':profileId', $iProfileId, \PDO::PARAM_INT);
+        }
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         }
 
         $rStmt->execute();
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $mData = $rStmt->fetchAll(\PDO::FETCH_OBJ);
-        }
-        else
-        {
+        } else {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             $mData = (int) $oRow->totalMails;
             unset($oRow);
@@ -216,5 +214,4 @@ class MailModel extends MailCoreModel
         $rStmt->execute();
         return ($rStmt->rowCount() === 0);
     }
-
 }

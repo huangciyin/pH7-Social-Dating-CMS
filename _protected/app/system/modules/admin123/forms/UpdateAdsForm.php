@@ -14,10 +14,10 @@ class UpdateAdsForm
 
     public static function display()
     {
-        if (isset($_POST['submit_update_ads']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_update_ads']))
+        if (isset($_POST['submit_update_ads'])) {
+            if (\PFBC\Form::isValid($_POST['submit_update_ads'])) {
                 new UpdateAdsFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -32,8 +32,7 @@ class UpdateAdsForm
 
         $oSysVar = new SysVar;
 
-        foreach ($oAds as $oRow)
-        {
+        foreach ($oAds as $oRow) {
             $oForm = new \PFBC\Form('form_update_ads', 500);
             $oForm->configure(array('action' => ''));
             $oForm->addElement(new \PFBC\Element\Hidden('submit_update_ads', 'form_update_ads'));
@@ -53,15 +52,17 @@ class UpdateAdsForm
             // mt_rand() function for generate an ID different if it causes problems in the display.
             $oForm->addElement(new \PFBC\Element\Button(t('Update'), 'submit', array('id' => mt_rand())));
 
-            if (AdsCore::getTable() == 'Ads') // This feature is not available for affiliate banners
+            if (AdsCore::getTable() == 'Ads') { // This feature is not available for affiliate banners
                 $oForm->addElement(new \PFBC\Element\HTMLExternal(t('Views: %0% | Clicks: %1%', $oRow->views, $oRow->clicks) . ' | '));
+            }
 
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<a class="medium_button" href="javascript:void(0)" onclick="ads(\'delete\',' . $oRow->adsId . ',\'' . $sCSRFToken . '\')">' . t('Delete') . '</a> | '));
 
-            if ($oRow->active == 1)
+            if ($oRow->active == 1) {
                 $oForm->addElement(new \PFBC\Element\HTMLExternal('<a class="medium_button" href="javascript:void(0)" onclick="ads(\'deactivate\',' . $oRow->adsId . ',\'' . $sCSRFToken . '\')">' . t('Deactivate') . '</a>'));
-            else
+            } else {
                 $oForm->addElement(new \PFBC\Element\HTMLExternal('<a class="medium_button" href="javascript:void(0)" onclick="ads(\'activate\',' . $oRow->adsId . ',\'' . $sCSRFToken . '\')">' . t('Activate') . '</a>'));
+            }
 
             // End ads div tags
             $oForm->addElement(new \PFBC\Element\HTMLExternal('</div>'));
@@ -69,5 +70,4 @@ class UpdateAdsForm
             $oForm->render();
         }
     }
-
 }

@@ -6,8 +6,7 @@
  * @package        PH7 / App / System / Module / Picture / Controller
  */
 namespace PH7;
-use
-PH7\Framework\Security\Ban\Ban,
+use PH7\Framework\Security\Ban\Ban,
 PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
@@ -83,21 +82,19 @@ class MainController extends Controller
         $this->view->current_page = $this->oPage->getCurrentPage();
         $oAlbums = $this->oPictureModel->album($profileId, null, 1, $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
 
-        if (empty($oAlbums))
-        {
+        if (empty($oAlbums)) {
             $this->sTitle = t('Empty Photo Album.');
             $this->_notFound(false); // Because the Ajax blocks profile, we cannot put HTTP error code 404, so the attribute is FALSE
-        }
-        else
-        {
+        } else {
             // We can include HTML tags in the title since the template will erase them before display.
             $this->sTitle = (!empty($profileId)) ? t('The Album of <a href="%0%">%1%</a>', $this->sUsernameLink, $this->str->upperFirst($this->sUsername)) : t('Photo Gallery Community');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
             $this->view->albums = $oAlbums;
         }
-        if (empty($profileId))
+        if (empty($profileId)) {
             $this->manualTplInclude('index.tpl');
+        }
 
         $this->output();
     }
@@ -109,13 +106,10 @@ class MainController extends Controller
 
         $oAlbum = $this->oPictureModel->photo($this->iProfileId, $this->httpRequest->get('album_id', 'int'), null, 1, $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
 
-        if (empty($oAlbum))
-        {
+        if (empty($oAlbum)) {
             $this->sTitle = t('No album found or still in pending approval.');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Album of <a href="%0%">%1%</a>', $this->sUsernameLink, $this->str->upperFirst($this->sUsername));
             $this->view->page_title = t('Album of %0%', $this->str->upperFirst($this->sUsername));
             $this->view->meta_description = t('Browse Photos From %0% | Picture Album Social Community - %site_name%', $this->str->upperFirst($this->sUsername));
@@ -132,13 +126,10 @@ class MainController extends Controller
     {
         $oPicture = $this->oPictureModel->photo($this->iProfileId, $this->httpRequest->get('album_id', 'int'), $this->httpRequest->get('picture_id', 'int'), 1, 0, 1);
 
-        if (empty($oPicture))
-        {
+        if (empty($oPicture)) {
             $this->sTitle = t('No photo found or still in pending approval.');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Photo of <a href="%0%">%1%</a>', $this->sUsernameLink, $this->str->upperFirst($this->sUsername));
 
             $sTitle = Ban::filterWord($oPicture->title, false);
@@ -195,13 +186,10 @@ class MainController extends Controller
         $this->view->current_page = $this->oPage->getCurrentPage();
         $oSearch = $this->oPictureModel->search($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
 
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('Sorry, Your search returned no results!');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Dating Social Picture - Your search returned');
             $this->view->page_title = $this->sTitle;
             $this->view->h3_title = nt('%n% Picture Result!', '%n% Pictures Result!', $this->iTotalPictures);
@@ -224,8 +212,9 @@ class MainController extends Controller
      */
     private function _notFound($b404Status = true)
     {
-        if ($b404Status === true)
+        if ($b404Status === true) {
             Framework\Http\Http::setHeadersByCode(404);
+        }
         $sErrMsg = ($b404Status === true) ? '<br />' . t('Please return to <a href="%1%">the previous page</a> or <a href="%1%">add a new picture</a> in this album.', 'javascript:history.back();', Uri::get('picture', 'main', 'addphoto', $this->httpRequest->get('album_id'))) : '';
 
         $this->view->page_title = $this->sTitle;
@@ -238,5 +227,4 @@ class MainController extends Controller
         // Destruction
         unset($this->oPictureModel, $this->oPage, $this->sUsername, $this->sUsernameLink, $this->iProfileId, $this->sTitle, $this->iTotalPictures);
     }
-
 }

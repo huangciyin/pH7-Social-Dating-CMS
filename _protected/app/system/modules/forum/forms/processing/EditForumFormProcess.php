@@ -22,5 +22,4 @@ class EditForumFormProcess extends Form
         (new ForumModel)->updateForum($iForumId, $this->httpRequest->post('category_id'), $this->httpRequest->post('name'), $this->httpRequest->post('description'), $this->dateTime->get()->dateTime('Y-m-d H:i:s'));
         Header::redirect(Uri::get('forum', 'forum', 'index'), t('Your message has been updated successfully!'));
     }
-
 }

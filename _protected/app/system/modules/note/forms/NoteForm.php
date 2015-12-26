@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -17,10 +16,10 @@ class NoteForm
 
     public static function display()
     {
-
         if (isset($_POST['submit_note'])) {
-            if (\PFBC\Form::isValid($_POST['submit_note']))
+            if (\PFBC\Form::isValid($_POST['submit_note'])) {
                 new NoteFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -28,8 +27,9 @@ class NoteForm
         $oCategoriesData = (new NoteModel)->getCategory(null, 0, 300);
 
         $aCategoriesName = array();
-        foreach ($oCategoriesData as $oId)
+        foreach ($oCategoriesData as $oId) {
             $aCategoriesName[$oId->categoryId] = $oId->name;
+        }
 
         $oForm = new \PFBC\Form('form_note', 650);
         $oForm->configure(array('action' => ''));
@@ -52,8 +52,7 @@ class NoteForm
         $oForm->addElement(new \PFBC\Element\Textbox(t('Author (meta tag):'), 'meta_author', array('validation' => new \PFBC\Validation\Str(2, 50))));
         $oForm->addElement(new \PFBC\Element\Textbox(t('Copyright (meta tag):'), 'meta_copyright', array('validation' => new \PFBC\Validation\Str(2, 50))));
         $oForm->addElement(new \PFBC\Element\Radio(t('Enable Comment:'), 'enable_comment', array('1' => t('Enable'), '0' => t('Disable')), array('value' => '1', 'required' => 1)));
-        if (DbConfig::getSetting('isCaptchaNote'))
-        {
+        if (DbConfig::getSetting('isCaptchaNote')) {
             $oForm->addElement(new \PFBC\Element\CCaptcha(t('Captcha:'), 'captcha', array('id' => 'ccaptcha', 'onkeyup' => 'CValid(this.value, this.id)', 'description' => t('Enter the code above:'))));
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error ccaptcha"></span>'));
         }
@@ -61,6 +60,4 @@ class NoteForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="' . PH7_URL_STATIC . PH7_JS . 'validate.js"></script><script src="' . PH7_URL_TPL_SYS_MOD . 'note/' . PH7_TPL . PH7_TPL_MOD_NAME . PH7_SH . PH7_JS . 'common.js"></script>'));
         $oForm->render();
     }
-
 }
-

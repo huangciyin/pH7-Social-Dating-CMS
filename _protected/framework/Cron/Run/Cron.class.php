@@ -36,20 +36,21 @@ abstract class Cron extends \PH7\Framework\Core\Core
         $sFullPath = PH7_PATH_SYS . 'core/assets/cron/_delay/' . $this->getFileName() . '.txt';
         $bStatus = true; // Default status is TRUE
 
-        if ($this->file->existFile($sFullPath))
-        {
+        if ($this->file->existFile($sFullPath)) {
             $iSavedTime = $this->file->getFile($sFullPath);
             $iSeconds = $this->getDelay() * 3600; // Convert hours to seconds
             $iCronTime = $iSavedTime + $iSeconds;
 
             $bStatus = ($iCronTime < $this->iTime); // Status is FALSE if the delay has not yet elapsed
 
-            if ($bStatus)
+            if ($bStatus) {
                 $this->file->deleteFile($sFullPath);
+            }
         }
 
-        if ($bStatus)
+        if ($bStatus) {
             $this->file->putFile($sFullPath, $this->iTime);
+        }
 
         return $bStatus;
     }
@@ -76,5 +77,4 @@ abstract class Cron extends \PH7\Framework\Core\Core
          */
         return (int) $this->_oUri->fragment(2);
     }
-
 }

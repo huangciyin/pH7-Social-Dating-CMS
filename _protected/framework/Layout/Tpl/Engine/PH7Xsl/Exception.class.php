@@ -19,5 +19,4 @@ class Exception extends \PH7\Framework\Layout\Exception
     {
         parent::__construct('ERROR XSLT Template: ' . $sMsg);
     }
-
 }

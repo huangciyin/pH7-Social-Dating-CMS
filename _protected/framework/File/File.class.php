@@ -126,16 +126,13 @@ class File
     {
         $bExists = false; // Default value
 
-        if (is_array($mFile))
-        {
-            foreach ($mFile as $sF)
-            {
-                if (!$bExists = $this->existFile($sF))
+        if (is_array($mFile)) {
+            foreach ($mFile as $sF) {
+                if (!$bExists = $this->existFile($sF)) {
                     break;
+                }
             }
-        }
-        else
-        {
+        } else {
             $bExists = is_file($mFile);
         }
 
@@ -152,16 +149,13 @@ class File
     {
         $bExists = false; // Default value
 
-        if (is_array($mDir))
-        {
-            foreach ($mDir as $sD)
-            {
-                if (!$bExists = $this->existDir($sD))
+        if (is_array($mDir)) {
+            foreach ($mDir as $sD) {
+                if (!$bExists = $this->existDir($sD)) {
                     break;
+                }
             }
-        }
-        else
-        {
+        } else {
             $bExists = is_dir($mDir);
         }
 
@@ -176,12 +170,11 @@ class File
     {
         $aDirList = array();
 
-        if ($rHandle = opendir($sDir))
-        {
-            while (false !== ($sFile = readdir($rHandle)))
-            {
-                if ($sFile != '.' && $sFile != '..' && is_dir($sDir . PH7_DS . $sFile))
+        if ($rHandle = opendir($sDir)) {
+            while (false !== ($sFile = readdir($rHandle))) {
+                if ($sFile != '.' && $sFile != '..' && is_dir($sDir . PH7_DS . $sFile)) {
                     $aDirList[] = $sFile;
+                }
             }
             asort($aDirList);
             reset($aDirList);
@@ -211,30 +204,21 @@ class File
         $aTree = array();
         $sDir = $this->checkExtDir($sDir);
 
-        if (is_dir($sDir) && $rHandle = opendir($sDir))
-        {
-            while (false !== ($sF = readdir($rHandle)))
-            {
-                if ($sF != '.' && $sF != '..')
-                {
-                    if (is_dir($sDir . $sF))
-                    {
+        if (is_dir($sDir) && $rHandle = opendir($sDir)) {
+            while (false !== ($sF = readdir($rHandle))) {
+                if ($sF != '.' && $sF != '..') {
+                    if (is_dir($sDir . $sF)) {
                         $aTree = array_merge($aTree, $this->getFileList($sDir . $sF));
-                    }
-                    else
-                    {
-                        if (!empty($mExt))
-                        {
+                    } else {
+                        if (!empty($mExt)) {
                             $aExt = (array) $mExt;
 
-                            foreach ($aExt as $sExt)
-                            {
-                                if (substr($sF, -strlen($sExt)) === $sExt)
+                            foreach ($aExt as $sExt) {
+                                if (substr($sF, -strlen($sExt)) === $sExt) {
                                     $aTree[] = $sDir . $sF;
+                                }
                             }
-                        }
-                        else
-                        {
+                        } else {
                             $aTree[] = $sDir . $sF;
                         }
                     }
@@ -258,11 +242,13 @@ class File
     {
         $bIsWindows = \PH7\Framework\Server\Server::isWindows();
 
-        if (!$bIsWindows && $bStart === true && substr($sDir, 0, 1) !== PH7_DS)
+        if (!$bIsWindows && $bStart === true && substr($sDir, 0, 1) !== PH7_DS) {
             $sDir = PH7_DS . $sDir;
+        }
 
-        if ($bEnd === true && substr($sDir, -1) !== PH7_DS)
+        if ($bEnd === true && substr($sDir, -1) !== PH7_DS) {
             $sDir .= PH7_DS;
+        }
 
         return $sDir;
     }
@@ -278,15 +264,16 @@ class File
      */
     public function createDir($mDir, $iMode = 0777)
     {
-        if (is_array($mDir))
-        {
-            foreach ($mDir as $sD) $this->createDir($sD);
-        }
-        else
-        {
-            if (!is_dir($mDir))
-                if (!@mkdir($mDir, $iMode, true))
+        if (is_array($mDir)) {
+            foreach ($mDir as $sD) {
+                $this->createDir($sD);
+            }
+        } else {
+            if (!is_dir($mDir)) {
+                if (!@mkdir($mDir, $iMode, true)) {
                     throw new Exception('Error to create file: \'' . $mDir . '\'<br /> Please verify that the directory permission is in writing mode.');
+                }
+            }
         }
     }
 
@@ -299,7 +286,9 @@ class File
      */
     public function copy($sFrom, $sTo)
     {
-        if (!is_file($sFrom)) return false;
+        if (!is_file($sFrom)) {
+            return false;
+        }
 
         return @copy($sFrom, $sTo);
     }
@@ -325,8 +314,9 @@ class File
      */
     public function copyMost($sFrom, $sTo)
     {
-        if (file_exists($sFrom))
+        if (file_exists($sFrom)) {
             return system("cp -r $sFrom $sTo");
+        }
 
         return false;
     }
@@ -341,7 +331,9 @@ class File
      */
     public function rename($sFrom, $sTo)
     {
-        if (!file_exists($sFrom)) return false;
+        if (!file_exists($sFrom)) {
+            return false;
+        }
 
         return @rename($sFrom, $sTo);
     }
@@ -367,8 +359,9 @@ class File
      */
     public function renameMost($sFrom, $sTo)
     {
-        if (file_exists($sFrom))
+        if (file_exists($sFrom)) {
             return system("mv $sFrom $sTo");
+        }
 
         return false;
     }
@@ -382,10 +375,15 @@ class File
      */
     public function deleteFile($mFile)
     {
-        if (is_array($mFile))
-            foreach ($mFile as $sF) $this->deleteFile($sF);
-        else
-            if (is_file($mFile)) unlink($mFile);
+        if (is_array($mFile)) {
+            foreach ($mFile as $sF) {
+                $this->deleteFile($sF);
+            }
+        } else {
+            if (is_file($mFile)) {
+                unlink($mFile);
+            }
+        }
     }
 
     /**
@@ -409,7 +407,9 @@ class File
     public function remove($sDir)
     {
         $oIterator = new \RecursiveIteratorIterator($this->getDirIterator($sDir), \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($oIterator as $sPath) ($sPath->isFile()) ? unlink($sPath) : @rmdir($sPath);
+        foreach ($oIterator as $sPath) {
+            ($sPath->isFile()) ? unlink($sPath) : @rmdir($sPath);
+        }
         @rmdir($sDir);
     }
 
@@ -459,8 +459,9 @@ class File
     public function chmod($sFile, $iMode)
     {
         // file_exists function verify the existence of a "file" or "folder"!
-        if (file_exists($sFile) && $this->getOctalAccess($sFile) !== $iMode)
+        if (file_exists($sFile) && $this->getOctalAccess($sFile) !== $iMode) {
             return @chmod($sFile, $iMode);
+        }
 
         return false;
     }
@@ -492,20 +493,23 @@ class File
      */
     public function getDirSize($sPath)
     {
-        if (!is_dir($sPath)) return 0;
-        if (!($rHandle = opendir($sPath))) return 0;
+        if (!is_dir($sPath)) {
+            return 0;
+        }
+        if (!($rHandle = opendir($sPath))) {
+            return 0;
+        }
 
         $iSize = 0;
-        while (false !== ($sFile = readdir($rHandle)))
-        {
-            if ($sFile != '.' && $sFile != '..')
-            {
+        while (false !== ($sFile = readdir($rHandle))) {
+            if ($sFile != '.' && $sFile != '..') {
                 $sFullPath = $sPath . PH7_DS . $sFile;
 
-                if (is_dir($sFullPath))
+                if (is_dir($sFullPath)) {
                     $iSize = $this->getDirSize($sFullPath);
-                else
+                } else {
                     $iSize += $this->size($sFullPath);
+                }
             }
         }
         closedir($rHandle);
@@ -557,17 +561,16 @@ class File
 
         /* Figure out the MIME type (if not specified) */
 
-
-        if (empty($sMimeType))
-        {
+        if (empty($sMimeType)) {
             $sFileExtension = $this->getFileExt($sFile);
 
             $mGetMimeType = $this->getMimeType($sFileExtension);
 
-            if (!empty($mGetMimeType))
+            if (!empty($mGetMimeType)) {
                 $sMimeType = $mGetMimeType;
-            else
+            } else {
                 $sMimeType = 'application/force-download';
+            }
         }
 
         @ob_end_clean(); // Turn off output buffering to decrease CPU usage
@@ -592,12 +595,10 @@ class File
      */
     public function writeHeader($sHeader, $aFile = array())
     {
-        for ($i = 0, $iCountFiles = count($aFile); $i < $iCountFiles; $i++)
-        {
+        for ($i = 0, $iCountFiles = count($aFile); $i < $iCountFiles; $i++) {
             $rHandle = fopen($aFile[$i], 'wb+');
             $sData = '';
-            if ($this->size($aFile[$i]) > 0)
-            {
+            if ($this->size($aFile[$i]) > 0) {
                 $aData = fread($rHandle, $this->size($aFile[$i]));
                 fwrite($rHandle, $sHeader . static::EOL . $sData);
             }
@@ -638,16 +639,17 @@ class File
      */
     public function readFiles($sPath = './', &$mFiles)
     {
-        if (!($rHandle = opendir($sPath))) return false;
+        if (!($rHandle = opendir($sPath))) {
+            return false;
+        }
 
-        while (false !== ($sFile = readdir($rHandle)))
-        {
-            if ($sFile != '.' && $sFile != '..')
-            {
-                if (strpos($sFile, '.') === false)
+        while (false !== ($sFile = readdir($rHandle))) {
+            if ($sFile != '.' && $sFile != '..') {
+                if (strpos($sFile, '.') === false) {
                     $this->readFiles($sPath . PH7_DS . $sFile, $mFiles);
-                else
+                } else {
                     $mFiles[] = $sPath . PH7_DS . $sFile;
+                }
             }
         }
         closedir($rHandle);
@@ -662,13 +664,15 @@ class File
      */
     public function readDirs($sPath = './')
     {
-        if (!($rHandle = opendir($sPath))) return false;
+        if (!($rHandle = opendir($sPath))) {
+            return false;
+        }
         $aRet = array();//remove it for yield
 
-        while (false !== ($sFolder = readdir($rHandle)))
-        {
-            if ('.' == $sFolder || '..' == $sFolder || !is_dir($sPath . $sFolder))
+        while (false !== ($sFolder = readdir($rHandle))) {
+            if ('.' == $sFolder || '..' == $sFolder || !is_dir($sPath . $sFolder)) {
                 continue;
+            }
             //yield $sFolder; // PHP 5.5
             $aRet[] = $sFolder;//remove it for yield
         }
@@ -704,21 +708,23 @@ class File
      */
     public function isBinary($sFile)
     {
-        if (file_exists($sFile))
-        {
-            if (!is_file($sFile))
+        if (file_exists($sFile)) {
+            if (!is_file($sFile)) {
                 return 0;
+            }
 
-            if (preg_match('/^(.*?)\.(gif|jpg|jpeg|png|ico|mp3|mp4|mov|avi|flv|mpg|mpeg|wmv|ogg|ogv|webm|pdf|ttf|eot|woff|svg|swf)$/i', $sFile))
+            if (preg_match('/^(.*?)\.(gif|jpg|jpeg|png|ico|mp3|mp4|mov|avi|flv|mpg|mpeg|wmv|ogg|ogv|webm|pdf|ttf|eot|woff|svg|swf)$/i', $sFile)) {
                 return 1;
+            }
 
             $rHandle  = fopen($sFile, 'r');
             $sContents = fread($rHandle, 512); // Get 512 bytes of the file.
             fclose($rHandle);
             clearstatcache();
 
-            if (!function_exists('is_binary')) // PHP 6
+            if (!function_exists('is_binary')) { // PHP 6
                 return is_binary($sContents);
+            }
 
             return (
                 0 or substr_count($sContents, "^ -~", "^\r\n")/512 > 0.3
@@ -751,23 +757,27 @@ class File
      */
     private function _recursiveDirIterator($sFrom, $sTo, $sFuncName)
     {
-        if ($sFuncName !== 'copy' && $sFuncName !== 'rename')
+        if ($sFuncName !== 'copy' && $sFuncName !== 'rename') {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('Bad function name: \'' . $sFuncName . '\'');
+        }
 
-        if (!is_dir($sFrom)) return false;
+        if (!is_dir($sFrom)) {
+            return false;
+        }
 
         $bRet = false;
         $oIterator = new \RecursiveIteratorIterator($this->getDirIterator($sFrom), \RecursiveIteratorIterator::SELF_FIRST);
-        foreach ($oIterator as $sFromFile)
-        {
+        foreach ($oIterator as $sFromFile) {
             $sDest = $sTo . PH7_DS . $oIterator->getSubPathName();
 
-            if ($sFromFile->isDir())
+            if ($sFromFile->isDir()) {
                 $this->createDir($sDest);
-            else
-                if (!$bRet = $this->$sFuncName($sFromFile, $sDest)) break;
+            } else {
+                if (!$bRet = $this->$sFuncName($sFromFile, $sDest)) {
+                    break;
+                }
+            }
         }
         return $bRet;
     }
-
 }

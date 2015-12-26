@@ -26,7 +26,6 @@ $sFindCode = <<<'EOS'
 '{@lang('Universal Login Config')@}</a></li>'
 EOS;
 
-
 /*** Begin Contents ***/
 
 $sHtml .= '<p>' . t('The installation is finished.') . '</p>';

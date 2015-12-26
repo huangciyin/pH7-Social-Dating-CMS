@@ -25,8 +25,7 @@ class InstallController extends Controller
         $aLangsList = include(PH7_ROOT_INSTALL . 'inc/lang_list.inc.php');
         $sLangSelect = '';
 
-        foreach ($aLangs as $sLang)
-        {
+        foreach ($aLangs as $sLang) {
             $sSel = (empty($_REQUEST['l']) ? $sLang == $this->sCurrentLang ? '" selected="selected' : '' : ($sLang == $_REQUEST['l']) ? '" selected="selected' : '');
             $sLangSelect .= '<option value="?l=' . $sLang . $sSel . '">' . $aLangsList[$sLang] . '</option>';
         }
@@ -41,40 +40,31 @@ class InstallController extends Controller
     {
         global $LANG;
 
-        if (empty($_SESSION['val']['path_protected']))
+        if (empty($_SESSION['val']['path_protected'])) {
             $_SESSION['val']['path_protected'] = PH7_ROOT_PUBLIC . '_protected' . PH7_DS;
+        }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['path_protected']))
-        {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['path_protected'])) {
             $_SESSION['val']['path_protected'] = check_ext_start(check_ext_end(trim($_POST['path_protected'])));
 
-            if (is_dir($_SESSION['val']['path_protected']))
-            {
-                if (is_readable($_SESSION['val']['path_protected']))
-                {
+            if (is_dir($_SESSION['val']['path_protected'])) {
+                if (is_readable($_SESSION['val']['path_protected'])) {
                     $sConstantContent = file_get_contents(PH7_ROOT_INSTALL . 'data/configs/constants.php');
 
                     $sConstantContent = str_replace('%path_protected%', addslashes($_SESSION['val']['path_protected']), $sConstantContent);
 
-                    if (!@file_put_contents(PH7_ROOT_PUBLIC . '_constants.php', $sConstantContent))
-                    {
+                    if (!@file_put_contents(PH7_ROOT_PUBLIC . '_constants.php', $sConstantContent)) {
                         $aErrors[] = $LANG['no_public_writable'];
-                    }
-                    else
-                    {
+                    } else {
                         $_SESSION['step2'] = 1;
                         unset($_SESSION['val']);
 
                         redirect(PH7_URL_SLUG_INSTALL . 'config_system');
                     }
-                }
-                else
-                {
+                } else {
                     $aErrors[] = $LANG['no_protected_readable'];
                 }
-            }
-            else
-            {
+            } else {
                 $aErrors[] = $LANG['no_protected_exist'];
             }
         }
@@ -90,12 +80,10 @@ class InstallController extends Controller
     {
         global $LANG;
 
-        if (!empty($_SESSION['step2']) && is_file(PH7_ROOT_PUBLIC . '_constants.php'))
-        {
+        if (!empty($_SESSION['step2']) && is_file(PH7_ROOT_PUBLIC . '_constants.php')) {
             session_regenerate_id(true);
 
-            if (empty($_SESSION['val']))
-            {
+            if (empty($_SESSION['val'])) {
                 $_SESSION['db']['type_name'] = 'MySQL';
                 $_SESSION['db']['type'] = 'mysql';
                 $_SESSION['db']['hostname'] = 'localhost';
@@ -109,20 +97,17 @@ class InstallController extends Controller
                 $_SESSION['val']['ffmpeg_path'] = (is_windows()) ? 'C:\ffmpeg\ffmpeg.exe' : '/usr/bin/ffmpeg';
             }
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['config_system_submit']))
-            {
-                if (filled_out($_POST))
-                {
-                    foreach ($_POST as $sKey => $sVal)
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['config_system_submit'])) {
+                if (filled_out($_POST)) {
+                    foreach ($_POST as $sKey => $sVal) {
                         $_SESSION['db'][str_replace('db_', '', $sKey)] = trim($sVal);
+                    }
 
                     $_SESSION['val']['bug_report_email'] = trim($_POST['bug_report_email']);
                     $_SESSION['val']['ffmpeg_path'] = trim($_POST['ffmpeg_path']);
 
-                    if (validate_email($_SESSION['val']['bug_report_email']))
-                    {
-                        try
-                        {
+                    if (validate_email($_SESSION['val']['bug_report_email'])) {
+                        try {
                             require_once(PH7_ROOT_INSTALL . 'inc/_db_connect.inc.php');
                             @require_once(PH7_ROOT_PUBLIC . '_constants.php');
                             @require_once(PH7_PATH_APP . 'configs/constants.php');
@@ -147,18 +132,12 @@ class InstallController extends Controller
                             $sConfigContent = str_replace('%private_key%', generate_hash(40), $sConfigContent);
                             $sConfigContent = str_replace('%rand_id%', generate_hash(5), $sConfigContent);
 
-                            if (!@file_put_contents(PH7_PATH_APP_CONFIG . 'config.ini', $sConfigContent))
-                            {
+                            if (!@file_put_contents(PH7_PATH_APP_CONFIG . 'config.ini', $sConfigContent)) {
                                 $aErrors[] = $LANG['no_app_config_writable'];
-                            }
-                            else
-                            {
-                                if (!($DB->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql' && version_compare($DB->getAttribute(\PDO::ATTR_SERVER_VERSION), PH7_REQUIRE_SQL_VERSION, '>=')))
-                                {
+                            } else {
+                                if (!($DB->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql' && version_compare($DB->getAttribute(\PDO::ATTR_SERVER_VERSION), PH7_REQUIRE_SQL_VERSION, '>='))) {
                                     $aErrors[] = $LANG['require_mysql_version'];
-                                }
-                                else
-                                {
+                                } else {
                                     $aDumps = array(
                                         /*** Game ***/
                                         // We need to install the Game before the Core SQL for "foreign keys" that work are correct.
@@ -181,8 +160,9 @@ class InstallController extends Controller
                                         'pH7_SampleData'
                                     );
 
-                                    for ($i = 0, $iCount = count($aDumps); $i < $iCount; $i++)
+                                    for ($i = 0, $iCount = count($aDumps); $i < $iCount; $i++) {
                                         exec_query_file($DB, PH7_ROOT_INSTALL . 'data/sql/' . $_SESSION['db']['type_name'] . '/' . $aDumps[$i] . '.sql');
+                                    }
 
                                     unset($DB);
 
@@ -192,25 +172,17 @@ class InstallController extends Controller
                                     redirect(PH7_URL_SLUG_INSTALL . 'config_site');
                                 }
                             }
-                        }
-                        catch (\PDOException $oE)
-                        {
+                        } catch (\PDOException $oE) {
                             $aErrors[] = $LANG['database_error'] . escape($oE->getMessage());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         $aErrors[] = $LANG['bad_email'];
                     }
-                }
-                else
-                {
+                } else {
                     $aErrors[] = $LANG['all_fields_mandatory'];
                 }
             }
-        }
-        else
-        {
+        } else {
             redirect(PH7_URL_SLUG_INSTALL . 'config_path');
         }
 
@@ -225,14 +197,11 @@ class InstallController extends Controller
     {
         global $LANG;
 
-        if (empty($_SESSION['step4']))
-        {
-            if (!empty($_SESSION['step3']) && is_file(PH7_ROOT_PUBLIC . '_constants.php'))
-            {
+        if (empty($_SESSION['step4'])) {
+            if (!empty($_SESSION['step3']) && is_file(PH7_ROOT_PUBLIC . '_constants.php')) {
                 session_regenerate_id(true);
 
-                if (empty($_SESSION['val']))
-                {
+                if (empty($_SESSION['val'])) {
                     $_SESSION['val']['site_name'] = 'My Own Social/Dating Site!';
                     $_SESSION['val']['admin_login_email'] = '';
                     $_SESSION['val']['admin_email'] = '';
@@ -243,27 +212,19 @@ class InstallController extends Controller
                     $_SESSION['val']['admin_last_name'] = '';
                 }
 
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['config_site_submit']))
-                {
-                    if (filled_out($_POST))
-                    {
-                        foreach ($_POST as $sKey => $sVal)
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['config_site_submit'])) {
+                    if (filled_out($_POST)) {
+                        foreach ($_POST as $sKey => $sVal) {
                             $_SESSION['val'][$sKey] = trim($sVal);
+                        }
 
-                        if (validate_email($_SESSION['val']['admin_login_email']) && validate_email($_SESSION['val']['admin_email']) && validate_email($_SESSION['val']['admin_feedback_email']) && validate_email($_SESSION['val']['admin_return_email']))
-                        {
-                            if (validate_username($_SESSION['val']['admin_username']) == 0)
-                            {
-                                if (validate_password($_SESSION['val']['admin_password']) == 0)
-                                {
-                                    if (validate_identical($_SESSION['val']['admin_password'], $_SESSION['val']['admin_passwords']))
-                                    {
-                                        if (!find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_username']) && !find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_first_name']) && !find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_last_name']))
-                                        {
-                                            if (validate_name($_SESSION['val']['admin_first_name']))
-                                            {
-                                                if (validate_name($_SESSION['val']['admin_last_name']))
-                                                {
+                        if (validate_email($_SESSION['val']['admin_login_email']) && validate_email($_SESSION['val']['admin_email']) && validate_email($_SESSION['val']['admin_feedback_email']) && validate_email($_SESSION['val']['admin_return_email'])) {
+                            if (validate_username($_SESSION['val']['admin_username']) == 0) {
+                                if (validate_password($_SESSION['val']['admin_password']) == 0) {
+                                    if (validate_identical($_SESSION['val']['admin_password'], $_SESSION['val']['admin_passwords'])) {
+                                        if (!find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_username']) && !find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_first_name']) && !find($_SESSION['val']['admin_password'], $_SESSION['val']['admin_last_name'])) {
+                                            if (validate_name($_SESSION['val']['admin_first_name'])) {
+                                                if (validate_name($_SESSION['val']['admin_last_name'])) {
                                                     @require_once(PH7_ROOT_PUBLIC . '_constants.php');
                                                     @require_once(PH7_PATH_APP . 'configs/constants.php');
 
@@ -271,8 +232,7 @@ class InstallController extends Controller
                                                     // To load "Security" class.
                                                     Framework\Loader\Autoloader::getInstance()->init();
 
-                                                    try
-                                                    {
+                                                    try {
                                                         require_once(PH7_ROOT_INSTALL . 'inc/_db_connect.inc.php');
 
                                                         // SQL EXECUTE
@@ -318,80 +278,48 @@ class InstallController extends Controller
                                                         $_SESSION['step4'] = 1;
 
                                                         redirect(PH7_URL_SLUG_INSTALL . 'service');
-                                                    }
-                                                    catch (\PDOException $oE)
-                                                    {
+                                                    } catch (\PDOException $oE) {
                                                         $aErrors[] = $LANG['database_error'] . escape($oE->getMessage());
                                                     }
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     $aErrors[] = $LANG['bad_last_name'];
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 $aErrors[] = $LANG['bad_first_name'];
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             $aErrors[] = $LANG['insecure_password'];
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $aErrors[] = $LANG['passwords_different'];
                                     }
-                                }
-                                elseif (validate_password($_SESSION['val']['admin_password']) == 1)
-                                {
+                                } elseif (validate_password($_SESSION['val']['admin_password']) == 1) {
                                     $aErrors[] = $LANG['password_too_short'];
-                                }
-                                elseif (validate_password($_SESSION['val']['admin_password']) == 2)
-                                {
+                                } elseif (validate_password($_SESSION['val']['admin_password']) == 2) {
                                     $aErrors[] = $LANG['password_too_long'];
-                                }
-                                elseif (validate_password($_SESSION['val']['admin_password']) ==  3)
-                                {
+                                } elseif (validate_password($_SESSION['val']['admin_password']) ==  3) {
                                     $aErrors[] = $LANG['password_no_number'];
-                                }
-                                elseif (validate_password($_SESSION['val']['admin_password']) ==  4)
-                                {
+                                } elseif (validate_password($_SESSION['val']['admin_password']) ==  4) {
                                     $aErrors[] = $LANG['password_no_upper'];
                                 }
-                            }
-                            elseif (validate_username($_SESSION['val']['admin_username']) == 1)
-                            {
+                            } elseif (validate_username($_SESSION['val']['admin_username']) == 1) {
                                 $aErrors[] = $LANG['username_too_short'];
-                            }
-                            elseif (validate_username($_SESSION['val']['admin_username']) == 2)
-                            {
+                            } elseif (validate_username($_SESSION['val']['admin_username']) == 2) {
                                 $aErrors[] = $LANG['username_too_long'];
-                            }
-                            elseif (validate_username($_SESSION['val']['admin_username']) == 3)
-                            {
+                            } elseif (validate_username($_SESSION['val']['admin_username']) == 3) {
                                 $aErrors[] = $LANG['bad_username'];
                             }
-                        }
-                        else
-                        {
+                        } else {
                             $aErrors[] = $LANG['bad_email'];
                         }
-                    }
-                    else
-                    {
+                    } else {
                         $aErrors[] = $LANG['all_fields_mandatory'];
                     }
                 }
-            }
-            else
-            {
+            } else {
                 redirect(PH7_URL_SLUG_INSTALL . 'config_system');
             }
-        }
-        else
-        {
+        } else {
             redirect(PH7_URL_SLUG_INSTALL . 'service');
         }
 
@@ -413,21 +341,18 @@ class InstallController extends Controller
     {
         global $LANG;
 
-        if (!empty($_SESSION['step4']) && is_file(PH7_ROOT_PUBLIC . '_constants.php'))
-        {
-            if (empty($_SESSION['val']['license']))
+        if (!empty($_SESSION['step4']) && is_file(PH7_ROOT_PUBLIC . '_constants.php')) {
+            if (empty($_SESSION['val']['license'])) {
                 $_SESSION['val']['license'] = '';
+            }
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['license']))
-            {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['license'])) {
                 $sKey = trim($_POST['license']);
-                if (check_license($sKey))
-                {
+                if (check_license($sKey)) {
                     @require_once(PH7_ROOT_PUBLIC . '_constants.php');
                     @require_once(PH7_PATH_APP . 'configs/constants.php');
 
-                    try
-                    {
+                    try {
                         require_once(PH7_ROOT_INSTALL . 'inc/_db_connect.inc.php');
 
                         $oSqlQuery = $DB->prepare('UPDATE ' . $_SESSION['db']['prefix'] . 'License SET licenseKey = :key WHERE licenseId = 1');
@@ -436,20 +361,14 @@ class InstallController extends Controller
                         ));
 
                         redirect(PH7_URL_SLUG_INSTALL . 'finish');
-                    }
-                    catch (\PDOException $oE)
-                    {
+                    } catch (\PDOException $oE) {
                         $aErrors[] = $LANG['database_error'] . escape($oE->getMessage());
                     }
-                }
-                else
-                {
+                } else {
                     $aErrors[] = $LANG['failure_license'];
                 }
             }
-        }
-        else
-        {
+        } else {
             redirect(PH7_URL_SLUG_INSTALL . 'config_site');
         }
 
@@ -466,8 +385,7 @@ class InstallController extends Controller
 
         @require_once(PH7_ROOT_PUBLIC . '_constants.php');
 
-        if (!empty($_SESSION['val']))
-        {
+        if (!empty($_SESSION['val'])) {
             // Send an email to say the installation is now done, and give some information...
             $aParams = array(
                 'to' => $_SESSION['val']['admin_login_email'],
@@ -490,8 +408,7 @@ class InstallController extends Controller
         // and then, we delete the cookie value locally to avoid using it by mistake in following our script.
         unset($_COOKIE[$sCookieName]);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['confirm_remove_install']))
-        {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['confirm_remove_install'])) {
             remove_install_dir();
             clearstatcache(); // We remove the files status cache as the "_install" folder doesn't exist anymore by now.
             exit(header('Location: ' . PH7_URL_ROOT));
@@ -517,5 +434,4 @@ class InstallController extends Controller
         @chmod(PH7_PATH_APP_CONFIG . 'config.ini', 0644);
         @chmod(PH7_ROOT_PUBLIC . '_constants.php', 0644);
     }
-
 }

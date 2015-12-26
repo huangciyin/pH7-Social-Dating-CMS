@@ -23,7 +23,9 @@ class Various
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Executes SQL queries.
@@ -33,7 +35,9 @@ class Various
      */
     public static function execQueryFile($sSqlFile)
     {
-        if (!is_file($sSqlFile)) return false;
+        if (!is_file($sSqlFile)) {
+            return false;
+        }
 
         $sSqlContent = file_get_contents($sSqlFile);
         $sSqlContent = str_replace(PH7_TABLE_PREFIX,  Db::prefix(), $sSqlContent);
@@ -52,8 +56,7 @@ class Various
      */
     public static function convertModToTable($Mod)
     {
-        switch ($Mod)
-        {
+        switch ($Mod) {
             case 'user':
                 $sTable = 'Members';
             break;
@@ -88,8 +91,7 @@ class Various
      */
      public static function convertTableToMod($sTable)
      {
-         switch ($sTable)
-         {
+         switch ($sTable) {
              case 'Members':
                  $sMod = 'user';
              break;
@@ -124,8 +126,7 @@ class Various
      */
     public static function convertTableToId($sTable)
     {
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'Members':
                 $sId = 'profileId';
             break;
@@ -185,8 +186,7 @@ class Various
      */
     public static function checkTable($sTable)
     {
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'Members':
             case 'AlbumsPictures':
             case 'AlbumsVideos':
@@ -217,8 +217,7 @@ class Various
      */
     public static function checkModelTable($sTable)
     {
-        switch ($sTable)
-        {
+        switch ($sTable) {
             case 'Members':
             case 'Affiliates':
             case 'MembersInfo':
@@ -251,6 +250,7 @@ class Various
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

@@ -22,7 +22,6 @@ $sDomain = (($_SERVER['SERVER_PORT'] != '80') && ($_SERVER['SERVER_PORT'] != '44
 // Determine the current file of the application
 $sPhp_self = str_replace('\\', '', dirname(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES))); // Remove backslashes for Windows compatibility
 
-
 //---------------------------- Constants --------------------------------//
 
 //------------ Other ----------------//

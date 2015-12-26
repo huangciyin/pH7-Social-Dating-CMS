@@ -30,8 +30,7 @@ class Url
         $sUrl = preg_replace( '/[\s]+/', '-', $sUrl);
         $sUrl = str_replace(array('«', '»', '"', '~', '#', '$', '@', '`', '§', '$', '£', 'µ', '\\', '[', ']', '<', '>', '%', '*', '{', '}'), '-', $sUrl);
 
-        if ($bFullClean)
-        {
+        if ($bFullClean) {
             $sUrl = str_replace(array('.', '^', ',', ':', ';', '!'), '', $sUrl);
             $oStr = new Str;
             $sUrl = $oStr->lower($sUrl);
@@ -57,5 +56,4 @@ class Url
 
         return $sLink;
     }
-
 }

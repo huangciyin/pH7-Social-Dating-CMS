@@ -23,5 +23,4 @@ class ProtectedFileFormProcess extends Form
 
         Header::redirect($this->httpRequest->previousPage(), $sMsg, $sMsgType);
     }
-
 }

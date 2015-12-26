@@ -12,8 +12,7 @@
 namespace PH7\Framework\Mvc\Model;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Mvc\Model\Engine\Util\Various;
 
@@ -44,8 +43,9 @@ class Security
         $rStmt->bindValue(':ip', $iIp, \PDO::PARAM_INT);
         $rStmt->execute();
 
-        if ($rStmt->rowCount() == 0) // Not Found IP
-        {
+        if ($rStmt->rowCount() == 0) {
+            // Not Found IP
+
             $rStmt = Db::getInstance()->prepare('INSERT INTO'.Db::prefix('BlockIp'). 'VALUES (:ip, :expires)');
             $rStmt->bindValue(':ip', $iIp, \PDO::PARAM_INT);
             $rStmt->bindValue(':expires', $iExpirationInSec, \PDO::PARAM_INT);
@@ -98,25 +98,21 @@ class Security
         $rStmt->bindValue(':ip', $this->_sIp, \PDO::PARAM_STR);
         $rStmt->execute();
 
-        if ($rStmt->rowCount() == 1)
-        {
+        if ($rStmt->rowCount() == 1) {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
 
-            if ($oRow->attempts >= $iMaxAttempts)
-            {
+            if ($oRow->attempts >= $iMaxAttempts) {
                 $sLockoutTime = (new \DateTime($oRow->lastLogin))->add(\DateInterval::createFromDateString("$iAttemptTime minutes"))->format('Y-m-d H:i:s');
 
-                if ($sLockoutTime > $this->_sCurrentTime)
-                {
+                if ($sLockoutTime > $this->_sCurrentTime) {
                     /**
                      * Send email to prevent that someone tries to hack their member account.
                      * We test that the number of attempts equals the number of maximim tantatives to avoid duplication of sending emails.
                      */
-                    if ($oRow->attempts == $iMaxAttempts)
+                    if ($oRow->attempts == $iMaxAttempts) {
                         (new \PH7\Security)->sendAlertLoginAttemptsExceeded($iMaxAttempts, $iAttemptTime, $this->_sIp, $sEmail, $oView, $sTable);
-                }
-                else
-                {
+                    }
+                } else {
                     // Clear Login Attempts
                     $this->clearLoginAttempts($sTable);
                     return true; // Authorized
@@ -141,8 +137,7 @@ class Security
         $rStmt->bindValue(':ip', $this->_sIp, \PDO::PARAM_STR);
         $rStmt->execute();
 
-        if ($rStmt->rowCount() == 1)
-        {
+        if ($rStmt->rowCount() == 1) {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             $iAttempts = $oRow->attempts+1;
             $rStmt = Db::getInstance()->prepare('UPDATE' . Db::prefix($sTable.'AttemptsLogin') . 'SET attempts = :attempts, lastLogin = :currentTime WHERE ip = :ip');
@@ -150,9 +145,7 @@ class Security
             $rStmt->bindValue(':attempts', $iAttempts, \PDO::PARAM_INT);
             $rStmt->bindValue(':currentTime', $this->_sCurrentTime, \PDO::PARAM_STR);
             $rStmt->execute();
-        }
-        else
-        {
+        } else {
             $rStmt = Db::getInstance()->prepare('INSERT INTO' . Db::prefix($sTable.'AttemptsLogin') . '(ip, attempts, lastLogin) VALUES (:ip, 1, :lastLogin)');
             $rStmt->bindValue(':ip', $this->_sIp, \PDO::PARAM_STR);
             $rStmt->bindValue(':lastLogin', $this->_sCurrentTime, \PDO::PARAM_STR);
@@ -177,5 +170,4 @@ class Security
         $rStmt->execute();
         Db::free($rStmt);
     }
-
 }

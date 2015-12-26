@@ -18,8 +18,9 @@ class ForgotPasswordForm
         $sTable = Various::convertModToTable( (new Http)->get('mod') );
 
         if (isset($_POST['submit_forgot_password'])) {
-            if (\PFBC\Form::isValid($_POST['submit_forgot_password']))
+            if (\PFBC\Form::isValid($_POST['submit_forgot_password'])) {
                 new ForgotPasswordFormProcess($sTable);
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -36,5 +37,4 @@ class ForgotPasswordForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="' . PH7_URL_STATIC . PH7_JS . 'validate.js"></script>'));
         $oForm->render();
     }
-
 }

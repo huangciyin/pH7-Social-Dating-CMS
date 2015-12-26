@@ -12,10 +12,10 @@ class AdsAdminForm
 
     public static function display()
     {
-        if (isset($_POST['submit_admin_ads']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_admin_ads']))
+        if (isset($_POST['submit_admin_ads'])) {
+            if (\PFBC\Form::isValid($_POST['submit_admin_ads'])) {
                 new AdsAdminFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -29,5 +29,4 @@ class AdsAdminForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

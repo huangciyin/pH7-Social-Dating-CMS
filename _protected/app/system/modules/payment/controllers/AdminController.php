@@ -34,12 +34,9 @@ class AdminController extends MainController
     {
         $oMembership = $this->oPayModel->getMemberships();
 
-        if (empty($oMembership))
-        {
+        if (empty($oMembership)) {
             $this->displayPageNotFound(t('No membership found!'));
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Memberships List');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -72,5 +69,4 @@ class AdminController extends MainController
 
         Header::redirect(Uri::get('payment', 'admin', 'membershiplist'), t('The Membership has been removed!'));
     }
-
 }

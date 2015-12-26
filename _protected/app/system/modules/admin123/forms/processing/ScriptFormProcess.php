@@ -17,8 +17,7 @@ class ScriptFormProcess extends Form
     {
         parent::__construct();
 
-        if (!$this->str->equals($this->httpRequest->post('code', Http::NO_CLEAN), (new Design)->customCode('js')))
-        {
+        if (!$this->str->equals($this->httpRequest->post('code', Http::NO_CLEAN), (new Design)->customCode('js'))) {
             (new AdminModel)->updateCustomCode($this->httpRequest->post('code', Http::NO_CLEAN), 'js');
 
             /* Clean Model\Design for STATIC / customCodejs data */
@@ -26,5 +25,4 @@ class ScriptFormProcess extends Form
         }
         \PFBC\Form::setSuccess('form_script', t('Your JS code was saved successfully!'));
     }
-
 }

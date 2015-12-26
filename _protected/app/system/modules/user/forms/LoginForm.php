@@ -14,10 +14,10 @@ class LoginForm
 
     public static function display($iWidth = 450)
     {
-        if (isset($_POST['submit_login_user']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_login_user']))
+        if (isset($_POST['submit_login_user'])) {
+            if (\PFBC\Form::isValid($_POST['submit_login_user'])) {
                 new LoginFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -31,8 +31,7 @@ class LoginForm
         $oForm->addElement(new \PFBC\Element\Password(t('Your Password:'), 'password', array('required' => 1)));
         $oForm->addElement(new \PFBC\Element\Checkbox('', 'remember', array(1=>t('Stay signed in'))));
 
-        if ((new Session)->exists('captcha_enabled'))
-        {
+        if ((new Session)->exists('captcha_enabled')) {
             $oForm->addElement(new \PFBC\Element\CCaptcha(t('Captcha:'), 'captcha', array('id'=>'ccaptcha', 'onkeyup'=>'CValid(this.value, this.id)', 'description'=>t('Enter the code above:'))));
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error ccaptcha"></span>'));
         }
@@ -41,5 +40,4 @@ class LoginForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

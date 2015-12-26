@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Navigation\Page,
+use PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -51,13 +50,10 @@ class AdminController extends Controller
         $oBrowse = $this->oSubscriptionModel->browse($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $oPage->getFirstItem(), $oPage->getNbItemsByPage());
         unset($oPage);
 
-        if (empty($oBrowse))
-        {
+        if (empty($oBrowse)) {
             $this->design->setRedirect(Uri::get('newsletter', 'admin', 'browse'));
             $this->displayPageNotFound(t('Sorry, Your search returned no results!'));
-        }
-        else
-        {
+        } else {
             // Adding the static files
             $this->design->addCss(PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_CSS, 'browse.css');
             $this->design->addJs(PH7_STATIC . PH7_JS, 'form.js');
@@ -79,12 +75,12 @@ class AdminController extends Controller
 
     public function deleteAll()
     {
-        if (!(new Framework\Security\CSRF\Token)->check('subscriber_action'))
+        if (!(new Framework\Security\CSRF\Token)->check('subscriber_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sEmail)
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sEmail) {
                 $this->oSubscriptionModel->unsubscribe($sEmail);
+            }
 
             $this->sMsg = t('The subscribers(s) has been deleted.');
         }

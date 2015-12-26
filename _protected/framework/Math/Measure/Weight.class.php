@@ -40,10 +40,10 @@ class Weight extends Measure implements IMeasure
         $aData = $this->get();
         $sWeightTxt = t('%0% sts &ndash; %1% lbs &ndash; %2% kgs', $aData['st'], $aData['lb'], $aData['kg']);
 
-        if($bPrint)
+        if ($bPrint) {
             echo $sWeightTxt;
-        else
+        } else {
             return $sWeightTxt;
+        }
     }
-
 }

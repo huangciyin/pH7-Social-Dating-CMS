@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Image\Image,
 PH7\Framework\Util\Various,
 PH7\Framework\Mvc\Model\DbConfig,
@@ -27,17 +26,16 @@ class AlbumFormProcess extends Form
          * This can cause minor errors (eg if a user sent a file that is not a photo).
          * So we hide the errors if we are not in development mode.
          */
-        if(!isDebug()) error_reporting(0);
+        if (!isDebug()) {
+            error_reporting(0);
+        }
 
         // Resizing and saving the thumbnail
         $oPicture = new Image($_FILES['album']['tmp_name']);
 
-        if(!$oPicture->validate())
-        {
+        if (!$oPicture->validate()) {
             \PFBC\Form::setError('form_picture_album', Form::wrongImgFileTypeMsg());
-        }
-        else
-        {
+        } else {
             $iApproved = (DbConfig::getSetting('pictureManualApproval') == 0) ? '1' : '0';
 
             $sFileName = Various::genRnd($oPicture->getFileName(), 1) . '-thumb.' . $oPicture->getExt();
@@ -64,5 +62,4 @@ class AlbumFormProcess extends Form
             Header::redirect(Uri::get('picture', 'main', 'addphoto', $iLastAlbumId));
         }
     }
-
 }

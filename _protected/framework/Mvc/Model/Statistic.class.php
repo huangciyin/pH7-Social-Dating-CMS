@@ -53,5 +53,4 @@ class Statistic
         Db::free($rStmt);
         return (int) @$oRow->views;
     }
-
 }

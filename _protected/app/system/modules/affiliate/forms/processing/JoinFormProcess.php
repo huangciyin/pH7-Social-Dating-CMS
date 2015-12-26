@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Util\Various,
 PH7\Framework\Cookie\Cookie,
 PH7\Framework\Ip\Ip,
@@ -55,24 +54,20 @@ class JoinFormProcess extends Form
         $oAffModel = new AffiliateModel;
 
         $iTimeDelay = (int) DbConfig::getSetting('timeDelayUserRegistration');
-        if (!$oAffModel->checkWaitJoin($aData['ip'], $iTimeDelay, $aData['current_date'], 'Affiliates'))
-        {
+        if (!$oAffModel->checkWaitJoin($aData['ip'], $iTimeDelay, $aData['current_date'], 'Affiliates')) {
             \PFBC\Form::setError('form_join_aff', Form::waitRegistrationMsg($iTimeDelay));
-        }
-        elseif (!$oAffModel->join($aData))
-        {
+        } elseif (!$oAffModel->join($aData)) {
             \PFBC\Form::setError('form_join_aff',
                 t('An error occurred during registration!') . '<br />' .
                 t('Please try again with new information in the form fields or come back later.')
             );
-        }
-        else
-        {
+        } else {
             // Successful registration in the database!
 
             /** Update the Affiliate Commission **/
-            if ($this->iActiveType == 0) // Only if the user's account is already activated.
+            if ($this->iActiveType == 0) { // Only if the user's account is already activated.
                 AffiliateCore::updateJoinCom($iAffId, $this->config, $this->registry);
+            }
 
             // Send an email and sets the welcome message.
             \PFBC\Form::setSuccess('form_join_aff', t('Your affiliate account has been created! %0%', (new Registration)->sendMail($aData)->getMsg()));
@@ -80,5 +75,4 @@ class JoinFormProcess extends Form
 
         unset($oAffModel);
     }
-
 }

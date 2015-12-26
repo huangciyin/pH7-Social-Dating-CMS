@@ -26,8 +26,8 @@ class Cron extends Framework\Cron\Run\Cron
      */
     public function isAlreadyExec()
     {
-        if (!$this->checkDelay())
+        if (!$this->checkDelay()) {
             exit(t('This cron has already been executed.'));
+        }
     }
-
 }

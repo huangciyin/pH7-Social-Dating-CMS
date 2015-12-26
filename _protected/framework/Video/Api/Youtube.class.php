@@ -28,8 +28,7 @@ class Youtube extends Api implements IApi
     public function getInfo($sUrl)
     {
         $sDataUrl = static::API_URL . $this->getVideoId($sUrl) . '?v=2&alt=jsonc';
-        if ($oData = $this->getData($sDataUrl))
-        {
+        if ($oData = $this->getData($sDataUrl)) {
             $this->oData = $oData->data;
             return $this;
         }
@@ -39,19 +38,13 @@ class Youtube extends Api implements IApi
 
     public function getMeta($sUrl, $sMedia, $iWidth, $iHeight)
     {
-
-        if ($sMedia == 'preview')
-        {
+        if ($sMedia == 'preview') {
             $aThumb = ['default', 1, 2, 3];
             shuffle($aThumb);
             return 'http://i' . mt_rand(1,4) . '.ytimg.com/vi/' . $this->getVideoId($sUrl) . PH7_SH . $aThumb[0] . '.jpg';
-        }
-        else
-        {
+        } else {
             $sParam = ($this->bAutoplay) ? '?autoplay=1' : '';
             return '<iframe width="' . $iWidth . '" height="' . $iHeight . '" src="' . $this->getEmbedUrl($sUrl) .$sParam . '&amp;rel=0" frameborder="0" allowfullscreen></iframe>';
         }
     }
-
 }
-

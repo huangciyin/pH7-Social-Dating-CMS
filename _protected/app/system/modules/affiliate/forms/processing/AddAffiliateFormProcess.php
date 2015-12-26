@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Util\Various,
+use PH7\Framework\Util\Various,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
@@ -47,5 +46,4 @@ class AddAffiliateFormProcess extends Form
 
         Header::redirect(Uri::get('affiliate', 'admin', 'browse'), t('The affiliate has been successfully added.'));
     }
-
 }

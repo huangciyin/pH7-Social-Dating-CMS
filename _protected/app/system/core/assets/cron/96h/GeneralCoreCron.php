@@ -25,7 +25,6 @@ class GeneralCoreCron extends Cron
         echo t('The Jobs Cron is working to complete successfully!');
     }
 
-
     /**
      * Checks file permissions and tries to correct them if they are incorrect.
      *
@@ -40,7 +39,6 @@ class GeneralCoreCron extends Cron
 
         echo t('Chmod file... Ok!') . '<br />';
     }
-
 }
 
 // Go!

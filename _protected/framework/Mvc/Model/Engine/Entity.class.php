@@ -51,8 +51,8 @@ abstract class Entity
      */
     protected function checkKeyId()
     {
-        if (empty($this->_iId))
+        if (empty($this->_iId)) {
             $this->setKeyId( Db::getInstance()->lastInsertId() );
+        }
     }
-
 }

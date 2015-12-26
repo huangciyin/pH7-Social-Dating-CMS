@@ -37,7 +37,9 @@ class FriendModel extends FriendCoreModel
 
         $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
         $rStmt->bindValue(':friendId', $iFriendId, \PDO::PARAM_INT);
-        if ($mPending !== 'all') $rStmt->bindValue(':pending', $mPending, \PDO::PARAM_INT);
+        if ($mPending !== 'all') {
+            $rStmt->bindValue(':pending', $mPending, \PDO::PARAM_INT);
+        }
         $rStmt->execute();
         return ($rStmt->fetchColumn() > 0) ? true : false;
     }
@@ -59,10 +61,8 @@ class FriendModel extends FriendCoreModel
         // Check if the two existing ID
         $oExistsModel = new ExistsCoreModel;
 
-        if ($oExistsModel->id($iProfileId, 'Members') && $oExistsModel->id($iFriendId, 'Members'))
-        {
-            if (!$this->inList($iProfileId, $iFriendId))
-            {
+        if ($oExistsModel->id($iProfileId, 'Members') && $oExistsModel->id($iFriendId, 'Members')) {
+            if (!$this->inList($iProfileId, $iFriendId)) {
                 $rStmt = Db::getInstance()->prepare('INSERT INTO' . Db::prefix('MembersFriends') .
                   '(profileId, friendId, pending, requestDate) VALUES (:profileId, :friendId, :pending, :requestDate)');
 
@@ -72,19 +72,15 @@ class FriendModel extends FriendCoreModel
                 $rStmt->bindValue(':requestDate', $sRequestDate, \PDO::PARAM_STR);
                 $oRow = $rStmt->execute();
                 Db::free($rStmt);
-                if (!$oRow)
+                if (!$oRow) {
                     $this->_sStatus = 'error';
-                else
+                } else {
                     $this->_sStatus = 'success';
-
-            }
-            else
-            {
+                }
+            } else {
                 $this->_sStatus = 'friend_exists';
             }
-        }
-        else
-        {
+        } else {
             $this->_sStatus = 'id_does_not_exist';
         }
 
@@ -171,24 +167,24 @@ class FriendModel extends FriendCoreModel
         $rStmt->bindValue(':profileId', $iIdProfileId, \PDO::PARAM_INT);
         (ctype_digit($mLooking)) ? $rStmt->bindValue(':looking', $mLooking, \PDO::PARAM_INT) : $rStmt->bindValue(':looking', '%' . $mLooking . '%', \PDO::PARAM_STR);
 
-        if (!empty($iFriendId)) $rStmt->bindValue(':friendId', $iFriendId, \PDO::PARAM_INT);
-        if ($mPending !== 'all') $rStmt->bindValue(':pending', $mPending, \PDO::PARAM_INT);
+        if (!empty($iFriendId)) {
+            $rStmt->bindValue(':friendId', $iFriendId, \PDO::PARAM_INT);
+        }
+        if ($mPending !== 'all') {
+            $rStmt->bindValue(':pending', $mPending, \PDO::PARAM_INT);
+        }
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         }
 
         $rStmt->execute();
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $mData = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
-        }
-        else
-        {
+        } else {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             $mData = (int) $oRow->totalFriends;
@@ -197,5 +193,4 @@ class FriendModel extends FriendCoreModel
 
         return $mData;
     }
-
 }

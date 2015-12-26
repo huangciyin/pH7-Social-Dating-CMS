@@ -38,21 +38,22 @@ class NewsFeedCore
     {
         $this->_oCache->start(self::CACHE_GROUP, 'software_feed_news' . $iNum, 3600*24);
 
-        if (!$this->_aData = $this->_oCache->get())
-        {
-            if (!@$this->_oXml->load(static::NEWS_URL))
+        if (!$this->_aData = $this->_oCache->get()) {
+            if (!@$this->_oXml->load(static::NEWS_URL)) {
                 throw new Framework\Error\CException\PH7Exception('Unable to retrieve news feeds at the URL: "' . static::NEWS_URL . '"');
+            }
 
             $iCount = 0;
-            foreach ($this->_oXml->getElementsByTagName('item') as $oItem)
-            {
+            foreach ($this->_oXml->getElementsByTagName('item') as $oItem) {
                 $sLink = $oItem->getElementsByTagName('link')->item(0)->nodeValue;
 
                 $this->_aData[$sLink]['title'] = $oItem->getElementsByTagName('title')->item(0)->nodeValue;
                 $this->_aData[$sLink]['link'] = $sLink;
                 $this->_aData[$sLink]['description'] = $oItem->getElementsByTagName('description')->item(0)->nodeValue;
 
-                if (++$iCount == $iNum) break; // If we have the number of news we want, we stop the foreach loop.
+                if (++$iCount == $iNum) {
+                    break;
+                } // If we have the number of news we want, we stop the foreach loop.
             }
 
             $this->_oCache->put($this->_aData);
@@ -65,5 +66,4 @@ class NewsFeedCore
     {
         unset($this->_oXml, $this->_oCache, $this->_aData);
     }
-
 }

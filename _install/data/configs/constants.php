@@ -30,7 +30,6 @@ $sDomain_cookie = '.' . str_replace('www.', '', $sDomain);
 // Determine the current file of the application
 $sPhp_self = str_replace('\\', '', dirname(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES))); // Remove backslashes for Windows compatibility
 
-
 ################################### CONSTANTS ###################################
 
 #################### OTHER ####################

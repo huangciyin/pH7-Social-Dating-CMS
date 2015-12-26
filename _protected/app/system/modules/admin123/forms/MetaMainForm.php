@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\File\File,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
@@ -18,10 +17,10 @@ class MetaMainForm
 
     public static function display()
     {
-        if (isset($_POST['submit_meta']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_meta']))
+        if (isset($_POST['submit_meta'])) {
+            if (\PFBC\Form::isValid($_POST['submit_meta'])) {
                 new MetaMainFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -39,8 +38,7 @@ class MetaMainForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<h3 class="underline"><a href="#showDiv_listLang" title="' . t('Click here to show/hide the languages') . '">' . t('Change language for the Meta Tags') . '</a></h3>'));
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<ul class="hidden" id="showDiv_listLang">'));
         $aLangs = (new File)->getDirList(PH7_PATH_APP_LANG);
-        for ($i=0, $iLength = count($aLangs); $i < $iLength; $i++)
-        {
+        for ($i=0, $iLength = count($aLangs); $i < $iLength; $i++) {
             $sAbbrLang = substr($aLangs[$i],0,2);
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<li>' . ($i+1) . ') ' . '<a class="bold" href="' . Uri::get(PH7_ADMIN_MOD, 'setting', 'metamain', $aLangs[$i], false) . '" title="' . t($sAbbrLang) . '">' . t($sAbbrLang) . ' (' . $aLangs[$i] . ')</a></li>'));
         }
@@ -62,5 +60,4 @@ class MetaMainForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

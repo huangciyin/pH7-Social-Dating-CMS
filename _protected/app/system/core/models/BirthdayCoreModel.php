@@ -44,28 +44,25 @@ class BirthdayCoreModel
 
         $rStmt = Db::getInstance()->prepare('SELECT ' . $sSqlSelect . ' FROM' . Db::prefix('Members') . 'WHERE (username <> \'' . PH7_GHOST_USERNAME . '\') AND (groupId=\'2\') AND (birthDate LIKE :date)' . $sSqlWhere . $sSqlOrder . $sSqlLimit);
         $rStmt->bindValue(':date', '%' . (new CDateTime)->get()->date('-m-d'), \PDO::PARAM_STR);
-        if ($bIsSex) $rStmt->bindValue(':sex', $sGender, \PDO::PARAM_STR);
+        if ($bIsSex) {
+            $rStmt->bindValue(':sex', $sGender, \PDO::PARAM_STR);
+        }
 
-        if (!$bCount && $bIsLimit)
-        {
+        if (!$bCount && $bIsLimit) {
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         }
 
         $rStmt->execute();
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $oRow = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             return $oRow;
-        }
-        else
-        {
+        } else {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             return (int) $oRow->totalBirths;
         }
     }
-
 }

@@ -13,8 +13,7 @@
 namespace PH7\Framework\Error\CException;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Error\LoggerExcept,
+use PH7\Framework\Error\LoggerExcept,
 PH7\Framework\Error\Debug,
 PH7\Framework\Page\Page;
 
@@ -36,16 +35,11 @@ class PH7Exception extends \Exception
      */
     public static function launch(\Exception $oExcept)
     {
-        if (Debug::is())
-        {
+        if (Debug::is()) {
             Page::exception($oExcept);
-        }
-        else
-        {
+        } else {
             (new LoggerExcept)->except($oExcept); // Set Exception in Error Log
             Page::error500();
         }
     }
-
 }
-

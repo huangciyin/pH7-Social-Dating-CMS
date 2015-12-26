@@ -128,7 +128,6 @@ class Client
         );
     }
 
-
     private function userAgent()
     {
         $curlVersion = curl_version();
@@ -155,7 +154,6 @@ class Client
                 'timeout' => $this->timeout,
             )
         );
-
     }
 
     /**
@@ -401,7 +399,7 @@ class Client
         // Check if we are inside a phar. If so, we need to copy the cert to a
         // temp file so that curl can see it.
         if (substr($cert, 0, 7) == 'phar://') {
-             $newCert =  tempnam(sys_get_temp_dir(), 'geoip2-');
+            $newCert =  tempnam(sys_get_temp_dir(), 'geoip2-');
             if (!copy($cert, $newCert)) {
                 throw new \RuntimeException(
                     "Could not copy $cert to $newCert: "

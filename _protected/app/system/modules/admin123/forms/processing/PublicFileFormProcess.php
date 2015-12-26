@@ -23,5 +23,4 @@ class PublicFileFormProcess extends Form
 
         Header::redirect($this->httpRequest->previousPage(), $sMsg, $sMsgType);
     }
-
 }

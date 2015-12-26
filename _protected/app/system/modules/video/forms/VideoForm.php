@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
@@ -18,10 +17,10 @@ class VideoForm
 
     public static function display()
     {
-        if (isset($_POST['submit_video']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_video']))
+        if (isset($_POST['submit_video'])) {
+            if (\PFBC\Form::isValid($_POST['submit_video'])) {
                 new VideoFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -33,7 +32,9 @@ class VideoForm
         $oAlbumId = (new VideoModel)->getAlbumsName((new Session)->get('member_id'));
 
         $aAlbumName = array();
-        foreach ($oAlbumId as $iId) $aAlbumName[$iId->albumId] = $iId->name;
+        foreach ($oAlbumId as $iId) {
+            $aAlbumName[$iId->albumId] = $iId->name;
+        }
 
         $oForm = new \PFBC\Form('form_video', 500);
         $oForm->configure(array('action' =>''));
@@ -59,5 +60,4 @@ class VideoForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'form.js"></script>'));
         $oForm->render();
     }
-
 }

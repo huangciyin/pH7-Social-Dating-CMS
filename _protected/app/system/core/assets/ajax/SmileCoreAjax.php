@@ -30,12 +30,10 @@ class SmileCoreAjax extends \PH7\Framework\Service\Emoticon
     {
         $oCache = (new Cache)->start('str/json', 'emoticons', 120*48*30);
 
-        if (!static::$_sData = $oCache->get())
-        {
+        if (!static::$_sData = $oCache->get()) {
             $aEmoticons = static::gets();
 
-            foreach ($aEmoticons as $sEmoticonKey => $aEmoticon)
-            {
+            foreach ($aEmoticons as $sEmoticonKey => $aEmoticon) {
                 $mCode = static::getCode($aEmoticon);
                 $sImg = static::getUrl($sEmoticonKey);
                 $sName = static::getName($aEmoticon);
@@ -56,11 +54,7 @@ EOD;
         }
         unset($oCache);
     }
-
 }
 
 // Output
 SmileCoreAjax::output();
-
-
-

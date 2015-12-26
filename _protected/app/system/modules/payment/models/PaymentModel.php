@@ -47,5 +47,4 @@ class PaymentModel extends UserCoreModel
     {
         $this->orm->delete('Memberships', 'groupId', $iGroupId);
     }
-
 }

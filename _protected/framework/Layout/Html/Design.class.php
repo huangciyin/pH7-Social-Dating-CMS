@@ -13,8 +13,7 @@
 namespace PH7\Framework\Layout\Html;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Core\Kernel,
+use PH7\Framework\Core\Kernel,
 PH7\Framework\Registry\Registry,
 PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Url\Url,
@@ -62,14 +61,15 @@ class Design
         //$aLangs = (new File)->getDirList(Registry::getInstance()->path_module_lang);
         $aLangs = (new File)->getDirList(PH7_PATH_APP_LANG);
 
-        foreach ($aLangs as $sLang)
-        {
-            if ($sLang === PH7_LANG_NAME) continue;
+        foreach ($aLangs as $sLang) {
+            if ($sLang === PH7_LANG_NAME) {
+                continue;
+            }
 
                 // Retrieve only the first two characters
                 $sAbbrLang = substr($sLang,0,2);
 
-                echo '<a href="', $sCurrentPage, $sLang, '" hreflang="', $sAbbrLang, '"><img src="', PH7_URL_STATIC, PH7_IMG, 'flag/s/', $sAbbrLang, '.gif" alt="', t($sAbbrLang), '" title="', t($sAbbrLang), '" /></a>&nbsp;';
+            echo '<a href="', $sCurrentPage, $sLang, '" hreflang="', $sAbbrLang, '"><img src="', PH7_URL_STATIC, PH7_IMG, 'flag/s/', $sAbbrLang, '.gif" alt="', t($sAbbrLang), '" title="', t($sAbbrLang), '" /></a>&nbsp;';
         }
 
         unset($aLangs, $sCurrentPage);
@@ -86,8 +86,7 @@ class Design
         $aLangs = (new File)->getDirList(PH7_PATH_APP_LANG);
 
         echo '<link rel="alternate" hreflang="x-default" href="', PH7_URL_ROOT, '">'; // For pages that are not specifically targeted
-        foreach ($aLangs as $sLang)
-        {
+        foreach ($aLangs as $sLang) {
             // Retrieve only the first two characters
             $sAbbrLang = substr($sLang,0,2);
             echo '<link rel="alternate" hreflang="', $sAbbrLang, '" href="', $sCurrentPage, $sLang, '" />';
@@ -114,22 +113,24 @@ class Design
      */
     public function message()
     {
-        if ($this->oHttpRequest->getExists('msg'))
+        if ($this->oHttpRequest->getExists('msg')) {
             $this->aMessages[] = substr($this->oHttpRequest->get('msg'),0,300);
+        }
 
         $iMsgNum = count($this->aMessages);
         /*** Check if there are any messages in the aMessages array ***/
-        if ($iMsgNum > 0)
-        {
+        if ($iMsgNum > 0) {
             $this->staticFiles('js', PH7_STATIC . PH7_JS, 'jquery/apprise.js');
 
             echo '<script>$(function(){Apprise(\'';
 
-            if ($iMsgNum > 1)
+            if ($iMsgNum > 1) {
                 echo '<strong>', t('You have'), ' <em>', $iMsgNum, '</em> ', nt('message:', 'messages:', $iMsgNum), '</strong><br />';
+            }
 
-            for ($i=0; $i < $iMsgNum; $i++)
+            for ($i=0; $i < $iMsgNum; $i++) {
                 echo $this->oStr->upperFirst(str_replace('-', ' ', $this->aMessages[$i])), '<br />';
+            }
 
             echo '\')});</script>';
         }
@@ -155,22 +156,23 @@ class Design
      */
     public function error()
     {
-        if ($this->oHttpRequest->getExists('err'))
+        if ($this->oHttpRequest->getExists('err')) {
             $this->aErrors[] = substr($this->oHttpRequest->get('err'),0,300);
+        }
 
         $iErrNum = count($this->aErrors);
         /*** Check if there are any errors in the aErrors array ***/
-        if ($iErrNum > 0)
-        {
-           $this->staticFiles('js', PH7_STATIC . PH7_JS, 'jquery/apprise.js');
+        if ($iErrNum > 0) {
+            $this->staticFiles('js', PH7_STATIC . PH7_JS, 'jquery/apprise.js');
 
-           echo '<script>$(function(){Apprise(\'';
-           echo '<strong>', t('You have'), ' <em>', $iErrNum, '</em> ', nt('error:', 'errors:', $iErrNum), '</strong><br />';
+            echo '<script>$(function(){Apprise(\'';
+            echo '<strong>', t('You have'), ' <em>', $iErrNum, '</em> ', nt('error:', 'errors:', $iErrNum), '</strong><br />';
 
-           for ($i=0; $i < $iErrNum; $i++)
-             echo $this->oStr->upperFirst(str_replace('-', ' ', $this->aErrors[$i])), '<br />';
+            for ($i=0; $i < $iErrNum; $i++) {
+                echo $this->oStr->upperFirst(str_replace('-', ' ', $this->aErrors[$i])), '<br />';
+            }
 
-           echo '\')});</script>';
+            echo '\')});</script>';
         }
 
         unset($this->aErrors);
@@ -187,8 +189,9 @@ class Design
     */
     public function setRedirect($sUrl = null, $sMsg = null, $sType = 'success', $iTime = 3)
     {
-        if ($sMsg)
+        if ($sMsg) {
             $this->setFlashMsg($sMsg, $sType);
+        }
 
         $sUrl = (!empty($sUrl)) ? $sUrl : $this->oHttpRequest->currentUrl();
 
@@ -219,12 +222,13 @@ class Design
      */
     public function homePageUrl()
     {
-        if (\PH7\AdminCore::auth())
+        if (\PH7\AdminCore::auth()) {
             $this->url(PH7_ADMIN_MOD, 'main', 'index');
-        elseif (\PH7\AffiliateCore::auth())
+        } elseif (\PH7\AffiliateCore::auth()) {
             $this->url('affiliate', 'account', 'index');
-        else
+        } else {
             echo PH7_URL_ROOT;
+        }
     }
 
     public function url($sModule, $sController, $sAction, $sVars = null, $bClear = true)
@@ -283,15 +287,17 @@ class Design
      */
     final public function link($bLink = true, $bSoftwareName = true, $bVersion = true, $bComment = true, $bEmail = false)
     {
-        if (defined('PH7_VALID_LICENSE') && PH7_VALID_LICENSE) return;
+        if (defined('PH7_VALID_LICENSE') && PH7_VALID_LICENSE) {
+            return;
+        }
 
         ($bLink ? $bSoftwareName = true : '');
 
-        if (!$bEmail && \PH7\AdminCore::auth())
+        if (!$bEmail && \PH7\AdminCore::auth()) {
             echo '<p class="underline"><strong><em><a class="red" href="', Uri::get(PH7_ADMIN_MOD, 'setting', 'license'), '">', t('Need to remove the link below?'), '</a></em></strong></p>';
+        }
 
-        if ($bComment)
-        {
+        if ($bComment) {
             echo '
             <!-- ', Kernel::SOFTWARE_COPYRIGHT, ' -->
             <!-- Powered by ', Kernel::SOFTWARE_NAME, ' ', Kernel::SOFTWARE_VERSION, ', Build ', Kernel::SOFTWARE_BUILD, ' -->
@@ -313,7 +319,9 @@ class Design
      */
     final public function smallLink()
     {
-        if (defined('PH7_VALID_LICENSE') && PH7_VALID_LICENSE) return;
+        if (defined('PH7_VALID_LICENSE') && PH7_VALID_LICENSE) {
+            return;
+        }
 
         echo '<p><strong>', t('Powered By'), ' <a href="', Kernel::SOFTWARE_WEBSITE, '" title="', Kernel::SOFTWARE_DESCRIPTION, '">', Kernel::SOFTWARE_NAME, '</a> ', Kernel::SOFTWARE_VERSION, '</strong></p>';
     }
@@ -363,10 +371,11 @@ class Design
      */
     public function staticFiles($sType, $sDir, $sFiles, $sCssMedia = 'all')
     {
-        if ($sType == 'js')
+        if ($sType == 'js') {
             echo $this->externalJsFile(PH7_RELATIVE . 'asset/gzip/?t=js&amp;d=' . $sDir . '&amp;f=' . $sFiles);
-        else
+        } else {
             echo $this->externalCssFile(PH7_RELATIVE . 'asset/gzip/?t=css&amp;d=' . $sDir . '&amp;f=' . $sFiles, $sCssMedia);
+        }
     }
 
     /**
@@ -398,8 +407,9 @@ class Design
      */
     public function css()
     {
-        for ($i = 0, $iCount = count($this->aCssDir); $i < $iCount; $i++)
+        for ($i = 0, $iCount = count($this->aCssDir); $i < $iCount; $i++) {
             $this->staticFiles('css', $this->aCssDir[$i], $this->aCssFiles[$i], $this->aCssMedia[$i]);
+        }
 
         unset($this->aCssDir, $this->aCssFiles, $this->aCssMedia);
     }
@@ -409,8 +419,9 @@ class Design
      */
     public function js()
     {
-        for ($i = 0, $iCount = count($this->aJsDir); $i < $iCount; $i++)
+        for ($i = 0, $iCount = count($this->aJsDir); $i < $iCount; $i++) {
             $this->staticFiles('js', $this->aJsDir[$i], $this->aJsFiles[$i]);
+        }
 
         unset($this->aJsDir, $this->aJsFiles);
     }
@@ -442,8 +453,7 @@ class Design
      */
     public function flashMsg()
     {
-        if ($this->oSession->exists('flash_msg'))
-        {
+        if ($this->oSession->exists('flash_msg')) {
             echo '<div class="center bold alert alert-', $this->oSession->get('flash_type'), '" role="alert">', $this->oSession->get('flash_msg'), '</div>';
 
             $this->oSession->remove('flash_msg'); // Remove the flash_msg session
@@ -463,10 +473,11 @@ class Design
         $sIp = Ip::get($sIp);
         $sHtml = '<a href="' . Ip::api($sIp) . '" title="' . t('See info of this IP, %0%', $sIp) . '" target="_blank">' . $this->oStr->extract($sIp,0,15) . '</a>';
 
-        if ($bPrint)
+        if ($bPrint) {
             echo $sHtml;
-        else
+        } else {
             return $sHtml;
+        }
     }
 
     /**
@@ -483,10 +494,11 @@ class Design
 
         $sHtml = '<a href="' . Uri::get('user', 'country', 'index', $sCountry . PH7_SH . $sCity) . '" title="' . t('Meet New People on %0%, %1% with %site_name%!', $sCountryLang, $sCity) . '">' . $sCountryLang . ', ' . $sCity . '</a>';
 
-        if ($bPrint)
+        if ($bPrint) {
             echo $sHtml;
-        else
+        } else {
             return $sHtml;
+        }
     }
 
     /**
@@ -513,8 +525,7 @@ class Design
     {
         $oCache = (new \PH7\Framework\Cache\Cache)->start(self::CACHE_AVATAR_GROUP . $sUsername, $sSex . $iSize, 60*24*30);
 
-        if (!$sUrl = $oCache->get())
-        {
+        if (!$sUrl = $oCache->get()) {
             $oUserModel = new \PH7\UserCoreModel;
 
             $iProfileId = $oUserModel->getId(null, $sUsername);
@@ -531,8 +542,7 @@ class Design
 
             $bIsModerate = (Registry::getInstance()->module === PH7_ADMIN_MOD);
 
-            if (!is_file($sPath) || $oGetAvatar->approvedAvatar == '0')
-            {
+            if (!is_file($sPath) || $oGetAvatar->approvedAvatar == '0') {
                 /* If sex is empty, it is recovered in the database using information from member */
                 $sSex = (!empty($sSex)) ? $sSex : $oUserModel->getSex(null, $sUsername, 'Members');
                 $sSex = $this->oStr->lower($sSex);
@@ -540,8 +550,7 @@ class Design
                 $sUrlTplName = (defined('PH7_TPL_NAME')) ? PH7_TPL_NAME : PH7_DEFAULT_THEME;
 
                 /*** If the user does not have an avatar ***/
-                if (!is_file($sPath))
-                {
+                if (!is_file($sPath)) {
                     /* The user has no avatar, we try to get a Gravatar */
 
                     // Get the User Email
@@ -550,15 +559,13 @@ class Design
                     $bSecureGravatar = \PH7\Framework\Http\Http::isSsl();
                     $sUrl = $this->getGravatarUrl($sEmail, '404', $iSize, 'g', $bSecureGravatar);
 
-                    if (!(new \PH7\Framework\Security\Validate\Validate)->url($sUrl, true))
-                    {
+                    if (!(new \PH7\Framework\Security\Validate\Validate)->url($sUrl, true)) {
                         // If there is no Gravatar, we set the default pH7CMS's avatar
                         $sUrl = PH7_URL_TPL . $sUrlTplName . PH7_SH . PH7_IMG . 'icon/' . $sIcon . '_no_picture' . $sSize . '.jpg';
                     }
+                } elseif (!$bIsModerate) {
+                    // We do not display the pending approval image when an administrator is on the panel admin
 
-                }
-                elseif (!$bIsModerate) // We do not display the pending approval image when an administrator is on the panel admin
-                {
                     $sUrl = PH7_URL_TPL . $sUrlTplName . PH7_SH . PH7_IMG . 'icon/pending' . $sSize . '.jpg';
                 }
             }
@@ -574,7 +581,6 @@ class Design
         unset($oCache);
         echo $sUrl;
     }
-
 
     /**
      * Get the Gravatar URL.
@@ -644,8 +650,9 @@ class Design
      */
     public function likeApi($bDisable = true)
     {
-        if ($bDisable === false)
+        if ($bDisable === false) {
             echo  '<br /><br /><div class="center addthis_toolbox addthis_default_style"><a class="addthis_button_facebook_like"></a><a class="addthis_button_tweet" tw:count="horizontal"></a><a class="addthis_button_google_plusone" g:plusone:size="medium"></a><a class="addthis_counter addthis_pill_style"></a></div>';
+        }
     }
 
     /**
@@ -658,8 +665,9 @@ class Design
      */
     public function littleLikeApi($bDisable = true)
     {
-        if ($bDisable === false)
+        if ($bDisable === false) {
             echo  '<div class="addthis_toolbox addthis_default_style"><a class="addthis_button_facebook_like"></a><a class="addthis_button_google_plusone" g:plusone:size="medium"></a><a class="addthis_button_tweet" tw:count="horizontal"></a></div>';
+        }
     }
 
     /**
@@ -693,8 +701,9 @@ class Design
         $sLinkName = \PH7\Framework\Parse\Url::name($sLink);
         $aDefAttrs = ['href' => $sLink, 'title' => $sLinkName];
 
-        if ($bNoFollow)
-            $aDefAttrs += ['rel' => 'nofollow']; // Add "nofollow" attribute if "$bNoFollow" is TURE
+        if ($bNoFollow) {
+            $aDefAttrs += ['rel' => 'nofollow'];
+        } // Add "nofollow" attribute if "$bNoFollow" is TURE
 
         $this->htmlTag('a', $aDefAttrs, true, $sLinkName);
     }
@@ -711,8 +720,9 @@ class Design
     {
         $aDefAttrs = ['src' => $sImg, 'alt' => $sAlt];
 
-        if (!empty($aAttrs))
-            $aDefAttrs += $aAttrs; // Update the attributes if necessary
+        if (!empty($aAttrs)) {
+            $aDefAttrs += $aAttrs;
+        } // Update the attributes if necessary
 
         $this->htmlTag('img',  $aDefAttrs);
     }
@@ -730,10 +740,10 @@ class Design
     {
         $sAttrs = '';
 
-        if (!empty($aAttrs))
-        {
-            foreach ($aAttrs as $sName => $sValue)
+        if (!empty($aAttrs)) {
+            foreach ($aAttrs as $sName => $sValue) {
                 $sAttrs .= ' ' . $sName . '="' . $sValue . '"';
+            }
         }
 
         echo ($bPair ? '<' . $sTag . $sAttrs . '>' . ($sText === null ? '' : $sText) . '</' . $sTag . '>' : '<' . $sTag . $sAttrs . ' />');
@@ -760,8 +770,12 @@ class Design
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>', (!empty($aMeta['title']) ? $aMeta['title'] : ''), '</title>';
-        if (!empty($aMeta['description'])) echo '<meta name="description" content="', $aMeta['description'], '" />';
-        if (!empty($aMeta['keywords'])) echo '<meta name="keywords" content="', $aMeta['keywords'], '" />';
+        if (!empty($aMeta['description'])) {
+            echo '<meta name="description" content="', $aMeta['description'], '" />';
+        }
+        if (!empty($aMeta['keywords'])) {
+            echo '<meta name="keywords" content="', $aMeta['keywords'], '" />';
+        }
         echo '<meta name="author" content="', Kernel::SOFTWARE_COMPANY, '" />
         <meta name="copyright" content="', Kernel::SOFTWARE_COPYRIGHT, '" />
         <meta name="creator" content="', Kernel::SOFTWARE_NAME, '" />
@@ -772,8 +786,7 @@ class Design
         $this->externalJsFile(PH7_URL_STATIC . PH7_JS . 'jquery/jquery.js');
         $this->externalJsFile(PH7_URL_STATIC . PH7_JS . 'jquery/jquery-ui.js');
         echo '<script>var pH7Url={base:\'', PH7_URL_ROOT, '\'}</script></head><body>';
-        if ($bLogo)
-        {
+        if ($bLogo) {
             // Website's name
             $sSiteName = Registry::getInstance()->site_name;
 
@@ -790,8 +803,9 @@ class Design
 
     public function htmlFooter()
     {
-        if ($this->bIsDiv)
+        if ($this->bIsDiv) {
             echo '</div>';
+        }
 
         echo '</body></html>';
     }
@@ -840,5 +854,4 @@ class Design
           $this->oHttpRequest
         );
     }
-
 }

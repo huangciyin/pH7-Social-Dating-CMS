@@ -34,8 +34,7 @@ class LoremIpsum
     {
         $this->_iTotalWords = (int) $iTotalWords;
 
-        switch($iFormat)
-        {
+        switch ($iFormat) {
             case static::PLAIN_FORMAT:
                 $this->_sContents = $this->getPlain();
             break;
@@ -87,15 +86,15 @@ class LoremIpsum
         $sDictPath = __DIR__ . '/loremipsum.txt';
         $aDoctWords = file($sDictPath);
 
-        for ($i = 0; $i < $this->_iTotalWords; $i++)
-        {
+        for ($i = 0; $i < $this->_iTotalWords; $i++) {
             $iIndex = array_rand($aDoctWords);
             $sWord = str_replace(array("\n", "\r"), '', $aDoctWords[$iIndex]);
 
-            if ($i > 0 && $aWords[$i-1] == $sWord)
+            if ($i > 0 && $aWords[$i-1] == $sWord) {
                 $i--;
-            else
+            } else {
                 $aWords[$i] = $sWord;
+            }
         }
 
         return $aWords;
@@ -106,13 +105,11 @@ class LoremIpsum
         $sOutputText = '';
         $aWords = $this->_getWords();
 
-        for ($i = 0, $iN = count($aWords); $i < $iN; $i++)
-        {
+        for ($i = 0, $iN = count($aWords); $i < $iN; $i++) {
             $sDelimiter =  ($i%12==4 ? ', ' : ($i%12==8 ? '. ' : ($i%12==1 ? "\n" : ' ')));
             $sOutputText .= ($i%12==9 ? ucfirst($aWords[$i]) : $aWords[$i]) . $sDelimiter;
         }
 
         return $sOutputText;
     }
-
 }

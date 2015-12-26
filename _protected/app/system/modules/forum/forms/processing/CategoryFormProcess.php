@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
 
@@ -23,5 +22,4 @@ class CategoryFormProcess extends Form
         (new ForumModel)->addCategory($this->httpRequest->post('title'));
         Header::redirect(Uri::get('forum', 'admin', 'addforum', Db::getInstance()->lastInsertId()), t('The Category has been successfully added!'));
     }
-
 }

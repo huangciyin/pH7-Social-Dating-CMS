@@ -48,7 +48,6 @@ class SettingController extends Controller
         $this->view->h1_title = $this->sTitle;
         $this->view->h4_title = t('%0% Banners', $iTotalAds);
         $this->output();
-
     }
 
     public function addAds()
@@ -107,8 +106,7 @@ class SettingController extends Controller
         $this->view->page_title = $this->sTitle;
         $this->view->h1_title = $this->sTitle;
 
-        if ($this->httpRequest->getExists('set_msg'))
-        {
+        if ($this->httpRequest->getExists('set_msg')) {
             $aData = $this->_getLicStatusMsg();
             $this->design->setFlashMsg($aData['msg'], ($aData['is_err'] ? 'error' : 'success'));
         }
@@ -126,8 +124,7 @@ class SettingController extends Controller
     {
         $bIsErr = true; // Set default value
 
-        switch (PH7_LICENSE_STATUS)
-        {
+        switch (PH7_LICENSE_STATUS) {
             case 'active':
                 $sMsg = t('Hurrah! Your License Key was saved successfully.');
                 $bIsErr = false;
@@ -151,5 +148,4 @@ class SettingController extends Controller
 
         return ['is_err' => $bIsErr, 'msg' => $sMsg];
     }
-
 }

@@ -13,7 +13,7 @@ use PH7\Framework\Mvc\Request\Http, PH7\Framework\Mvc\Router\Uri;
 class LinkCoreForm
 {
 
-   /**
+    /**
     * @param string $sLabel Link name of submit form
     * @param string $sModule
     * @param string $sController
@@ -30,11 +30,11 @@ class LinkCoreForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_link', 'form_link'));
         $oForm->addElement(new \PFBC\Element\Token(substr($sUrl, -14, -6))); // Create a name token and generate a random token
 
-        foreach($aParams as $sKey => $sVal)
+        foreach ($aParams as $sKey => $sVal) {
             $oForm->addElement(new \PFBC\Element\Hidden($sKey, $sVal));
+        }
 
         $oForm->addElement(new \PFBC\Element\Submit($sLabel));
         $oForm->render();
     }
-
 }

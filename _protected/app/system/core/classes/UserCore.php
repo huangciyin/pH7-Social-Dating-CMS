@@ -10,8 +10,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Navigation\Browser,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Ip\Ip,
@@ -51,7 +50,9 @@ class UserCore
      */
     public function delete($iProfileId, $sUsername)
     {
-        if ($sUsername == PH7_GHOST_USERNAME) exit('You cannot delete this profile!');
+        if ($sUsername == PH7_GHOST_USERNAME) {
+            exit('You cannot delete this profile!');
+        }
 
         $oFile = new File;
         $oFile->deleteDir(PH7_PATH_PUBLIC_DATA_SYS_MOD . 'user/avatar/' . PH7_IMG . $sUsername);
@@ -83,11 +84,15 @@ class UserCore
          * This can cause minor errors (eg if a user sent a file that is not a photo).
          * So we hide the errors if we are not in development mode.
          */
-        if (!isDebug()) error_reporting(0);
+        if (!isDebug()) {
+            error_reporting(0);
+        }
 
         $oAvatar1 = new Framework\Image\Image($sFile, 600, 800);
 
-        if (!$oAvatar1->validate()) return false; // File type incompatible.
+        if (!$oAvatar1->validate()) {
+            return false;
+        } // File type incompatible.
 
         // We removes the old avatar if it exists and we delete the cache at the same time.
         $this->deleteAvatar($iProfileId, $sUsername);
@@ -197,15 +202,18 @@ class UserCore
          * This can cause minor errors (eg if a user sent a file that is not a photo).
          * So we hide the errors if we are not in development mode.
          */
-        if (!isDebug()) error_reporting(0);
+        if (!isDebug()) {
+            error_reporting(0);
+        }
 
         $oWallpaper = new Framework\Image\Image($sFile, 600, 800);
 
-        if (!$oWallpaper->validate()) return false;
+        if (!$oWallpaper->validate()) {
+            return false;
+        }
 
         // We removes the old background if it exists and we delete the cache at the same time.
         $this->deleteBackground($iProfileId, $sUsername);
-
 
         $sPath = PH7_PATH_PUBLIC_DATA_SYS_MOD . 'user/background/img/' . $sUsername . PH7_SH;
         (new File)->createDir($sPath);
@@ -219,9 +227,9 @@ class UserCore
          // Saved the new background
          $oWallpaper->save($sPath . $sFile);
 
-         unset($oWallpaper);
+        unset($oWallpaper);
 
-         return true;
+        return true;
     }
 
     /**
@@ -231,7 +239,7 @@ class UserCore
      */
     public function deleteBackground($iProfileId, $sUsername)
     {
-         // We start to delete the file before the data in the database if we could not delete the file since we would have lost the link to the file found in the database.
+        // We start to delete the file before the data in the database if we could not delete the file since we would have lost the link to the file found in the database.
         $sFile = (new UserCoreModel)->getBackground($iProfileId, null);
 
         (new File)->deleteFile(PH7_PATH_PUBLIC_DATA_SYS_MOD . 'user/background/img/' . $sUsername . PH7_SH . $sFile);
@@ -264,8 +272,7 @@ class UserCore
      */
     public function getProfileSignupLink($sUsername, $sFirstName, $sSex)
     {
-        if (!self::auth() && !AdminCore::auth())
-        {
+        if (!self::auth() && !AdminCore::auth()) {
             $aHttpParams = [
                 'ref' => (new Framework\Mvc\Request\Http)->currentController(),
                 'a' => Framework\Registry\Registry::getInstance()->action,
@@ -275,13 +282,11 @@ class UserCore
             ];
 
             $sLink = Uri::get('user','signup','step1', '?' . Framework\Url\Url::httpBuildQuery($aHttpParams), false);
-        }
-        else
-        {
+        } else {
             $sLink = $this->getProfileLink($sUsername);
         }
 
-       return $sLink;
+        return $sLink;
     }
 
     /**
@@ -295,7 +300,9 @@ class UserCore
     public function setAuth($oUserData, UserCoreModel $oUserModel, Session $oSession)
     {
         // Is disconnected if the user is logged on as "affiliate" or "administrator".
-        if (AffiliateCore::auth() || AdminCore::auth()) $oSession->destroy();
+        if (AffiliateCore::auth() || AdminCore::auth()) {
+            $oSession->destroy();
+        }
 
         // Regenerate the session ID to prevent the session fixation
         $oSession->regenerateId();
@@ -349,14 +356,14 @@ class UserCore
             $sLastName . '-' . $sFirstName . $sRnd
         ];
 
-        foreach($aUsernameList as $sUsername)
-        {
+        foreach ($aUsernameList as $sUsername) {
             $sUsername = substr($sUsername, 0, $iMaxLen);
 
-            if ( (new Framework\Security\Validate\Validate)->username($sUsername) )
+            if ( (new Framework\Security\Validate\Validate)->username($sUsername) ) {
                 break;
-            else
-                $sUsername = Various::genRnd('pOH_Pierre-Henry_Soria_Béghin_Rollier', $iMaxLen); // Default value
+            } else {
+                $sUsername = Various::genRnd('pOH_Pierre-Henry_Soria_Béghin_Rollier', $iMaxLen);
+            } // Default value
         }
 
         return $sUsername;
@@ -372,23 +379,15 @@ class UserCore
     {
         $mRet = true; // Default value
 
-        if ($oDbProfileData->active != 1)
-        {
-            if ($oDbProfileData->active == 2)
-            {
+        if ($oDbProfileData->active != 1) {
+            if ($oDbProfileData->active == 2) {
                 $mRet = t('Sorry, your account has not yet been activated. Please activate it by clicking the activation link that was emailed.');
-            }
-            elseif ($oDbProfileData->active == 3)
-            {
+            } elseif ($oDbProfileData->active == 3) {
                 $mRet = t('Sorry, your account has not yet been activated. An administrator must validate your account.');
-            }
-            else
-            {
+            } else {
                 $mRet = t('Your account does not have a valid activation status. Please contact the database administrator so that it solves this problem.');
             }
-        }
-        elseif ($oDbProfileData->ban == 1)
-        {
+        } elseif ($oDbProfileData->ban == 1) {
             $mRet = t('Sorry, Your account has been banned.');
         }
 
@@ -412,29 +411,24 @@ class UserCore
         $sRedirectIndexUrl = ($sMod == 'newsletter' ? PH7_URL_ROOT : ($sMod == 'affiliate' ? Uri::get('affiliate', 'home', 'index') : Uri::get('user', 'main', 'index')));
         $sSuccessMsg = ($sMod == 'newsletter' ? t('Your subscription to our newsletters has been successfully validated!') : t('Your account has been successfully validated. You can now login!'));
 
-        if (isset($sEmail, $sHash))
-        {
+        if (isset($sEmail, $sHash)) {
             $oUserModel = new AffiliateCoreModel;
-            if ($oUserModel->validateAccount($sEmail, $sHash, $sTable))
-            {
+            if ($oUserModel->validateAccount($sEmail, $sHash, $sTable)) {
                 $iId = $oUserModel->getId($sEmail, null, $sTable);
-                if ($sMod != 'newsletter')
+                if ($sMod != 'newsletter') {
                     $this->clearReadProfileCache($iId, $sTable);
+                }
 
                 /** Update the Affiliate Commission **/
                 $iAffId = $oUserModel->getAffiliatedId($iId);
                 AffiliateCore::updateJoinCom($iAffId, $oConfig, $oRegistry);
 
                 Header::redirect($sRedirectLoginUrl, $sSuccessMsg);
-            }
-            else
-            {
+            } else {
                 Header::redirect($sRedirectLoginUrl, t('Oops! The URL is either invalid or you already have activated your account.'), 'error');
             }
             unset($oUserModel);
-        }
-        else
-        {
+        } else {
             Header::redirect($sRedirectIndexUrl, t('Invalid approach, please use the link that has been send to your email.'), 'error');
         }
     }
@@ -496,6 +490,7 @@ class UserCore
      * @clone
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

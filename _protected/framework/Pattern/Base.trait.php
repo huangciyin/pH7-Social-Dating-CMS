@@ -21,7 +21,9 @@ trait Base
      * @access private
      * @final
      */
-    final private function __construct() {}
+    final private function __construct()
+    {
+    }
 
     /**
      * Block cloning.
@@ -29,7 +31,7 @@ trait Base
      * @access private
      * @final
      */
-    final private function __clone() {}
-
+    final private function __clone()
+    {
+    }
 }
-

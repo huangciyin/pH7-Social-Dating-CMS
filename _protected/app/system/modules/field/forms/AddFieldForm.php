@@ -14,10 +14,10 @@ class AddFieldForm
 
     public static function display()
     {
-        if (isset($_POST['submit_add_field']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_add_field']))
+        if (isset($_POST['submit_add_field'])) {
+            if (\PFBC\Form::isValid($_POST['submit_add_field'])) {
                 new AddFieldFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class AddFieldForm
         $oForm->addElement(new \PFBC\Element\Button(t('Add')));
         $oForm->render();
     }
-
 }

@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Image\Image,
+use PH7\Framework\Image\Image,
 PH7\Framework\Util\Various,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Router\Uri,
@@ -29,7 +28,9 @@ class PictureFormProcess extends Form
          * @desc This can cause minor errors (eg if a user sent a file that is not a photo).
          * So we hide the errors if we are not in development mode.
          */
-        if(!isDebug()) error_reporting(0);
+        if (!isDebug()) {
+            error_reporting(0);
+        }
 
         /**
          * @desc
@@ -37,8 +38,7 @@ class PictureFormProcess extends Form
          * This test is necessary because when the selection exists but that no option is available (this can when a user wants to add photos but he has no album)
          * the return value is of type "string" and the value is "1".
          */
-        if(!is_numeric($this->httpRequest->post('album_id')))
-        {
+        if (!is_numeric($this->httpRequest->post('album_id'))) {
             \PFBC\Form::setError('form_picture', t('Please add a category before you add some photos.'));
             return; // Stop execution of the method.
         }
@@ -47,11 +47,9 @@ class PictureFormProcess extends Form
          * @desc Resizing and saving some photos
          */
         $aPhotos = $_FILES['photos']['tmp_name'];
-        for($i = 0, $iNumPhotos = count($aPhotos); $i < $iNumPhotos; $i++)
-        {
+        for ($i = 0, $iNumPhotos = count($aPhotos); $i < $iNumPhotos; $i++) {
             $oPicture1 = new Image($aPhotos[$i], 2500, 2500);
-            if(!$oPicture1->validate())
-            {
+            if (!$oPicture1->validate()) {
                 \PFBC\Form::setError('form_picture', Form::wrongImgFileTypeMsg());
                 return; // Stop execution of the method.
             }
@@ -114,5 +112,4 @@ class PictureFormProcess extends Form
         $sMsg = ($iApproved == '0') ? $sModerationText : $sText;
         Header::redirect(Uri::get('picture', 'main', 'album', $this->session->get('member_username') . ',' . $sAlbumTitle . ',' . $iAlbumId), $sMsg);
     }
-
 }

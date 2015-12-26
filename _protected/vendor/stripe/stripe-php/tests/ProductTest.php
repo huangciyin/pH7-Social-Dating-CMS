@@ -19,7 +19,6 @@ class ProductSKUOrderTest extends TestCase
 
     public function testProductCreateUpdateRead()
     {
-
         Stripe::setApiKey('sk_test_JieJALRz7rPz7boV17oMma7a');
         $ProductID = 'gold-' . self::generateRandomString(20);
         $p = Product::create(array(

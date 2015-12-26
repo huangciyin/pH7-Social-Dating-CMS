@@ -35,8 +35,9 @@ class Admin extends AdminCore
     {
         $iProfileId = (int) $iProfileId;
 
-        if($iProfileId === 1) exit('You cannot delete the Root Administrator!');
+        if ($iProfileId === 1) {
+            exit('You cannot delete the Root Administrator!');
+        }
         (new AdminModel)->delete($iProfileId, $sUsername);
     }
-
 }

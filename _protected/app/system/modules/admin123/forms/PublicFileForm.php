@@ -13,10 +13,10 @@ class PublicFileForm
 
     public static function display()
     {
-        if (isset($_POST['submit_file']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_file']))
+        if (isset($_POST['submit_file'])) {
+            if (\PFBC\Form::isValid($_POST['submit_file'])) {
                 new PublicFileFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -31,5 +31,4 @@ class PublicFileForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

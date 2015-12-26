@@ -22,5 +22,4 @@ class UserException extends \Exception
     {
         static::init($sMsg);
     }
-
 }

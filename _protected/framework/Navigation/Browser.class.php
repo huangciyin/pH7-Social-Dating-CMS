@@ -77,15 +77,18 @@ class Browser
      */
     public function encoding()
     {
-        if (headers_sent() || connection_aborted())
+        if (headers_sent() || connection_aborted()) {
             return false;
+        }
 
         $sEncoding = Server::getVar(Server::HTTP_ACCEPT_ENCODING);
-        if (false !== strpos($sEncoding, 'gzip'))
+        if (false !== strpos($sEncoding, 'gzip')) {
             return 'gzip';
+        }
 
-        if (false !== strpos($sEncoding, 'x-gzip'))
+        if (false !== strpos($sEncoding, 'x-gzip')) {
             return 'x-gzip';
+        }
 
         return false;
     }
@@ -97,26 +100,28 @@ class Browser
      */
     public function isMobile()
     {
-        if (null !== Server::getVar(Server::HTTP_X_WAP_PROFILE) || null !== Server::getVar(Server::HTTP_PROFILE))
+        if (null !== Server::getVar(Server::HTTP_X_WAP_PROFILE) || null !== Server::getVar(Server::HTTP_PROFILE)) {
             return true;
+        }
 
         $sHttpAccept = Server::getVar(Server::HTTP_ACCEPT);
-        if (null !== $sHttpAccept)
-        {
+        if (null !== $sHttpAccept) {
             $sHttpAccept = strtolower($sHttpAccept);
 
-            if (false !== strpos($sHttpAccept, 'wap'))
+            if (false !== strpos($sHttpAccept, 'wap')) {
                 return true;
+            }
         }
 
         $sUserAgent = self::getUserAgent();
-        if (null !== $sUserAgent)
-        {
-            if (false !== strpos($sUserAgent, 'Mobile'))
+        if (null !== $sUserAgent) {
+            if (false !== strpos($sUserAgent, 'Mobile')) {
                 return true;
+            }
 
-            if (false !== strpos($sUserAgent, 'Opera Mini'))
+            if (false !== strpos($sUserAgent, 'Opera Mini')) {
                 return true;
+            }
         }
 
         return false;
@@ -168,5 +173,4 @@ class Browser
 
         return $sApiUrl . $sDomainName;
     }
-
 }

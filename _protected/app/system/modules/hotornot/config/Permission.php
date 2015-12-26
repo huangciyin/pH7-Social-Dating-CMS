@@ -15,13 +15,12 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (!AdminCore::auth()) // If the administrator is not logged
-        {
-            if (!$this->checkMembership() || !$this->group->hot_or_not)
-            {
+        if (!AdminCore::auth()) {
+            // If the administrator is not logged
+
+            if (!$this->checkMembership() || !$this->group->hot_or_not) {
                 $this->paymentRedirect();
             }
         }
     }
-
 }

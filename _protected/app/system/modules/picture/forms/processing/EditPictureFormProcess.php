@@ -27,5 +27,4 @@ class EditPictureFormProcess extends Form
 
         Header::redirect(Uri::get('picture', 'main', 'photo', $this->session->get('member_username') . ',' . $iAlbumId . ',' . $sPictureTitle . ',' . $iPictureId), t('Your photo has been updated successfully!'));
     }
-
 }

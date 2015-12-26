@@ -27,5 +27,4 @@ class EditVideoFormProcess extends Form
 
         Header::redirect(Uri::get('video', 'main', 'video', $this->session->get('member_username') . ',' . $iAlbumId . ',' . $sVideoTitle . ',' . $iVideoId), t('Your video has been updated successfully!'));
     }
-
 }

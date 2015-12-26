@@ -25,8 +25,9 @@ class Form extends Framework\Layout\Form\Form
         $aVal = array(); // Default Value
         $aValue = explode(',', $sValue);
 
-        foreach ($aValue as $sVal)
+        foreach ($aValue as $sVal) {
             $aVal[] = $sVal;
+        }
 
         return $aVal;
     }
@@ -41,10 +42,10 @@ class Form extends Framework\Layout\Form\Form
     {
         $sVal = ''; // Devault Value
 
-        foreach ($aValue as $sValue)
+        foreach ($aValue as $sValue) {
             $sVal .= $sValue . ',';
+        }
 
         return substr($sVal, 0, -1); // Removes the last comma
     }
-
 }

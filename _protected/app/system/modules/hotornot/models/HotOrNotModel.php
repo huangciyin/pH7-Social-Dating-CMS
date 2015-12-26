@@ -27,7 +27,9 @@ class HotOrNotModel extends Framework\Mvc\Model\Engine\Model
         $sSql = (!empty($iProfileId)) ? ' AND (profileId <> :profileId) ' : ' ';
         $rStmt = Db::getInstance()->prepare('SELECT profileId, username, firstName, sex, avatar FROM'.Db::prefix('Members') . 'WHERE (username <> \'' . PH7_GHOST_USERNAME . '\')' . $sSql . 'AND (avatar IS NOT NULL) AND (approvedAvatar = :approved) ORDER BY RAND() LIMIT :offset, :limit');
 
-        if (!empty($iProfileId)) $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        if (!empty($iProfileId)) {
+            $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        }
         $rStmt->bindValue(':approved', $iApproved, \PDO::PARAM_INT);
         $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
@@ -37,5 +39,4 @@ class HotOrNotModel extends Framework\Mvc\Model\Engine\Model
         Db::free($rStmt);
         return $oRow;
     }
-
 }

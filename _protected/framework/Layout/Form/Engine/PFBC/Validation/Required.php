@@ -21,23 +21,18 @@ class Required extends \PFBC\Validation
     {
         $bValid = false; // Default value
 
-        if (!is_null($mValue))
-        {
-            if (is_array($mValue))
-            {
-                foreach ($mValue as $sItem)
-                {
-                    if (!$bValid = $this->isValid($sItem)) // Recursive method
+        if (!is_null($mValue)) {
+            if (is_array($mValue)) {
+                foreach ($mValue as $sItem) {
+                    if (!$bValid = $this->isValid($sItem)) { // Recursive method
                         break;
+                    }
                 }
-            }
-            else
-            {
+            } else {
                 $bValid = ($mValue !== '');
             }
         }
 
         return $bValid;
     }
-
 }

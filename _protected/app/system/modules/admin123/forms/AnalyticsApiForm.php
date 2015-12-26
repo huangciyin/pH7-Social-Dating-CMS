@@ -14,10 +14,10 @@ class AnalyticsApiForm
 
     public static function display()
     {
-        if (isset($_POST['submit_analytics']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_analytics']))
+        if (isset($_POST['submit_analytics'])) {
+            if (\PFBC\Form::isValid($_POST['submit_analytics'])) {
                 new AnalyticsApiFormProcess;
+            }
             Framework\Url\Header::redirect();
         }
 
@@ -29,5 +29,4 @@ class AnalyticsApiForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

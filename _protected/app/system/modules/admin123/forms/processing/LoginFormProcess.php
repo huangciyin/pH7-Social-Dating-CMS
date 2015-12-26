@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Util\Various,
 PH7\Framework\Mvc\Router\Uri,
@@ -31,7 +30,6 @@ class LoginFormProcess extends Form
         $sUsername = $this->httpRequest->post('username');
         $sPassword = $this->httpRequest->post('password');
 
-
         /*** Security IP Login ***/
         $sIpLogin = DbConfig::getSetting('ipLogin');
 
@@ -40,8 +38,7 @@ class LoginFormProcess extends Form
         $iMaxAttempts = (int) DbConfig::getSetting('maxAdminLoginAttempts');
         $iTimeDelay = (int) DbConfig::getSetting('loginAdminAttemptTime');
 
-        if($bIsLoginAttempt && !$oSecurityModel->checkLoginAttempt($iMaxAttempts, $iTimeDelay, $sEmail, $this->view, 'Admins'))
-        {
+        if ($bIsLoginAttempt && !$oSecurityModel->checkLoginAttempt($iMaxAttempts, $iTimeDelay, $sEmail, $this->view, 'Admins')) {
             \PFBC\Form::setError('form_admin_login', Form::loginAttemptsExceededMsg($iTimeDelay));
             return; // Stop execution of the method.
         }
@@ -50,34 +47,33 @@ class LoginFormProcess extends Form
         $bIsLogged = $oAdminModel->adminLogin($sEmail, $sUsername, $sPassword);
         $bIsIpBanned = !empty($sIpLogin) && $sIpLogin !== $sIp;
 
-        if(!$bIsLogged || $bIsIpBanned) // If the login is failed or if the IP address is banned
-        {
+        if (!$bIsLogged || $bIsIpBanned) {
+            // If the login is failed or if the IP address is banned
+
             sleep(2); // Security against brute-force attack to avoid drowning the server and the database
 
-            if(!$bIsLogged)
-            {
+            if (!$bIsLogged) {
                 $oSecurityModel->addLoginLog($sEmail, $sUsername, $sPassword, 'Failed! Incorrect Email, Username or Password', 'Admins');
 
-                if($bIsLoginAttempt)
+                if ($bIsLoginAttempt) {
                     $oSecurityModel->addLoginAttempt('Admins');
+                }
 
                 $this->session->set('captcha_admin_enabled',1); // Enable Captcha
                 \PFBC\Form::setError('form_admin_login', t('"Email", "Username" or "Password" is Incorrect'));
-            }
-            elseif($bIsIpBanned)
-            {
+            } elseif ($bIsIpBanned) {
                 $this->session->set('captcha_admin_enabled',1); // Enable Captcha
                 \PFBC\Form::setError('form_admin_login', t('Incorrect Login!'));
                 $oSecurityModel->addLoginLog($sEmail, $sUsername, $sPassword, 'Failed! Bad Ip adress', 'Admins');
             }
-        }
-        else
-        {
+        } else {
             $oSecurityModel->clearLoginAttempts('Admins');
             $this->session->remove('captcha_admin_enabled');
 
             // Is disconnected if the user is logged on as "user" or "affiliate".
-            if(UserCore::auth() || AffiliateCore::auth()) $this->session->destroy();
+            if (UserCore::auth() || AffiliateCore::auth()) {
+                $this->session->destroy();
+            }
 
             $iId = $oAdminModel->getId($sEmail, null, 'Admins');
             $oAdminData = $oAdminModel->readProfile($iId, 'Admins');
@@ -102,5 +98,4 @@ class LoginFormProcess extends Form
             Header::redirect(Uri::get(PH7_ADMIN_MOD,'main','index'), t('You are successfully logged!'));
         }
     }
-
 }

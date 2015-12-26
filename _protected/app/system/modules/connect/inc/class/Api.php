@@ -58,8 +58,9 @@ abstract class Api
         $oUserData = $oUserModel->readProfile($iId);
         $oUser = new UserCore;
 
-        if(true === ($sErrMsg = $oUser->checkAccountStatus($oUserData)))
+        if (true === ($sErrMsg = $oUser->checkAccountStatus($oUserData))) {
             $oUser->setAuth($oUserData, $oUserModel, new Framework\Session\Session);
+        }
 
         unset($oUser, $oUserModel);
 
@@ -70,5 +71,4 @@ abstract class Api
     {
         unset($this->oDesign, $this->sUrl);
     }
-
 }

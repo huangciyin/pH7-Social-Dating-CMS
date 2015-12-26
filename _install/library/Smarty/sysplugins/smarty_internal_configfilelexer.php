@@ -162,52 +162,44 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r1_1($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_COMMENTSTART;
         $this->yypushstate(self::COMMENT);
     }
 
     function yy_r1_2($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_OPENB;
         $this->yypushstate(self::SECTION);
     }
 
     function yy_r1_3($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_CLOSEB;
     }
 
     function yy_r1_4($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_EQUAL;
         $this->yypushstate(self::VALUE);
     }
 
     function yy_r1_5($yy_subpatterns)
     {
-
         return false;
     }
 
     function yy_r1_6($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NEWLINE;
     }
 
     function yy_r1_7($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_ID;
     }
 
     function yy_r1_8($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_OTHER;
     }
 
@@ -279,48 +271,41 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r2_1($yy_subpatterns)
     {
-
         return false;
     }
 
     function yy_r2_2($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_FLOAT;
         $this->yypopstate();
     }
 
     function yy_r2_3($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_INT;
         $this->yypopstate();
     }
 
     function yy_r2_4($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_TRIPPLE_QUOTES;
         $this->yypushstate(self::TRIPPLE);
     }
 
     function yy_r2_5($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_SINGLE_QUOTED_STRING;
         $this->yypopstate();
     }
 
     function yy_r2_6($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_DOUBLE_QUOTED_STRING;
         $this->yypopstate();
     }
 
     function yy_r2_7($yy_subpatterns)
     {
-
         if (!$this->smarty->config_booleanize || !in_array(strtolower($this->value), Array("true", "false", "on", "off", "yes", "no"))) {
             $this->yypopstate();
             $this->yypushstate(self::NAKED_STRING_VALUE);
@@ -333,14 +318,12 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r2_8($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NAKED_STRING;
         $this->yypopstate();
     }
 
     function yy_r2_9($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NAKED_STRING;
         $this->value = "";
         $this->yypopstate();
@@ -406,7 +389,6 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r3_1($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NAKED_STRING;
         $this->yypopstate();
     }
@@ -473,19 +455,16 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r4_1($yy_subpatterns)
     {
-
         return false;
     }
 
     function yy_r4_2($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NAKED_STRING;
     }
 
     function yy_r4_3($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_NEWLINE;
         $this->yypopstate();
     }
@@ -551,13 +530,11 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r5_1($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_DOT;
     }
 
     function yy_r5_2($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_SECTION;
         $this->yypopstate();
     }
@@ -623,7 +600,6 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r6_1($yy_subpatterns)
     {
-
         $this->token = Smarty_Internal_Configfileparser::TPC_TRIPPLE_QUOTES_END;
         $this->yypopstate();
         $this->yypushstate(self::START);
@@ -631,7 +607,6 @@ class Smarty_Internal_Configfilelexer
 
     function yy_r6_2($yy_subpatterns)
     {
-
         $to = strlen($this->data);
         preg_match("/\"\"\"[ \t\r]*[\n#;]/", $this->data, $match, PREG_OFFSET_CAPTURE, $this->counter);
         if (isset($match[0][1])) {
@@ -643,4 +618,3 @@ class Smarty_Internal_Configfilelexer
         $this->token = Smarty_Internal_Configfileparser::TPC_TRIPPLE_TEXT;
     }
 }
-

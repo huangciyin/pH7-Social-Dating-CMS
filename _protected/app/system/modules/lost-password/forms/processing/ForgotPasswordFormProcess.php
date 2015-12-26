@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or die('Restricted access');
 
-use
-PH7\Framework\Ip\Ip,
+use PH7\Framework\Ip\Ip,
 PH7\Framework\Util\Various,
 PH7\Framework\Mail\Mail,
 PH7\Framework\Mvc\Router\Uri;
@@ -24,13 +23,10 @@ class ForgotPasswordFormProcess extends Form
         $oUserModel = new UserCoreModel;
         $sMail = $this->httpRequest->post('mail');
 
-        if (!$iProfileId = $oUserModel->getId($sMail, null, $sTable))
-        {
+        if (!$iProfileId = $oUserModel->getId($sMail, null, $sTable)) {
             sleep(1); // Security against brute-force attack to avoid drowning the server and the database
             \PFBC\Form::setError('form_forgot_password', t('Oops, this "%0%" is not associated with any %site_name% account. Please, make sure that you entered the e-mail address used in creating your account.', escape(substr($sMail,0,PH7_MAX_EMAIL_LENGTH))));
-        }
-        else
-        {
+        } else {
             $oUserModel->setNewHashValidation($iProfileId, Various::genRnd(), $sTable);
             (new UserCore)->clearReadProfileCache($iProfileId, $sTable); // Clean the profile data (for the new hash)
             $oData = $oUserModel->readProfile($iProfileId, $sTable);
@@ -51,12 +47,12 @@ class ForgotPasswordFormProcess extends Form
 
             unset($oData);
 
-            if ( ! (new Mail)->send($aInfo, $sMessageHtml) )
+            if ( ! (new Mail)->send($aInfo, $sMessageHtml) ) {
                 \PFBC\Form::setError('form_forgot_password', Form::errorSendingEmail());
-            else
+            } else {
                 \PFBC\Form::setSuccess('form_forgot_password', t('Successfully requested a new password, email sent!'));
+            }
         }
         unset($oUserModel);
     }
-
 }

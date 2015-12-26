@@ -94,7 +94,6 @@ class Smarty_Internal_Config_File_Compiler
             $mbEncoding = null;
         }
 
-
         if ($this->smarty->_parserdebug) {
             $parser->PrintTrace();
         }

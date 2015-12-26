@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Parse\SysVar,
 PH7\Framework\Url\Url;
 
@@ -24,5 +23,4 @@ class HomeController extends Controller
         $this->view->chat_room = Url::clean( (new SysVar)->parse( DbConfig::getSetting('chatApi') ) );
         $this->output();
     }
-
 }

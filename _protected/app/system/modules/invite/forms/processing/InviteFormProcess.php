@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Security\Validate\Validate,
+use PH7\Framework\Security\Validate\Validate,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Mail\Mail;
 
@@ -21,20 +20,13 @@ class InviteFormProcess extends Form
         parent::__construct();
 
         $aTo = explode(',', $this->httpRequest->post('to'));
-        if (count($aTo) > 10)
-        {
+        if (count($aTo) > 10) {
             \PFBC\Form::setError('form_invite', t('To prevent spam, you cannot put more than 10 email addresses at a time.'));
-        }
-        else
-        {
-            foreach ($aTo as $sMail)
-            {
-                if ( !(new Validate)->email($sMail) )
-                {
+        } else {
+            foreach ($aTo as $sMail) {
+                if ( !(new Validate)->email($sMail) ) {
                     \PFBC\Form::setError('form_invite', t('One or more email addresses are invalid!'));
-                }
-                else
-                {
+                } else {
                     $this->view->content = t('Hello!<br />You have received a privilege on the invitation from your friend on the new platform to meet new generation - %site_name%') . '<br />' .
                     '<strong><a href="' . Uri::get('user','signup','step1', '?ref=invitation') . '">' . t('Get exclusive privilege to join your friend is waiting for you!') . '</a></strong><br />' .
                     t('Message left by your friend:') . '<br />"<em>' . $this->httpRequest->post('message') . '</em>"';
@@ -47,13 +39,13 @@ class InviteFormProcess extends Form
                         'subject' => t('Privilege on the invitation from your friend for the new generation community platform - %site_name%')
                     ];
 
-                    if ( ! (new Mail)->send($aInfo, $sMessageHtml) )
+                    if ( ! (new Mail)->send($aInfo, $sMessageHtml) ) {
                         \PFBC\Form::setError('form_invite', Form::errorSendingEmail());
-                    else
+                    } else {
                         \PFBC\Form::setSuccess('form_invite', t('Cool! We have sent that.'));
+                    }
                 }
             }
         }
     }
-
 }

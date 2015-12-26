@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\Engine\Util\Various,
+use PH7\Framework\Mvc\Model\Engine\Util\Various,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Model\Engine\Db;
 
@@ -48,14 +47,12 @@ class FieldModel extends Framework\Mvc\Model\Engine\Model
         $iNum = (int) $rStmt->rowCount();
         $aColumn = array();
 
-        if ($iNum > 0)
-        {
-            while ($aRow = $rStmt->fetch())
-            {
-                foreach ($aRow as $sColumn => $sValue)
-                {
-                    if (!is_numeric($sColumn) && $sColumn !== 'profileId')
+        if ($iNum > 0) {
+            while ($aRow = $rStmt->fetch()) {
+                foreach ($aRow as $sColumn => $sValue) {
+                    if (!is_numeric($sColumn) && $sColumn !== 'profileId') {
                         $aColumn[] = $sColumn;
+                    }
                 }
             }
         }
@@ -105,18 +102,27 @@ class FieldModel extends Framework\Mvc\Model\Engine\Model
 
     protected function getType()
     {
-        switch ($this->_sType)
-        {
+        switch ($this->_sType) {
             case 'textbox':
-                if (mb_strlen($this->_sDefVal) > $this->_iLength) $this->_iLength = mb_strlen($this->_sDefVal);
-                if ($this->_iLength == 0 || $this->_iLength > 255) $this->_iLength = 255;
+                if (mb_strlen($this->_sDefVal) > $this->_iLength) {
+                    $this->_iLength = mb_strlen($this->_sDefVal);
+                }
+                if ($this->_iLength == 0 || $this->_iLength > 255) {
+                    $this->_iLength = 255;
+                }
                 $this->_sSql .= 'VARCHAR(' . $this->_iLength . ')';
             break;
 
             case 'number':
-                if (!is_numeric($this->_sDefVal)) $this->_sDefVal = 0;
-                if (strlen($this->_sDefVal) > $this->_iLength) $this->_iLength = strlen($this->_sDefVal);
-                if ($this->_iLength == 0 || $this->_iLength > 11) $this->_iLength = 9; // Set the default maximum length value.
+                if (!is_numeric($this->_sDefVal)) {
+                    $this->_sDefVal = 0;
+                }
+                if (strlen($this->_sDefVal) > $this->_iLength) {
+                    $this->_iLength = strlen($this->_sDefVal);
+                }
+                if ($this->_iLength == 0 || $this->_iLength > 11) {
+                    $this->_iLength = 9;
+                } // Set the default maximum length value.
                 $this->_sSql .= 'INT(' . $this->_iLength . ')';
             break;
 
@@ -126,5 +132,4 @@ class FieldModel extends Framework\Mvc\Model\Engine\Model
 
         return $this->_sSql . ' NOT NULL DEFAULT ' . Db::getInstance()->quote($this->_sDefVal) . ';';
     }
-
 }

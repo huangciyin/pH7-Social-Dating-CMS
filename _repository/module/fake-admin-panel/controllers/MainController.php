@@ -22,5 +22,4 @@ class MainController extends Controller
         $this->view->page_h1 = t('Sign in');
         $this->output();
     }
-
 }

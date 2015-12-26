@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Url\Header,
+use PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Date\Various as VDate;
 
@@ -38,5 +37,4 @@ class ValidateSiteCore
         }
         return false;
     }
-
 }

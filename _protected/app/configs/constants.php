@@ -18,7 +18,6 @@ defined('PH7') or exit('Restricted access');
 
 #################### URL ####################
 
-
 ################################### CONSTANTS ###################################
 
 #################### OTHER ####################
@@ -72,7 +71,6 @@ define ( 'PH7_WIDTH_SEARCH_FORM', 160 );
 define ( 'PH7_DDOS_DELAY_SLEEP', 40 );
 define ( 'PH7_DDOS_MAX_COOKIE_PAGE_LOAD', 99999999 );
 define ( 'PH7_DDOS_MAX_SESSION_PAGE_LOAD', 999 );
-
 
 /***** TABLE PREFIX *****/
 
@@ -128,7 +126,6 @@ define ( 'PH7_STATIC', 'static/' );
 
 /***** DATA *****/
 
-
 /*** PUBLIC DATA ***/
 
 define ( 'PH7_PATH_PUBLIC_DATA', PH7_PATH_ROOT . PH7_DATA );
@@ -144,7 +141,6 @@ define ( 'PH7_PATH_TMP', PH7_PATH_DATA . PH7_TMP );
 define ( 'PH7_PATH_CACHE', PH7_PATH_DATA . PH7_CACHE );
 define ( 'PH7_PATH_BACKUP', PH7_PATH_DATA . PH7_BACKUP );
 define ( 'PH7_PATH_BACKUP_SQL', PH7_PATH_BACKUP . PH7_SQL );
-
 
 /***** APP *****/
 

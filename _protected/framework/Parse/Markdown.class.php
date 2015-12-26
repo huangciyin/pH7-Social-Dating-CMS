@@ -185,6 +185,4 @@ class Markdown extends Code
         $this->sText = preg_replace('/====(.+?)====/s', '<h4>\1</h4>', $this->sText); //h4
         $this->sText = preg_replace('/===(.+?)===/s', '<h5>\1</h5>', $this->sText); //h5
     }
-
 }
-

@@ -13,8 +13,7 @@ $oHttpRequest = new Http;
 
 $iStatus = 0; // Error Default Value
 
-if($oHttpRequest->postExists('post_id'))
-{
+if ($oHttpRequest->postExists('post_id')) {
     $iStatus = ((new Blog)->checkPostId($oHttpRequest->post('post_id'))) ? 1 : 0;
 }
 

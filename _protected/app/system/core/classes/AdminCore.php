@@ -28,5 +28,4 @@ class AdminCore extends UserCore
 
         return $bIsConnect;
     }
-
 }

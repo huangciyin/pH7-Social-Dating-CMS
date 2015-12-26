@@ -13,8 +13,7 @@
 namespace PH7\Framework\Parse;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Registry\Registry,
+use PH7\Framework\Registry\Registry,
 PH7\Framework\Core\Kernel,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Mvc\Router\Uri,
@@ -32,8 +31,7 @@ class SysVar
     public function parse($sVar)
     {
         /*** Not to parse a text ***/
-        if (preg_match('/#!.+!#/', $sVar))
-        {
+        if (preg_match('/#!.+!#/', $sVar)) {
             $sVar = str_replace(array('#!', '!#'), '', $sVar);
             return $sVar;
         }
@@ -69,5 +67,4 @@ class SysVar
         // Output
         return $sVar;
     }
-
 }

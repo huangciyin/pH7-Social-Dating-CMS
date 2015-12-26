@@ -13,8 +13,7 @@
 namespace PH7\Framework\Cache;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Core\Kernel,
+use PH7\Framework\Core\Kernel,
 PH7\Framework\Config\Config,
 PH7\Framework\File\File;
 
@@ -64,10 +63,11 @@ class Cache
      */
     public function setCacheDir($sCacheDir)
     {
-        if (is_dir($sCacheDir))
+        if (is_dir($sCacheDir)) {
             $this->_sCacheDir = $sCacheDir;
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('"' . $sCacheDir . '" cache directory cannot be found!');
+        }
 
         return $this;
     }
@@ -108,17 +108,16 @@ class Cache
      */
     public function start($sGroup, $sId, $iTtl)
     {
-      $this->_checkCacheDir();
+        $this->_checkCacheDir();
 
-      if ($this->_bEnabled)
-      {
-          $this->_sGroup = $sGroup . PH7_DS;
-          $this->_sId = $sId;
-          $this->_iTtl = $iTtl;
-          ob_start();
-      }
+        if ($this->_bEnabled) {
+            $this->_sGroup = $sGroup . PH7_DS;
+            $this->_sId = $sId;
+            $this->_iTtl = $iTtl;
+            ob_start();
+        }
 
-      return $this;
+        return $this;
     }
 
     /**
@@ -129,13 +128,14 @@ class Cache
      */
     public function stop($bPrint = true)
     {
-        if (!$this->_bEnabled) return null;
+        if (!$this->_bEnabled) {
+            return null;
+        }
 
         $sBuffer = ob_get_contents();
         ob_end_clean();
         $this->_write($sBuffer);
-        if ($bPrint)
-        {
+        if ($bPrint) {
             echo $sBuffer;
             return null;
         }
@@ -152,8 +152,9 @@ class Cache
     public function get($bPrint = false)
     {
         $mData = $this->_read($bPrint);
-        if ($mData !== false)
+        if ($mData !== false) {
             $mData = unserialize($mData);
+        }
 
         return $mData;
     }
@@ -166,7 +167,9 @@ class Cache
      */
     public function put($sData)
     {
-        if (!$this->_bEnabled) return null;
+        if (!$this->_bEnabled) {
+            return null;
+        }
 
         $this->_write(serialize($sData));
 
@@ -180,12 +183,13 @@ class Cache
      */
     public function clear()
     {
-        if (!empty($this->_sId))
+        if (!empty($this->_sId)) {
             $this->_oFile->deleteFile($this->_getFile());
-         else
+        } else {
             $this->_oFile->deleteDir($this->_sCacheDir . $this->_sGroup);
+        }
 
-         return $this;
+        return $this;
     }
 
     /**
@@ -224,19 +228,21 @@ ID file: ' . $this->_sId . '
      */
     final private function _write($sData)
     {
-      if (!$this->_bEnabled) return null;
+        if (!$this->_bEnabled) {
+            return null;
+        }
 
-      $sFile = $this->_getFile();
-      $this->_oFile->createDir($this->_sCacheDir . $this->_sGroup);
+        $sFile = $this->_getFile();
+        $this->_oFile->createDir($this->_sCacheDir . $this->_sGroup);
 
-      $sPhpHeader = $this->getHeaderContents();
+        $sPhpHeader = $this->getHeaderContents();
 
         $sData = '<?php ' . $sPhpHeader . '$_mData = <<<\'EOF\'' . File::EOL . $sData . File::EOL . 'EOF;' . File::EOL . '?>';
 
-        if ($rHandle = @fopen($sFile, 'wb'))
-        {
-            if (@flock($rHandle, LOCK_EX))
+        if ($rHandle = @fopen($sFile, 'wb')) {
+            if (@flock($rHandle, LOCK_EX)) {
                 fwrite($rHandle, $sData);
+            }
 
             fclose($rHandle);
             $this->setExpire($this->_iTtl);
@@ -256,19 +262,14 @@ ID file: ' . $this->_sId . '
      */
     private function _read($bPrint)
     {
-        if ($this->_check())
-        {
+        if ($this->_check()) {
             require $this->_getFile();
 
-            if (!empty($_mData))
-            {
-                if ($bPrint)
-                {
+            if (!empty($_mData)) {
+                if ($bPrint) {
                     echo $_mData;
                     return true;
-                }
-                else
-                {
+                } else {
                     return $_mData;
                 }
             }
@@ -296,14 +297,11 @@ ID file: ' . $this->_sId . '
     private function _check()
     {
         $sFile = $this->_getFile();
-        if (!$this->_bEnabled || !is_file($sFile) || (!empty($this->_iTtl) && $this->_oFile->getModifTime($sFile) < time()))
-        {
+        if (!$this->_bEnabled || !is_file($sFile) || (!empty($this->_iTtl) && $this->_oFile->getModifTime($sFile) < time())) {
             // If the cache has expired
             $this->_oFile->deleteFile($this->_getFile());
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -333,5 +331,4 @@ ID file: ' . $this->_sId . '
           $this->_bEnabled
         );
     }
-
 }

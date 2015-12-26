@@ -11,10 +11,10 @@ define('PH7', 1);
 
 require '_ajax.inc.php';
 
-if (!empty($_POST['lic']))
-{
-    if (check_license($_POST['lic']))
+if (!empty($_POST['lic'])) {
+    if (check_license($_POST['lic'])) {
         echo '<p class="success">' . $LANG['success_license'] . '</p>';
-    else
+    } else {
         echo '<p class="error">' . $LANG['failure_license'] . '</p>';
+    }
 }

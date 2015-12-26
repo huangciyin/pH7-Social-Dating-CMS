@@ -10,8 +10,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Config\Config,
+use PH7\Framework\Config\Config,
 PH7\Framework\File as F;
 
 /**
@@ -57,8 +56,7 @@ class Module
 
     public function run($sSwitch)
     {
-        if(empty($this->_sModsDirModFolder))
-        {
+        if (empty($this->_sModsDirModFolder)) {
             /**
              * $this->_sModsDirModFolder attribute must be defined by the method Module::setPath() before executing the following methods!
              * See the ModuleController for more information (Module::setPath() method).
@@ -68,18 +66,15 @@ class Module
 
         $sValue = $this->_checkParam($sSwitch);
 
-        if($sValue == static::INSTALL)
-        {
+        if ($sValue == static::INSTALL) {
             $this->_file($sValue);
             $this->_route($sValue);
             $this->_sql($sValue);
-         }
-         else
-         {
+        } else {
             $this->_sql($sValue);
             $this->_route($sValue);
             $this->_file($sValue);
-         }
+        }
     }
 
     /**
@@ -93,8 +88,9 @@ class Module
         $sValue = $this->_checkParam($sSwitch);
         $aFolders = array();
 
-        foreach($this->_readMods($sValue) as $sFolder)
+        foreach ($this->_readMods($sValue) as $sFolder) {
             $aFolders[$sFolder] = $sFolder;
+        }
 
         return $aFolders;
     }
@@ -164,13 +160,10 @@ class Module
      */
     private function _file($sSwitch)
     {
-        if($sSwitch == static::INSTALL)
-        {
+        if ($sSwitch == static::INSTALL) {
             $this->_oFile->renameMost(PH7_PATH_REPOSITORY . static::DIR . PH7_DS . $this->_sModsDirModFolder, PH7_PATH_MOD); // Files of module
             $this->_oFile->chmod(PH7_PATH_MOD . $this->_sModsDirModFolder, 0777);
-        }
-        else
-        {
+        } else {
             $this->_oFile->renameMost(PH7_PATH_MOD . $this->_sModsDirModFolder, PH7_PATH_REPOSITORY . static::DIR . PH7_DS); // Files of module
             $this->_oFile->chmod(PH7_PATH_REPOSITORY . static::DIR . PH7_DS . $this->_sModsDirModFolder, 0777);
         }
@@ -187,11 +180,12 @@ class Module
         $sSqlFile = Config::getInstance()->values['database']['type_name'] . PH7_DS . ($sSwitch == static::INSTALL ? static::INSTALL_SQL_FILE : static::UNINSTALL_SQL_FILE);
         $sPath = PH7_PATH_MOD . $this->_sModsDirModFolder . static::INSTALL_DIR . PH7_DS . static::SQL_DIR . PH7_DS . $sSqlFile;
 
-        if(is_file($sPath) && filesize($sPath) > 12)
-        {
+        if (is_file($sPath) && filesize($sPath) > 12) {
             $mQuery = (new ModuleModel)->run($sPath);
 
-            if($mQuery !== true) exit(t('Unable to execute the query SQL of module.<br />Error Message: %0%', '<pre>' . print_r($mQuery) . '</pre>'));
+            if ($mQuery !== true) {
+                exit(t('Unable to execute the query SQL of module.<br />Error Message: %0%', '<pre>' . print_r($mQuery) . '</pre>'));
+            }
         }
     }
 
@@ -205,8 +199,9 @@ class Module
     {
         $this->_sModRoutePath = PH7_PATH_MOD . $this->_sModsDirModFolder . static::INSTALL_DIR . PH7_DS . static::ROUTE_FILE;
 
-        if(is_file($this->_sModRoutePath))
+        if (is_file($this->_sModRoutePath)) {
             ($sSwitch == static::INSTALL) ? $this->_addRoute() : $this->_removeRoute();
+        }
     }
 
     /**
@@ -260,17 +255,17 @@ class Module
      */
     private function _checkParam($sSwitch)
     {
-        if($sSwitch == static::INSTALL)
+        if ($sSwitch == static::INSTALL) {
             return static::INSTALL;
-        elseif($sSwitch == static::UNINSTALL)
+        } elseif ($sSwitch == static::UNINSTALL) {
             return static::UNINSTALL;
-        else
+        } else {
             exit('Wrong value in the parameter of the method: ' . __METHOD__ . ' in the class: ' . __CLASS__);
+        }
     }
 
     public function __destruct()
     {
         unset($this->_oFile, $this->_sModsDirModFolder, $this->_sDefLangRoute, $this->_sRoutePath, $this->_sModRoutePath);
     }
-
 }

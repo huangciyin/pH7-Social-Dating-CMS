@@ -23,8 +23,7 @@ class RatingCoreModel extends Framework\Mvc\Model\Engine\Model
         $sTable = Various::checkTable($sTable);
         $sWhere = Various::convertTableToId($sTable);
 
-        if (!$iData = $this->cache->get())
-        {
+        if (!$iData = $this->cache->get()) {
             $rStmt = Db::getInstance()->prepare('SELECT votes FROM' . Db::prefix($sTable) .
                 'WHERE ' . $sWhere . ' = :id LIMIT 1');
             $rStmt->bindValue(':id', $iId, \PDO::PARAM_INT);
@@ -46,8 +45,7 @@ class RatingCoreModel extends Framework\Mvc\Model\Engine\Model
         $sTable = Various::checkTable($sTable);
         $sWhere = Various::convertTableToId($sTable);
 
-        if (!$fData = $this->cache->get())
-        {
+        if (!$fData = $this->cache->get()) {
             $rStmt = Db::getInstance()->prepare('SELECT score FROM' . Db::prefix($sTable) .
                 'WHERE ' . $sWhere . ' = :id LIMIT 1');
             $rStmt->bindValue(':id', $iId, \PDO::PARAM_INT);
@@ -63,7 +61,6 @@ class RatingCoreModel extends Framework\Mvc\Model\Engine\Model
 
     public function updateVotes($iId, $sTable)
     {
-
         $sTable = Various::checkTable($sTable);
         $sWhere = Various::convertTableToId($sTable);
 
@@ -84,5 +81,4 @@ class RatingCoreModel extends Framework\Mvc\Model\Engine\Model
         $rStmt->bindValue(':id', $iId);
         return $rStmt->execute();
     }
-
 }

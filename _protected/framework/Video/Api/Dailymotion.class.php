@@ -41,13 +41,9 @@ class Dailymotion extends Api implements IApi
 
     public function getMeta($sUrl, $sMedia, $iWidth, $iHeight)
     {
-
-        if ($sMedia == 'preview')
-        {
+        if ($sMedia == 'preview') {
             return 'http://dailymotion.com/thumbnail/160x120/video/' . $this->getVideoId($sUrl);
-        }
-        else
-        {
+        } else {
             $sParam = ($this->bAutoplay) ? '?autoPlay=1' : '';
             return '<iframe frameborder="0" width="' . $iWidth . '" height="' . $iHeight . '" src="' . $this->getEmbedUrl($sUrl) . $sParam . '"></iframe>';
         }
@@ -60,14 +56,15 @@ class Dailymotion extends Api implements IApi
     public function getVideoId($sUrl)
     {
         preg_match('#/video/(\w+)_#i', $sUrl, $aMatch);
-        if (!empty($aMatch[1]))
+        if (!empty($aMatch[1])) {
             return $aMatch[1];
+        }
 
         preg_match('#/embed/video/(\w+)#i', $sUrl, $aMatch);
-        if (!empty($aMatch[1]))
+        if (!empty($aMatch[1])) {
             return $aMatch[1];
+        }
 
         return false;
     }
-
 }

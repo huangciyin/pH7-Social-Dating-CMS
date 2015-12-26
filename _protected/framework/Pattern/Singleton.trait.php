@@ -45,8 +45,10 @@ trait Singleton
     /**
      * Private serialize/unserialize method to prevent serializing/unserializing.
      */
-    private function __wakeup() {}
-    private function __sleep() {}
-
+    private function __wakeup()
+    {
+    }
+    private function __sleep()
+    {
+    }
 }
-

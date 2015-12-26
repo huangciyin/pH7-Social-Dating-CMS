@@ -14,7 +14,9 @@ class Field
      * @desc Block constructing.
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Get table.
@@ -50,7 +52,5 @@ class Field
     {
         $aList = ['profileid', 'middlename', 'description', 'businessname', 'address', 'street', 'city', 'state', 'zipcode', 'country', 'phone', 'fax', 'website', 'socialnetworksite', 'height', 'weight'];
         return in_array(strtolower($sField), $aList);
-
     }
-
 }

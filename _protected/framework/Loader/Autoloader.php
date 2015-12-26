@@ -26,7 +26,6 @@ final class Autoloader
 
     const DOWNLOAD_URL = 'http://download.hizup.com/files/';
 
-
     /**
      * We use this class with the singleton pattern.
      */
@@ -35,7 +34,6 @@ final class Autoloader
     /**
      * We do not put a "__construct" and "__clone" "private" because it is already included in the class \PH7\Framework\Pattern\Base that is included in the \PH7\Framework\Pattern\Singleton class.
      */
-
 
     /**
      * Autoloader Class.
@@ -65,8 +63,7 @@ final class Autoloader
     {
         $sClass = $this->_clean($sClass);
 
-        switch (true)
-        {
+        switch (true) {
             /***** To include the libraries *****/
 
             // To include Classes
@@ -83,7 +80,6 @@ final class Autoloader
             case is_file(PH7_PATH_FRAMEWORK . $sClass . '.trait.php'):
                 $sFile =  PH7_PATH_FRAMEWORK . $sClass . '.trait.php';
             break;
-
 
             /***** To include third-party library that does not have the same naming convention that our CMS *****/
 
@@ -124,10 +120,10 @@ final class Autoloader
         $bFileExists = $oFile->existFile($sFullPath);
         $bIsTooSmallFile = ($oFile->size($sFullPath) < 1000);
 
-        if (!$bFileExists || $bIsTooSmallFile || $bIsExpiredFile)
-        {
-            if ($bFileExists) // Delete the file if it already exists
+        if (!$bFileExists || $bIsTooSmallFile || $bIsExpiredFile) {
+            if ($bFileExists) { // Delete the file if it already exists
                 $oFile->deleteFile($sFullPath);
+            }
 
             $this->_downloadFile($sFileNamePath, $oFile);
         }
@@ -158,5 +154,4 @@ final class Autoloader
     {
         return md5(strtolower(str_replace(array('/', '.class', '.php'), '', $sFileNamePath))) . '.dwld';
     }
-
 }

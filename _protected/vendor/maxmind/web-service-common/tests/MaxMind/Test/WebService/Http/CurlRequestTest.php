@@ -35,7 +35,6 @@ class CurlRequestTest extends \PHPUnit_Framework_TestCase
         $cr->get();
     }
 
-
     /**
      * @expectedException MaxMind\Exception\HttpException
      * @expectedExceptionMessage cURL error (6):

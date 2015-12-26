@@ -24,28 +24,23 @@ class SignupController extends Controller
         $bRef = $this->httpRequest->getExists('ref');
         $bUserRef = $this->httpRequest->getExists(array('ref', 'a', 'u', 'f_n', 's'));
 
-        if ($bRef || $bUserRef)
-        {
+        if ($bRef || $bUserRef) {
             $sRef = $this->httpRequest->get('ref'); // For the statistics
             $sRefTxt = t('Reference: %0%', $sRef);
         }
 
-        if ($bUserRef)
-        {
+        if ($bUserRef) {
             $sAction = $this->httpRequest->get('a'); // For the statistics
             $sUsername = $this->httpRequest->get('u'); // For the statistics and user image block
             $sSex = $this->httpRequest->get('s'); // For the statistics and user image block
 
             $sSessContents = $sRefTxt . ' | ' . t('Action: %0%', $sAction) . ' | ' . t('Sex: %0%', $sSex) . ' | ' . t('Username: %0%', $sUsername);
             $this->session->set('joinRef', $sSessContents);
-        }
-        elseif ($bRef)
-        {
+        } elseif ($bRef) {
             $this->session->set('joinRef', $sRefTxt);
         }
 
-        if ($bUserRef)
-        {
+        if ($bUserRef) {
             /* Enable the user image block in the view */
             $this->view->user_ref = 1;
 
@@ -53,9 +48,7 @@ class SignupController extends Controller
             $this->view->username = $sUsername;
             $this->view->first_name = $sFirstName;
             $this->view->sex = $sSex;
-        }
-        else
-        {
+        } else {
             /* For Members Block */
             $this->view->userDesignModel = new UserDesignCoreModel();
         }
@@ -83,5 +76,4 @@ class SignupController extends Controller
         $this->view->h1_title = t('Sign up - Step 3/3');
         $this->output();
     }
-
 }

@@ -85,8 +85,7 @@ class Various
      */
     public static function textTimeStamp($mTime)
     {
-        if (is_string($mTime))
-        {
+        if (is_string($mTime)) {
             // Converting the date string format to TimeStamp.
             $mTime = strtotime($mTime);
         }
@@ -100,23 +99,25 @@ class Various
         $iMonths = round($iSeconds / 2419200);
         $iYears = round($iSeconds / 29030400);
 
-        if ($iSeconds == 0)
+        if ($iSeconds == 0) {
             $sTxt = t('%0% seconds ago.', 0.5);
-        elseif ($iSeconds < 60)
+        } elseif ($iSeconds < 60) {
             $sTxt = t('%0% seconds ago.', $iSeconds);
-        elseif ($iMinutes < 60)
+        } elseif ($iMinutes < 60) {
             $sTxt = ($iMinutes == 1) ? t('one minute ago.') : t('%0% minutes ago.', $iMinutes);
-        elseif ($iHours < 24)
+        } elseif ($iHours < 24) {
             $sTxt = ($iHours == 1) ? t('one hour ago.') : t('%0% hours ago.', $iHours);
-        else
-            if ($iDays < 7)
+        } else {
+            if ($iDays < 7) {
                 $sTxt = ($iDays == 1) ? t('one day ago.') : t('%0% days ago.', $iDays);
-            elseif ($iWeeks < 4)
-                 $sTxt = ($iWeeks == 1) ? t('one week ago.') : t('%0% weeks ago.', $iWeeks);
-            elseif ($iMonths < 12)
+            } elseif ($iWeeks < 4) {
+                $sTxt = ($iWeeks == 1) ? t('one week ago.') : t('%0% weeks ago.', $iWeeks);
+            } elseif ($iMonths < 12) {
                 $sTxt = ($iMonths == 1) ? t('one month ago.') : t('%0% months ago.', $iMonths);
-            else
+            } else {
                 $sTxt = ($iYears == 1) ? t('one year ago.') : t('%0% years ago.', $iYears);
+            }
+        }
 
         return $sTxt;
     }
@@ -132,5 +133,4 @@ class Various
     {
         return (strlen($iVal) == 1) ? 0 . $iVal : $iVal;
     }
-
 }

@@ -21,7 +21,6 @@ class MainController extends Controller
 
     private $_sApi, $_sUrl;
 
-
     public function index()
     {
         $this->sTitle = t('Welcome to Universal Login');
@@ -31,7 +30,6 @@ class MainController extends Controller
         $this->view->h1_title = $this->sTitle;
 
         $this->output();
-
     }
 
     public function register()
@@ -43,7 +41,6 @@ class MainController extends Controller
 
         $this->manualTplInclude('waiting.inc.tpl');
         $this->output();
-
     }
 
     public function login($sApiName = '')
@@ -75,25 +72,32 @@ class MainController extends Controller
 
     private function _whatApi()
     {
-        switch ($this->_sApi)
-        {
+        switch ($this->_sApi) {
             case 'fb':
-                if (!$this->config->values['module.api']['facebook.enable']) continue;
+                if (!$this->config->values['module.api']['facebook.enable']) {
+                    continue;
+                }
                 $this->_sUrl = new Facebook;
             break;
 
             case 'google':
-                if (!$this->config->values['module.api']['google.enable']) continue;
+                if (!$this->config->values['module.api']['google.enable']) {
+                    continue;
+                }
                 $this->_sUrl = new Google($this->session, $this->httpRequest, $this->registry);
             break;
 
             case 'twitter':
-                if (!$this->config->values['module.api']['twitter.enable']) continue;
+                if (!$this->config->values['module.api']['twitter.enable']) {
+                    continue;
+                }
                 $this->_sUrl = new Twitter;
             break;
 
             case 'microsoft':
-                if (!$this->config->values['module.api']['microsoft.enable']) continue;
+                if (!$this->config->values['module.api']['microsoft.enable']) {
+                    continue;
+                }
                 $this->_sUrl = new Microsoft;
             break;
 
@@ -101,5 +105,4 @@ class MainController extends Controller
                 $this->displayPageNotFound(t('The %0% API is incorrect.', $this->_sApi));
         }
     }
-
 }

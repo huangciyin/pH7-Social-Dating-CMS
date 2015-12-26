@@ -28,5 +28,4 @@ trait Escape
     {
         $this->message = strip_tags($sMsg, $this->sAllowTags);
     }
-
 }

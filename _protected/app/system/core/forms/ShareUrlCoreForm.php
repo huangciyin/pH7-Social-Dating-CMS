@@ -27,5 +27,4 @@ class ShareUrlCoreForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<br />'));
         $oForm->render();
     }
-
 }

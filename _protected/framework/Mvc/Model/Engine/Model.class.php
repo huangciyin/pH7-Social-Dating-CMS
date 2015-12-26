@@ -72,5 +72,4 @@ abstract class Model extends Entity
     {
         unset($this->orm, $this->cache);
     }
-
 }

@@ -17,18 +17,14 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (UserCore::auth() && $this->registry->controller === 'HomeController')
-        {
+        if (UserCore::auth() && $this->registry->controller === 'HomeController') {
             // Newsletter subscription is only for visitors, not for members since they can subscribe into their account.
             Header::redirect(Uri::get('user','main','index'));
         }
 
-        if (!AdminCore::auth() && $this->registry->controller === 'AdminController')
-        {
+        if (!AdminCore::auth() && $this->registry->controller === 'AdminController') {
             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Header::redirect(Uri::get('user','main','login'), $this->adminSignInMsg(), 'error');
         }
-
     }
-
 }

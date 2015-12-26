@@ -19,30 +19,20 @@ class Module implements Mixer
 
     public function __construct()
     {
-
     }
 
     public function cms()
     {
-
     }
 
     public function framework()
     {
-
     }
 
     public function mixer()
     {
-        switch ($this->_sModName)
-        {
-
+        switch ($this->_sModName) {
 
         }
     }
-
 }
-
-
-
-

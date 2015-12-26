@@ -49,5 +49,4 @@ class WebcamController extends Controller
          * pH7 developers team (Pierre-Henry Soria).
          */
     }
-
 }

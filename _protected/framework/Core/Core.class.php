@@ -14,8 +14,7 @@
 namespace PH7\Framework\Core;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Translate\Lang,
 PH7\Framework\Layout\Html\Design,
 PH7\Framework\Date\CDateTime,
@@ -49,5 +48,4 @@ abstract class Core extends Kernel
           $this->view
         );
     }
-
 }

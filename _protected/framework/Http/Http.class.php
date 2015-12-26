@@ -87,7 +87,6 @@ class Http
         599 => '599 Network connect timeout error'
     ];
 
-
     /**
      * @static
      * @param integer $iStatus The "code" for the HTTP status
@@ -133,11 +132,14 @@ class Http
     public static function setHeaders($mHeaders)
     {
         // Header already sent
-        if (static::_isSent()) throw new Exception('Headers were already sent.');
+        if (static::_isSent()) {
+            throw new Exception('Headers were already sent.');
+        }
 
         // Loop elements and set header
-        foreach ((array) $mHeaders as $sHeader)
+        foreach ((array) $mHeaders as $sHeader) {
             header((string) $sHeader);
+        }
     }
 
     /**
@@ -148,7 +150,9 @@ class Http
      */
     public static function setHeadersByCode($iCode = 200)
     {
-        if (!static::getStatusCodes($iCode)) $iCode = 200;
+        if (!static::getStatusCodes($iCode)) {
+            $iCode = 200;
+        }
         // Set header
         static::setHeaders(static::getProtocol() . ' ' . static::getStatusCodes($iCode));
     }
@@ -191,15 +195,14 @@ class Http
         $sAuthUsr = Server::getVar(Server::AUTH_USER);
         $sAuthPwd = Server::getVar(Server::AUTH_PW);
 
-        if (!($sAuthUsr == $sUsr && $sAuthPwd == $sPwd))
-        {
+        if (!($sAuthUsr == $sUsr && $sAuthPwd == $sPwd)) {
             header('WWW-Authenticate: Basic realm="HTTP Basic Authentication"');
             static::setHeadersByCode(401);
             echo t('You must enter a valid login ID and password to access this resource.') . "\n";
             exit(false);
-        }
-        else
+        } else {
             return true;
+        }
     }
 
     /**
@@ -213,17 +216,19 @@ class Http
     {
         $sHttps = strtolower(Server::getVar(Server::HTTPS));
 
-        if (null !== $sHttps)
-        {
-             $sHttps = strtolower($sHttps);
+        if (null !== $sHttps) {
+            $sHttps = strtolower($sHttps);
 
-             if ('on' == $sHttps) return true;
-             elseif ('1' == $sHttps) return true;
-             else
-             {
-                 $iPort = Server::getVar(Server::SERVER_PORT);
-                 if ('443' == $iPort) return true;
-             }
+            if ('on' == $sHttps) {
+                return true;
+            } elseif ('1' == $sHttps) {
+                return true;
+            } else {
+                $iPort = Server::getVar(Server::SERVER_PORT);
+                if ('443' == $iPort) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -307,5 +312,4 @@ class Http
     {
         return headers_sent();
     }
-
 }

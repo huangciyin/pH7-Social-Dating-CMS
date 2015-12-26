@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -17,10 +16,10 @@ class EditForm
 
     public static function display()
     {
-        if (isset($_POST['submit_admin_edit_account']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_admin_edit_account']))
+        if (isset($_POST['submit_admin_edit_account'])) {
+            if (\PFBC\Form::isValid($_POST['submit_admin_edit_account'])) {
                 new EditFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -36,8 +35,7 @@ class EditForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_admin_edit_account', 'form_admin_edit_account'));
         $oForm->addElement(new \PFBC\Element\Token('edit_account'));
 
-        if ($oHR->getExists('profile_id') && $oHR->get('profile_id', 'int') !== 1)
-        {
+        if ($oHR->getExists('profile_id') && $oHR->get('profile_id', 'int') !== 1) {
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<p class="center"><a class="s_button" href="' . Uri::get(PH7_ADMIN_MOD, 'admin', 'browse') . '">' . t('Return to back admins browse') . '</a></p>'));
         }
         unset($oHR);
@@ -51,5 +49,4 @@ class EditForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

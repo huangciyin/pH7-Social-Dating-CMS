@@ -15,7 +15,7 @@ class MainController extends Controller
 
     public function __construct()
     {
-          parent::__construct();
+        parent::__construct();
           // Enable caching for all pages of this module
           $this->view->setCaching(true);
 
@@ -153,5 +153,4 @@ class MainController extends Controller
         $this->view->h1_title = $this->sTitle;
         $this->output();
     }
-
 }

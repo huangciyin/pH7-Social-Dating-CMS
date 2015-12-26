@@ -10,8 +10,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mail\Mail;
 
 class MainController extends Controller
@@ -52,12 +51,9 @@ class MainController extends Controller
     {
         $oMembershipModel = $this->oPayModel->getMemberships();
 
-        if (empty($oMembershipModel))
-        {
+        if (empty($oMembershipModel)) {
             $this->displayPageNotFound(t('No membership found!'));
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Memberships List');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -72,12 +68,9 @@ class MainController extends Controller
 
         $oMembershipModel = $this->oPayModel->getMemberships($iMembershipId);
 
-        if (empty($iMembershipId) || empty($oMembershipModel))
-        {
+        if (empty($iMembershipId) || empty($oMembershipModel)) {
             $this->displayPageNotFound(t('No membership found!'));
-        }
-        else
-        {
+        } else {
             // Adding the stylesheet for Gatway Logo
             $this->design->addCss(PH7_LAYOUT . PH7_SYS . PH7_MOD . $this->registry->module . PH7_SH . PH7_TPL . PH7_TPL_MOD_NAME . PH7_SH . PH7_CSS, 'common.css');
 
@@ -94,15 +87,12 @@ class MainController extends Controller
 
     public function process($sProvider = '')
     {
-        switch ($sProvider)
-        {
+        switch ($sProvider) {
             case 'paypal':
             {
                 $oPayPal = new PayPal($this->config->values['module.setting']['sandbox.enable']);
-                if ($oPayPal->valid() && $this->httpRequest->postExists('item_number') && $this->httpRequest->postExists('custom'))
-                {
-                    if ($this->oUserModel->updateMembership($this->httpRequest->post('item_number'), $this->httpRequest->post('custom', 'int'), $this->httpRequest->post('amount'), $this->dateTime->dateTime('Y-m-d H:i:s')))
-                    {
+                if ($oPayPal->valid() && $this->httpRequest->postExists('item_number') && $this->httpRequest->postExists('custom')) {
+                    if ($this->oUserModel->updateMembership($this->httpRequest->post('item_number'), $this->httpRequest->post('custom', 'int'), $this->httpRequest->post('amount'), $this->dateTime->dateTime('Y-m-d H:i:s'))) {
                         $this->_bStatus = true; // Status is OK
                         // PayPal will call automatically the "notification()" method thanks its IPN feature and "notify_url" form attribute.
                     }
@@ -113,19 +103,17 @@ class MainController extends Controller
 
             case 'stripe':
             {
-                if ($this->httpRequest->postExists('stripeToken'))
-                {
+                if ($this->httpRequest->postExists('stripeToken')) {
                     \Stripe\Stripe::setApiKey($this->config->values['module.setting']['stripe.secret_key']);
 
-                     $oCharge = \Stripe\Charge::create(
+                    $oCharge = \Stripe\Charge::create(
                         array(
                             'source' => $this->httpRequest->post('stripeToken'),
                             'email'    => $this->httpRequest->post('stripeEmail')
                         )
                     );
 
-                    if ($this->oUserModel->updateMembership($this->httpRequest->post('item_number'), $this->httpRequest->post('member_id', 'int'), $this->httpRequest->post('amount'), $this->dateTime->dateTime('Y-m-d H:i:s')))
-                    {
+                    if ($this->oUserModel->updateMembership($this->httpRequest->post('item_number'), $this->httpRequest->post('member_id', 'int'), $this->httpRequest->post('amount'), $this->dateTime->dateTime('Y-m-d H:i:s'))) {
                         $this->_bStatus = true; // Status is OK
                         $this->notification('Stripe'); // Add info into the log file
                     }
@@ -139,10 +127,8 @@ class MainController extends Controller
                 $sVendorId = $this->config->values['module.setting']['2co.vendor_id'];
                 $sSecretWord = $this->config->values['module.setting']['2co.secret_word'];
 
-                if ($o2CO->valid($sVendorId, $sSecretWord) && $this->httpRequest->postExists('sale_id'))
-                {
-                    if ($this->oUserModel->updateMembership($this->httpRequest->post('sale_id'), $this->iProfileId, $this->httpRequest->post('price'), $this->dateTime->dateTime('Y-m-d H:i:s')))
-                    {
+                if ($o2CO->valid($sVendorId, $sSecretWord) && $this->httpRequest->postExists('sale_id')) {
+                    if ($this->oUserModel->updateMembership($this->httpRequest->post('sale_id'), $this->iProfileId, $this->httpRequest->post('price'), $this->dateTime->dateTime('Y-m-d H:i:s'))) {
                         $this->_bStatus = true; // Status is OK
                         $this->notification('TwoCO'); // Add info into the log file
                     }
@@ -167,8 +153,7 @@ class MainController extends Controller
         $this->view->page_title = $this->sTitle;
         $this->view->h2_title = $this->sTitle;
 
-        if ($this->_bStatus)
-        {
+        if ($this->_bStatus) {
             $this->updateAffCom();
         }
 
@@ -183,8 +168,7 @@ class MainController extends Controller
     public function notification($sGatewayName = '')
     {
         // Save buyer information to a log file
-        if ($sGatewayName == 'PayPal' || $sGatewayName == 'Stripe' || $sGatewayName == 'TwoCO' || $sGatewayName == 'CCBill')
-        {
+        if ($sGatewayName == 'PayPal' || $sGatewayName == 'Stripe' || $sGatewayName == 'TwoCO' || $sGatewayName == 'CCBill') {
             $sGatewayName = 'PH7\\' . $sGatewayName;
             $this->log(new $sGatewayName(false), t('%0% payment was made with the following information:', $sGatewayName));
         }
@@ -204,13 +188,16 @@ class MainController extends Controller
         $this->config->load(PH7_PATH_SYS_MOD . 'affiliate' . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE);
 
         $iAffId = $this->oUserModel->getAffiliatedId($this->iProfileId);
-        if ($iAffId < 1) return; // If there is no valid ID, we stop the method.
+        if ($iAffId < 1) {
+            return;
+        } // If there is no valid ID, we stop the method.
 
         $iAmount = $this->oUserModel->readProfile($this->iProfileId)->price;
         $iAffCom = ($iAmount*$this->config->values['module.setting']['rate.user_membership_payment']/100);
 
-        if ($iAffCom > 0)
+        if ($iAffCom > 0) {
             $this->oUserModel->updateUserJoinCom($iAffId, $iAffCom);
+        }
     }
 
     /**
@@ -249,11 +236,9 @@ class MainController extends Controller
      */
     protected function log(Framework\Payment\Gateway\Api\Api $oProvider, $sMsg)
     {
-        if ($this->config->values['module.setting']['log_file.enable'])
-        {
+        if ($this->config->values['module.setting']['log_file.enable']) {
             $sLogTxt = $sMsg . Framework\File\File::EOL . Framework\File\File::EOL . Framework\File\File::EOL . Framework\File\File::EOL;
             $oProvider->saveLog($sLogTxt . print_r($_POST, true), $this->registry);
         }
     }
-
 }

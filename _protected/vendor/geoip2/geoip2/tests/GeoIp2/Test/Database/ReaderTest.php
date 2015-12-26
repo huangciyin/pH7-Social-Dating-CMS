@@ -19,7 +19,6 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLocaleList()
     {
-
         foreach (array('City', 'Country') as $type) {
             $reader = new Reader(
                 "maxmind-db/test-data/GeoIP2-$type-Test.mmdb",

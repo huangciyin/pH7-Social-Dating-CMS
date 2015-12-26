@@ -26,7 +26,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-
     private function getResponse($ipAddress)
     {
         $responses = array(
@@ -191,9 +190,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $country->maxmind->queriesRemaining,
             'queriesRemaining is correct'
         );
-
     }
-
 
     public function testInsights()
     {
@@ -244,7 +241,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->makeRequest('Country', '2.2.3.5');
     }
 
-
     /**
      * @expectedException GeoIp2\Exception\InvalidRequestException
      * @expectedExceptionCode 400
@@ -272,7 +268,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testWeirdErrorBodyIPException()
     {
         $this->makeRequest('Country', '1.2.3.8');
-
     }
 
     /**
@@ -283,7 +278,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testInvalidErrorBodyIPException()
     {
         $this->makeRequest('Country', '1.2.3.9');
-
     }
 
     /**
@@ -384,7 +378,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     private function response(
         $endpoint,
         $status,
@@ -481,5 +474,4 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
         return $client->$method($ipAddress);
     }
-
 }

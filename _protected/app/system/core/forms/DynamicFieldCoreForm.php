@@ -33,8 +33,7 @@ class DynamicFieldCoreForm
      */
     public function generate()
     {
-        switch ($this->_sColumn)
-        {
+        switch ($this->_sColumn) {
             case 'description':
                 $this->_oForm->addElement(new \PFBC\Element\CKEditor(t('About Me - My Ideal Date - Description:'), $this->_sColumn, array('id'=>$this->getFieldId('str'), 'onblur' =>'CValid(this.value,this.id,10,2000)','value' => $this->_sVal, 'validation'=>new \PFBC\Validation\Str(20,4000), 'required'=>1)));
                 $this->addCheckErrSpan('str');
@@ -110,34 +109,34 @@ class DynamicFieldCoreForm
 
     protected function getFieldType()
     {
-        if (strstr($this->_sColumn, 'textarea'))
+        if (strstr($this->_sColumn, 'textarea')) {
             $sType = 'Textarea';
-        elseif (strstr($this->_sColumn, 'editor'))
+        } elseif (strstr($this->_sColumn, 'editor')) {
             $sType = 'CKEditor';
-        elseif (strstr($this->_sColumn, 'email'))
+        } elseif (strstr($this->_sColumn, 'email')) {
             $sType = 'Email';
-        elseif (strstr($this->_sColumn, 'password'))
+        } elseif (strstr($this->_sColumn, 'password')) {
             $sType = 'Password';
-        elseif (strstr($this->_sColumn, 'url'))
+        } elseif (strstr($this->_sColumn, 'url')) {
             $sType = 'Url';
-        elseif (strstr($this->_sColumn, 'phone'))
+        } elseif (strstr($this->_sColumn, 'phone')) {
             $sType = 'Phone';
-        elseif (strstr($this->_sColumn, 'date'))
+        } elseif (strstr($this->_sColumn, 'date')) {
             $sType = 'Date';
-        elseif (strstr($this->_sColumn, 'color'))
+        } elseif (strstr($this->_sColumn, 'color')) {
             $sType = 'Color';
-        elseif (strstr($this->_sColumn, 'number'))
+        } elseif (strstr($this->_sColumn, 'number')) {
             $sType = 'Number';
-        elseif (strstr($this->_sColumn, 'range'))
+        } elseif (strstr($this->_sColumn, 'range')) {
             $sType = 'Range';
-        elseif (strstr($this->_sColumn, 'height'))
+        } elseif (strstr($this->_sColumn, 'height')) {
             $sType = 'Height';
-        elseif (strstr($this->_sColumn, 'weight'))
+        } elseif (strstr($this->_sColumn, 'weight')) {
             $sType = 'Weight';
-        else
+        } else {
             $sType = 'Textbox';
+        }
 
         return $sType;
     }
-
 }

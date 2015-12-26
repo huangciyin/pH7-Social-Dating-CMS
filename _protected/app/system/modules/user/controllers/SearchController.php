@@ -28,5 +28,4 @@ class SearchController extends Controller
         $this->view->h1_title = t('The Search Members | Advanced Search');
         $this->output();
     }
-
 }

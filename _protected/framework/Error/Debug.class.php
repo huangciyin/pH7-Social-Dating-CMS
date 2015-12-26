@@ -18,12 +18,14 @@ use PH7\Framework\Config\Config;
  final class Debug
  {
 
-    /**
+     /**
      * Private constructor to prevent instantiation of class since it's a static class.
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Gets Information (message, code, file, line, trace) of an Exception.
@@ -61,8 +63,9 @@ use PH7\Framework\Config\Config;
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
  }
 
 }

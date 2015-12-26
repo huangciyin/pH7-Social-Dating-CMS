@@ -45,7 +45,9 @@ class SearchCoreModel
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Order By method.
@@ -57,8 +59,7 @@ class SearchCoreModel
      */
     public static function order($sColumn, $iSort = self::ASC, $sAsTable = null)
     {
-        switch ($sColumn)
-        {
+        switch ($sColumn) {
             case static::NAME:
             case static::TITLE:
             case static::VIEWS:
@@ -98,5 +99,4 @@ class SearchCoreModel
     {
         return ($iSort === static::DESC) ? ' DESC ' : ' ASC ';
     }
-
 }

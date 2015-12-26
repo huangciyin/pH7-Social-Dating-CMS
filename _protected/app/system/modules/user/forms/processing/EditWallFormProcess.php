@@ -13,7 +13,7 @@ use PH7\Framework\Mvc\Router\Uri, PH7\Framework\Url\Header;
 class EditWallFormProcess extends Form
 {
 
-/*
+    /*
  * This class is still under development, if you are a developer and you want to help us and join our volunteer team of developers to continue development of this module, you are welcome!
  * Please contact us by email: ph7software@gmail.com
  *
@@ -27,5 +27,4 @@ class EditWallFormProcess extends Form
         (new WallModel)->edit($this->session->get('member_id'), $this->httpRequest->post('post'), $this->dateTime->get()->dateTime('Y-m-d H:i:s'));
         Header::redirect(Uri::get('user', 'main', 'index'), t('Your message has been added successfully!'));
     }
-
 }

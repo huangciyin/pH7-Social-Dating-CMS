@@ -62,5 +62,4 @@ class MessengerModel extends Framework\Mvc\Model\Engine\Model
         $rStmt->bindValue(':date', $sDate, \PDO::PARAM_STR);
         return $rStmt->execute();
     }
-
 }

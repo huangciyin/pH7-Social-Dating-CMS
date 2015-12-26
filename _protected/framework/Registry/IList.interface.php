@@ -22,5 +22,4 @@ interface IList
      * @return void
      */
     public function add($sName, $sValue);
-
 }

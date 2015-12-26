@@ -31,5 +31,4 @@ class HomeController extends Controller
         // Go Display
         $this->output();
     }
-
 }

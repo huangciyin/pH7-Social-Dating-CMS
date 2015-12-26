@@ -14,10 +14,10 @@ class EditVideoForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_video']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_video']))
+        if (isset($_POST['submit_edit_video'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_video'])) {
                 new EditVideoFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -36,5 +36,4 @@ class EditVideoForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

@@ -158,5 +158,4 @@ class ModeratorModel extends ModeratorCoreModel
         $rStmt->bindValue(':albumId', $iAlbumId, \PDO::PARAM_INT);
         return $rStmt->execute();
     }
-
 }

@@ -28,14 +28,15 @@ class Paypal extends Provider implements Api
     $_sMsg,
     $_bValid = null;
 
-
     /**
      * @param boolean $bSandbox Default FALSE
      * @return void
      */
     public function __construct($bSandbox = false)
     {
-        if ($bSandbox) $this->_sUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+        if ($bSandbox) {
+            $this->_sUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+        }
 
         $this->param('cmd', '_xclick');
     }
@@ -70,35 +71,31 @@ class Paypal extends Provider implements Api
     public function valid($sParam1 = '', $sParam2 = '')
     {
         // If already validated, just return last result
-        if (true === $this->_bValid || false === $this->_bValid) return $this->_bValid;
+        if (true === $this->_bValid || false === $this->_bValid) {
+            return $this->_bValid;
+        }
 
         $this->setParams();
 
         $mStatus = $this->getStatus();
 
         // Valid
-        if (0 == strcmp('VERIFIED', $mStatus))
-        {
-            if ($_POST['payment_status'] == 'Completed')
-            {
+        if (0 == strcmp('VERIFIED', $mStatus)) {
+            if ($_POST['payment_status'] == 'Completed') {
                 $this->_bValid = true;
                 $this->_sMsg = t('Transaction valid and completed.');
-            }
-            else
-            {
+            } else {
                 $this->_bValid = false;
                 $this->_sMsg = t('Transaction valid but not completed.');
             }
         }
         // Invalid
-        elseif (0 == strcmp('INVALID', $mStatus))
-        {
+        elseif (0 == strcmp('INVALID', $mStatus)) {
             $this->_bValid = false;
             $this->_sMsg = t('Invalid transaction.');
         }
         // Bad Connection
-        else
-        {
+        else {
             $this->_bValid = false;
             $this->_sMsg = t('Connection to PayPal failed.');
         }
@@ -134,8 +131,9 @@ class Paypal extends Provider implements Api
      */
      protected function setParams()
      {
-         foreach ($this->getPostDatas() as $sKey => $sValue)
+         foreach ($this->getPostDatas() as $sKey => $sValue) {
              $this->setUrlData($sKey, $sValue);
+         }
 
          return $this;
      }
@@ -164,16 +162,15 @@ class Paypal extends Provider implements Api
         $aRawPost = explode('&', $rRawPost);
         $aPostData = array();
 
-        foreach ($aRawPost as $sKeyVal)
-        {
+        foreach ($aRawPost as $sKeyVal) {
             $aKeyVal = explode ('=', $sKeyVal);
-            if (count($aKeyVal) == 2)
+            if (count($aKeyVal) == 2) {
                 $aPostData[$aKeyVal[0]] = Url::encode($aKeyVal[1]);
+            }
             unset($aKeyVal);
         }
         unset($aRawPost);
 
         return $aPostData;
     }
-
 }

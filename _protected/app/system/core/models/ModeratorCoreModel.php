@@ -74,5 +74,4 @@ class ModeratorCoreModel extends AdminCoreModel
         Db::free($rStmt);
         return (int)$oRow->totalNotes;
     }
-
 }

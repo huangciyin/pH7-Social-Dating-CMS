@@ -20,7 +20,5 @@ abstract class Import
     public function __construct()
     {
         $this->db = Db::getInstance();
-
     }
-
 }

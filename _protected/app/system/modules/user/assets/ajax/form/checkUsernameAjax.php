@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Security\Validate\Validate,
+use PH7\Framework\Security\Validate\Validate,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Request\Http;
 
@@ -17,8 +16,7 @@ $oHttpRequest = new Http;
 
 $iStatus = 0; // Error Default Value
 
-if($oHttpRequest->postExists('username'))
-{
+if ($oHttpRequest->postExists('username')) {
     $iStatus = ((new Validate)->username($oHttpRequest->post('username'), DbConfig::getSetting('minUsernameLength'), DbConfig::getSetting('maxUsernameLength'))) ? 1 : 0;
 }
 

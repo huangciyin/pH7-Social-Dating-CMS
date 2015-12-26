@@ -12,10 +12,10 @@ class MsgForm
 
     public static function display()
     {
-        if (isset($_POST['submit_msg']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_msg']))
+        if (isset($_POST['submit_msg'])) {
+            if (\PFBC\Form::isValid($_POST['submit_msg'])) {
                 new MsgFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -31,5 +31,4 @@ class MsgForm
         $oForm->addElement(new \PFBC\Element\Button(t('Send!'), 'submit'));
         $oForm->render();
     }
-
 }

@@ -13,5 +13,4 @@ class Search extends Textbox
         $this->attributes['type'] = 'search'; // Search type
         parent::render();
     }
-
 }

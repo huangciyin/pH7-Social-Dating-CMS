@@ -17,14 +17,14 @@ class AdsAjax
 
     public function __construct()
     {
-        if (!(new Framework\Security\CSRF\Token)->check('ads') )
-        exit(jsonMsg(0, Form::errorTokenMsg()));
+        if (!(new Framework\Security\CSRF\Token)->check('ads') ) {
+            exit(jsonMsg(0, Form::errorTokenMsg()));
+        }
 
         $this->_oHttpRequest = new Http;
         $this->_oAdsModel = new AdsCoreModel;
 
-        switch ($this->_oHttpRequest->post('type'))
-        {
+        switch ($this->_oHttpRequest->post('type')) {
             case 'activate':
                 $this->activate();
             break;
@@ -49,13 +49,10 @@ class AdsAjax
 
         $this->_bStatus = $this->_oAdsModel->setStatus($this->_oHttpRequest->post('adsId'), 1, $sTable);
 
-        if ($this->_bStatus)
-        {
+        if ($this->_bStatus) {
             (new Framework\Cache\Cache)->start(Design::CACHE_STATIC_GROUP, null, null)->clear();
             $this->_sMsg = jsonMsg(1, t('The Advertisement we been activate.'));
-        }
-        else
-        {
+        } else {
             $this->_sMsg = jsonMsg(0, t('Cannot activate Advertisement, please try later.'));
         }
         echo $this->_sMsg;
@@ -67,13 +64,10 @@ class AdsAjax
 
         $this->_bStatus = $this->_oAdsModel->setStatus($this->_oHttpRequest->post('adsId'), 0, $sTable);
 
-        if ($this->_bStatus)
-        {
+        if ($this->_bStatus) {
             (new Framework\Cache\Cache)->start(Design::CACHE_STATIC_GROUP, null, null)->clear();
             $this->_sMsg = jsonMsg(1, t('The deactivate we been deleted.'));
-        }
-        else
-        {
+        } else {
             $this->_sMsg = jsonMsg(0, t('Cannot deactivate Advertisement, please try later.'));
         }
         echo $this->_sMsg;
@@ -85,17 +79,14 @@ class AdsAjax
 
         $this->_bStatus = $this->_oAdsModel->delete($this->_oHttpRequest->post('adsId'), $sTable);
 
-        if ($this->_bStatus)
-        {
+        if ($this->_bStatus) {
             /* Clean AdminCoreModel Ads and Model\Design for STATIC data */
             (new Framework\Cache\Cache)->start(Design::CACHE_STATIC_GROUP, null, null)->clear()
                     ->start(AdsCoreModel::CACHE_GROUP, 'totalAds', null)->clear()
                     ->start(AdsCoreModel::CACHE_GROUP, 'totalAdsAffiliates', null)->clear();
 
             $this->_sMsg = jsonMsg(1, t('The Advertisement we been deleted.'));
-        }
-        else
-        {
+        } else {
             $this->_sMsg = jsonMsg(0, t('Cannot remove Advertisement, please try later.'));
         }
         echo $this->_sMsg;
@@ -105,9 +96,9 @@ class AdsAjax
     {
         unset($this->_oHttpRequest, $this->_oAdsModel, $this->_sMsg, $this->_bStatus);
     }
-
 }
 
 // Only for the Admins
-if (Admin::auth())
+if (Admin::auth()) {
     new AdsAjax;
+}

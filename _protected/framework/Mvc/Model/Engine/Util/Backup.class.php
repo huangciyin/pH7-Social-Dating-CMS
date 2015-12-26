@@ -14,8 +14,7 @@
 namespace PH7\Framework\Mvc\Model\Engine\Util;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Core\Kernel,
+use PH7\Framework\Core\Kernel,
 PH7\Framework\Config\Config,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Navigation\Browser,
@@ -54,20 +53,20 @@ class Backup
 
         $aTables = $aColumns = $aValues = array();
         $oAllTables = Db::showTables();
-        while ($aRow = $oAllTables->fetch()) $aTables[] = $aRow[0];
+        while ($aRow = $oAllTables->fetch()) {
+            $aTables[] = $aRow[0];
+        }
         unset($oAllTables);
 
         $oDb = Db::getInstance();
 
         // Loop through tables
-        foreach ($aTables as $sTable)
-        {
+        foreach ($aTables as $sTable) {
             $oResult = $oDb->query('SHOW CREATE TABLE ' . $sTable);
 
             $iNum = (int) $oResult->rowCount();
 
-            if ($iNum > 0)
-            {
+            if ($iNum > 0) {
                 $aRow = $oResult->fetch();
 
                 $this->_sSql .= "#\n# Table: $sTable\r\n#\r\n\r\n";
@@ -89,16 +88,13 @@ class Backup
 
             $iNum = (int) $oResult->rowCount();
 
-            if ($iNum > 0)
-            {
-                while ($aRow = $oResult->fetch())
-                {
-                    foreach ($aRow as $sColumn => $sValue)
-                    {
-                        if (!is_numeric($sColumn))
-                        {
-                            if (!is_numeric($sValue) && !empty($sValue))
+            if ($iNum > 0) {
+                while ($aRow = $oResult->fetch()) {
+                    foreach ($aRow as $sColumn => $sValue) {
+                        if (!is_numeric($sColumn)) {
+                            if (!is_numeric($sValue) && !empty($sValue)) {
                                 $sValue = Db::getInstance()->quote($sValue);
+                            }
 
                             $sValue = str_replace(array("\r", "\n"), array('', '\n'), $sValue);
 
@@ -141,9 +137,9 @@ class Backup
      */
     public function save()
     {
-         $rHandle = fopen($this->_sPathName, 'wb');
-         fwrite($rHandle, $this->_sSql);
-         fclose($rHandle);
+        $rHandle = fopen($this->_sPathName, 'wb');
+        fwrite($rHandle, $this->_sSql);
+        fclose($rHandle);
     }
 
     /**
@@ -182,8 +178,9 @@ class Backup
         $rArchive = gzopen($this->_sPathName, 'r');
 
         $sSqlContent = '';
-        while (!feof($rArchive))
+        while (!feof($rArchive)) {
             $sSqlContent .= gzread($rArchive, filesize($this->_sPathName));
+        }
 
         gzclose($rArchive);
 
@@ -240,5 +237,4 @@ class Backup
         echo $sBuffer;
         exit;
     }
-
 }

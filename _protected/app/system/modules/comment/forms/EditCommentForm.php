@@ -14,10 +14,10 @@ class EditCommentForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_comment']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_comment']))
+        if (isset($_POST['submit_edit_comment'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_comment'])) {
                 new EditCommentFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -36,5 +36,4 @@ class EditCommentForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

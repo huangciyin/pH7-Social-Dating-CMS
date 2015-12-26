@@ -22,5 +22,4 @@ class PH7InvalidArgumentException extends \InvalidArgumentException
     {
         static::init($sMsg);
     }
-
 }

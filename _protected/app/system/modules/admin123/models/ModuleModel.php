@@ -22,5 +22,4 @@ class ModuleModel extends Framework\Mvc\Model\Engine\Model
     {
         return Various::execQueryFile($sSqlModuleFile);
     }
-
 }

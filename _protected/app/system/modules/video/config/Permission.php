@@ -15,24 +15,20 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if(!UserCore::auth() && ($this->registry->action === 'addalbum' || $this->registry->action === 'addvideo'
+        if (!UserCore::auth() && ($this->registry->action === 'addalbum' || $this->registry->action === 'addvideo'
         || $this->registry->action === 'editalbum' || $this->registry->action === 'editvideo'
-        || $this->registry->action === 'deletevideo' || $this->registry->action === 'deletealbum'))
-        {
+        || $this->registry->action === 'deletevideo' || $this->registry->action === 'deletealbum')) {
             $this->signInRedirect();
         }
 
-        if (!AdminCore::auth()) // If the administrator is not logged
-        {
-            if (!$this->checkMembership() || !$this->group->view_videos)
-            {
+        if (!AdminCore::auth()) {
+            // If the administrator is not logged
+
+            if (!$this->checkMembership() || !$this->group->view_videos) {
                 $this->paymentRedirect();
-            }
-            elseif (($this->registry->action === 'addalbum' || $this->registry->action === 'addvideo') && !$this->group->upload_videos)
-            {
+            } elseif (($this->registry->action === 'addalbum' || $this->registry->action === 'addvideo') && !$this->group->upload_videos) {
                 $this->paymentRedirect();
             }
         }
     }
-
 }

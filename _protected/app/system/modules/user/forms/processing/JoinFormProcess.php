@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Security\Security,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Util\Various,
@@ -54,24 +53,20 @@ class JoinFormProcess extends Form
         $aData += ['password' => Security::hashPwd($this->httpRequest->post('password'))];
 
         $iTimeDelay = (int) DbConfig::getSetting('timeDelayUserRegistration');
-        if (!$this->oUserModel->checkWaitJoin($aData['ip'], $iTimeDelay, $aData['current_date']))
-        {
+        if (!$this->oUserModel->checkWaitJoin($aData['ip'], $iTimeDelay, $aData['current_date'])) {
             \PFBC\Form::setError('form_join_user', Form::waitRegistrationMsg($iTimeDelay));
-        }
-        elseif (!$this->oUserModel->join($aData))
-        {
+        } elseif (!$this->oUserModel->join($aData)) {
             \PFBC\Form::setError('form_join_user',
                 t('An error occurred during registration!') . '<br />' .
                 t('Please try again with new information in the form fields or come back later.')
             );
-        }
-        else
-        {
+        } else {
             // Successful registration in the database for step 1!
 
             /** Update the Affiliate Commission **/
-            if ($this->iActiveType == 0) // Only if the user's account is already activated.
+            if ($this->iActiveType == 0) { // Only if the user's account is already activated.
                 AffiliateCore::updateJoinCom($iAffId, $this->config, $this->registry);
+            }
 
             // Send email
             $this->oRegistration->sendMail($aData);
@@ -103,15 +98,12 @@ class JoinFormProcess extends Form
             'profile_id' => $iProfileId
         ];
 
-        if (!$this->oUserModel->exe($aData1, '2_1') || !$this->oUserModel->exe($aData2, '2_2'))
-        {
+        if (!$this->oUserModel->exe($aData1, '2_1') || !$this->oUserModel->exe($aData2, '2_2')) {
             \PFBC\Form::setError('form_join_user2',
                 t('An error occurred during registration!') . '<br />' .
                 t('Please try again with new information in the form fields or come back later.')
             );
-        }
-        else
-        {
+        } else {
             // Register successfully in database for step 2!
             $this->session->set('mail_step2', $this->session->get('mail_step1'));
             Header::redirect(Uri::get('user','signup','step3'));
@@ -120,21 +112,17 @@ class JoinFormProcess extends Form
 
     public function step3()
     {
-
         $aData = [
             'description' => $this->httpRequest->post('description', Http::ONLY_XSS_CLEAN),
             'profile_id' => $this->oUserModel->getId($this->session->get('mail_step2'))
         ];
 
-        if (!$this->oUserModel->exe($aData, '3'))
-        {
+        if (!$this->oUserModel->exe($aData, '3')) {
             \PFBC\Form\setError('form_join_user3',
                 t('An error occurred during registration!') . '<br />' .
                 t('Please try again with new information in the form fields or come back later.')
             );
-        }
-        else
-        {
+        } else {
             $this->session->destroy(); // Remove all sessions created pending registration
 
             Header::redirect(Uri::get('user','main','login'), t('You have now been registered! %0%', $this->oRegistration->getMsg()));
@@ -145,5 +133,4 @@ class JoinFormProcess extends Form
     {
         unset($this->oUserModel, $this->iActiveType);
     }
-
 }

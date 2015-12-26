@@ -22,5 +22,4 @@ interface IHash
      * @return void
      */
     public function push($sName, $sValue);
-
 }

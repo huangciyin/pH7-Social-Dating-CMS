@@ -54,7 +54,6 @@ class DisputeTest extends TestCase
         $this->assertSame(3, count($sublist->data));
     }
 
-
     public function testUpdate()
     {
         self::authorizeFromEnv();

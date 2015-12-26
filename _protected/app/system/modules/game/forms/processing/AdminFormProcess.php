@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or die('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Image\Image,
 PH7\Framework\Util\Various,
 PH7\Framework\Url\Header,
@@ -24,8 +23,7 @@ class AdminFormProcess extends Form
 
         // Thumbnail
         $oImg = new Image($_FILES['thumb']['tmp_name']);
-        if (!$oImg->validate())
-        {
+        if (!$oImg->validate()) {
             \PFBC\Form::setError('form_game', Form::wrongImgFileTypeMsg());
             return; // Stop execution of the method.
         }
@@ -44,12 +42,9 @@ class AdminFormProcess extends Form
         // If the folders is not created (games not installed), yet we will create.
         $this->file->createDir( array($sThumbDir, $sGameDir) );
 
-        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $sGameDir . $sGameFile))
-        {
+        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $sGameDir . $sGameFile)) {
             \PFBC\Form::setError('form_game', t('Impossible to upload the game. If you are the administrator, please check if the folder of games data has the write permission (CHMOD 755).'));
-        }
-        else
-        {
+        } else {
             $aData = [
                 'category_id' => $this->httpRequest->post('category_id', 'int'),
                 'name' => $this->httpRequest->post('name'),
@@ -68,6 +63,4 @@ class AdminFormProcess extends Form
             Header::redirect(Uri::get('game', 'main', 'game', $aData['title'].','.Db::getInstance()->lastInsertId()), t('The game has been successfully added!'));
         }
     }
-
 }
-

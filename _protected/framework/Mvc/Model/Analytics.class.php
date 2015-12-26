@@ -25,5 +25,4 @@ class Analytics
     {
         return Engine\Record::getInstance()->update('AnalyticsApi', 'code', $sCode);
     }
-
 }

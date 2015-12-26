@@ -25,6 +25,4 @@ class File
         clearstatcache();
         return (is_file($sFile) && is_executable($sFile));
     }
-
 }
-

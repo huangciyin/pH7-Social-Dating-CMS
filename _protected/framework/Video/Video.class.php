@@ -14,14 +14,12 @@
 namespace PH7\Framework\Video;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Date\Various,
+use PH7\Framework\Date\Various,
 PH7\Framework\Config\Config,
 PH7\Framework\File as F;
 
 class Video extends F\Upload
 {
-
 
     private $oFile, $sType, $sFfmpegPath, $aFile;
 
@@ -53,8 +51,7 @@ class Video extends F\Upload
         $this->oFile = new F\File;
         $this->sFfmpegPath = Config::getInstance()->values['video']['handle.ffmpeg_path'];
 
-        if (!file_exists($this->sFfmpegPath))
-        {
+        if (!file_exists($this->sFfmpegPath)) {
             $sMsg = t('FFmpeg is not installed on your server or the path cannot be found. Please install and configure the path in "~/YOUR-PROTECTED-FOLDER/app/configs/config.ini"');
             exit($sMsg);
         }
@@ -75,15 +72,13 @@ class Video extends F\Upload
      */
     public function validate()
     {
-        if (!is_uploaded_file($this->aFile['tmp_name']))
-        {
-            if (!isDebug())
+        if (!is_uploaded_file($this->aFile['tmp_name'])) {
+            if (!isDebug()) {
                 return false;
-            else
+            } else {
                 throw new \PH7\Framework\Error\CException\PH7BadMethodCallException('The file could not be uploaded. Possibly too large.');
-        }
-        else
-        {
+            }
+        } else {
             return (in_array($this->sType, $this->aAllowedTypes));
         }
     }
@@ -120,8 +115,9 @@ class Video extends F\Upload
         $sParams = ''; // By default, we don't use parameter
 
         $sType = $this->oFile->getFileExt($sFile); // Get the new format
-        if ($sType == 'mp4')
+        if ($sType == 'mp4') {
             $sParams = '-c copy -copyts';
+        }
 
         exec("$this->sFfmpegPath -i {$this->aFile['tmp_name']} $sParams $sFile");
         return $sFile;
@@ -148,9 +144,9 @@ class Video extends F\Upload
      */
     public function getDuration()
     {
-         $sTime = exec($this->sFfmpegPath . ' -i ' . $this->aFile['tmp_name'] . ' 2>&1 | grep "Duration" | cut -d \' \' -f 4 | sed s/,//');
-         return Various::timeToSec($sTime);
-     }
+        $sTime = exec($this->sFfmpegPath . ' -i ' . $this->aFile['tmp_name'] . ' 2>&1 | grep "Duration" | cut -d \' \' -f 4 | sed s/,//');
+        return Various::timeToSec($sTime);
+    }
 
     /**
      * Get Type Video File.
@@ -177,5 +173,4 @@ class Video extends F\Upload
             $this->aFile
         );
     }
-
 }

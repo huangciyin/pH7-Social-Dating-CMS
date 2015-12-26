@@ -24,5 +24,4 @@ class SearchVisitorForm
         $oForm->addElement(new \PFBC\Element\Button(t('Search'),'submit', array('icon' => 'search')));
         $oForm->render();
     }
-
 }

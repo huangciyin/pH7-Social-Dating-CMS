@@ -20,15 +20,11 @@ class Blog extends WriteCore
      */
     public function setThumb($oPost, File $oFile)
     {
-        if (!empty($_FILES['thumb']['tmp_name']))
-        {
+        if (!empty($_FILES['thumb']['tmp_name'])) {
             $oImage = new Framework\Image\Image($_FILES['thumb']['tmp_name']);
-            if (!$oImage->validate())
-            {
+            if (!$oImage->validate()) {
                 \PFBC\Form::setError('form_blog', Form::wrongImgFileTypeMsg());
-            }
-            else
-            {
+            } else {
                 /**
                  * The method deleteFile first test if the file exists, if so it delete the file.
                  */
@@ -69,5 +65,4 @@ class Blog extends WriteCore
     {
         return (preg_match('#^' . Config::getInstance()->values['module.setting']['post_id.pattern'] . '$#', $sPostId) && !(new BlogModel)->postIdExists($sPostId));
     }
-
 }

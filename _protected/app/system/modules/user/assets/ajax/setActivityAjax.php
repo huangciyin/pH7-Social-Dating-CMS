@@ -12,7 +12,6 @@ namespace PH7;
 defined('PH7') or exit('Restricted access');
 
 // Only for members
-if(UserCore::auth())
-{
+if (UserCore::auth()) {
     (new UserCoreModel)->setLastActivity((new Framework\Session\Session)->get('member_id'));
 }

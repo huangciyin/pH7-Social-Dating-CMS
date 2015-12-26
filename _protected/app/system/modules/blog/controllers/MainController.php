@@ -38,14 +38,11 @@ class MainController extends Controller
             oPage->getNbItemsByPage());
         $this->setMenuVars();
 
-        if (empty($oPosts))
-        {
+        if (empty($oPosts)) {
             $this->sTitle = t('Empty Blog');
             $this->notFound(false); // We disable the HTTP error code 404 for Ajax requests running
             $this->view->error = t('Oops! Empty Blog...'); // We change the error message
-        }
-        else
-        {
+        } else {
             $this->view->posts = $oPosts;
         }
 
@@ -54,12 +51,10 @@ class MainController extends Controller
 
     public function read($sPostId)
     {
-        if (!empty($sPostId))
-        {
+        if (!empty($sPostId)) {
             $oPost = $this->oBlogModel->readPost($sPostId);
 
-            if (!empty($oPost->postId) && $this->str->equals($sPostId, $oPost->postId))
-            {
+            if (!empty($oPost->postId) && $this->str->equals($sPostId, $oPost->postId)) {
                 $aVars = [
                     /***** META TAGS *****/
                     'page_title' => $oPost->pageTitle,
@@ -87,15 +82,11 @@ class MainController extends Controller
 
                 // Set Blogs Post Views Statistics
                 Framework\Analytics\Statistic::setView($oPost->blogId, 'Blogs');
-            }
-            else
-            {
+            } else {
                 $this->sTitle = t('No Blog Found');
                 $this->notFound();
             }
-        }
-        else
-        {
+        } else {
             Framework\Url\Header::redirect(Framework\Mvc\Router\Uri::get('blog', 'main', 'index'));
         }
 
@@ -117,13 +108,10 @@ class MainController extends Controller
         $this->setMenuVars();
 
         $sCategoryTxt = substr($sCategory, 0, 60);
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('No "%0%" category found!', $sCategoryTxt);
             $this->notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Search by Category: "%0%" Blog', $sCategoryTxt);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -159,13 +147,10 @@ class MainController extends Controller
             getFirstItem(), $this->oPage->getNbItemsByPage());
         $this->setMenuVars();
 
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('Sorry, Your search returned no results!');
             $this->notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Dating Social Blog - Your search returned');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -204,8 +189,9 @@ class MainController extends Controller
      */
     protected function notFound($b404Status = true)
     {
-        if ($b404Status)
+        if ($b404Status) {
             Framework\Http\Http::setHeadersByCode(404);
+        }
         $this->view->page_title = $this->sTitle;
         $this->view->h2_title = $this->sTitle;
         $this->view->error = t('Sorry, we weren\'t able to find the page you requested.<br />
@@ -218,5 +204,4 @@ class MainController extends Controller
     {
         unset($this->oBlogModel, $this->oPage, $this->sTitle, $this->iTotalBlogs);
     }
-
 }

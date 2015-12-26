@@ -16,5 +16,4 @@ class Phone extends Textbox
         $this->validation[] = new \PFBC\Validation\Phone;
         parent::render();
     }
-
 }

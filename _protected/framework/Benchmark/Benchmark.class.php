@@ -153,5 +153,4 @@ class Benchmark
 
         return sprintf($format, $time, $unit);
     }
-
 }

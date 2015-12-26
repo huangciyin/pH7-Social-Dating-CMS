@@ -29,8 +29,9 @@ final class HashList extends File implements IHashList, IHash
      */
     public function get($sName)
     {
-        if(isset(self::$_aData[$sName]))
+        if (isset(self::$_aData[$sName])) {
             return $this->unserialize($this->read())[$sName];
+        }
 
         return null;
     }
@@ -47,5 +48,4 @@ final class HashList extends File implements IHashList, IHash
         self::$_aData[$sName] = $sValue;
         $this->write($this->serialize(self::$_aData));
     }
-
 }

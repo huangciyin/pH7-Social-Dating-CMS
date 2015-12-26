@@ -69,7 +69,6 @@ class Acl
         return in_array($oRole->sName, $oResource->aAllowed);
     }
 
-
     /**
      * @desc Get a resource
      * @param string $sName
@@ -79,10 +78,8 @@ class Acl
     {
         $rResource = null;
 
-        foreach ($this->aResources as $r)
-        {
-            if ($r->getName() == $sName)
-            {
+        foreach ($this->aResources as $r) {
+            if ($r->getName() == $sName) {
                 $rResource = $r;
                 break;
             }
@@ -97,10 +94,8 @@ class Acl
      */
     public function getRole($sName)
     {
-        foreach ($this->aRoles as $r)
-        {
-            if ($r->getName() == $sName)
-            {
+        foreach ($this->aRoles as $r) {
+            if ($r->getName() == $sName) {
                 $rRole = $r;
                 break;
             }

@@ -17,7 +17,9 @@ class LostPwdDesignCore
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Get the link "forgot password".
@@ -30,10 +32,10 @@ class LostPwdDesignCore
     {
         $sHtml = '<a rel="nofollow" href="' . Uri::get('lost-password','main','forgot',$sMod) . '">' . t('Forgot your password?') . '</a>';
 
-        if ($bPrint)
+        if ($bPrint) {
             echo $sHtml;
-        else
+        } else {
             return $sHtml;
+        }
     }
-
 }

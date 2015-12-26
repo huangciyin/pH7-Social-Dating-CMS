@@ -22,12 +22,11 @@ function get_dir_list($sDir)
 {
     $aDirList = array();
 
-    if ($rHandle = opendir($sDir))
-    {
-        while (false !== ($sFile = readdir($rHandle)))
-        {
-            if ($sFile != '.' && $sFile != '..' && is_dir($sDir . '/' . $sFile))
+    if ($rHandle = opendir($sDir)) {
+        while (false !== ($sFile = readdir($rHandle))) {
+            if ($sFile != '.' && $sFile != '..' && is_dir($sDir . '/' . $sFile)) {
                 $aDirList[] = $sFile;
+            }
         }
         closedir($rHandle);
         asort($aDirList);
@@ -45,9 +44,11 @@ function get_dir_list($sDir)
 function is_directory($sDir)
 {
     $sPathProtected = check_ext_start(check_ext_end(trim($sDir)));
-    if (is_dir($sPathProtected))
-        if (is_readable($sPathProtected))
+    if (is_dir($sPathProtected)) {
+        if (is_readable($sPathProtected)) {
             return true;
+        }
+    }
     return false;
 }
 
@@ -96,10 +97,15 @@ function validate_name($sName, $iMin = 2, $iMax = 20)
  */
 function validate_username($sUsername, $iMin = 3, $iMax = 30)
 {
-    if (mb_strlen($sUsername) < $iMin) return 1;
-    elseif (mb_strlen($sUsername) > $iMax) return 2;
-    elseif (preg_match('/[^\w]+$/', $sUsername)) return 3;
-    else return 0;
+    if (mb_strlen($sUsername) < $iMin) {
+        return 1;
+    } elseif (mb_strlen($sUsername) > $iMax) {
+        return 2;
+    } elseif (preg_match('/[^\w]+$/', $sUsername)) {
+        return 3;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -112,11 +118,17 @@ function validate_username($sUsername, $iMin = 3, $iMax = 30)
  */
 function validate_password($sPassword, $iMin = 6, $iMax = 92)
 {
-    if (mb_strlen($sPassword) < $iMin) return 1;
-    elseif (mb_strlen($sPassword) > $iMax) return 2;
-    elseif (!preg_match('/[0-9]{1,}/', $sPassword)) return 3;
-    elseif (!preg_match('/[A-Z]{1,}/', $sPassword)) return 4;
-    else return 0;
+    if (mb_strlen($sPassword) < $iMin) {
+        return 1;
+    } elseif (mb_strlen($sPassword) > $iMax) {
+        return 2;
+    } elseif (!preg_match('/[0-9]{1,}/', $sPassword)) {
+        return 3;
+    } elseif (!preg_match('/[A-Z]{1,}/', $sPassword)) {
+        return 4;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -162,9 +174,11 @@ function find($sText, $sWord)
  */
 function filled_out($aVars)
 {
-    foreach ($aVars as $sKey => $sVal)
-        if (empty($sKey) || trim($sVal) == '')
+    foreach ($aVars as $sKey => $sVal) {
+        if (empty($sKey) || trim($sVal) == '') {
             return false;
+        }
+    }
     return true;
 }
 
@@ -206,7 +220,9 @@ function delete_dir($sPath)
  */
 function exec_query_file($oDb, $sSqlFile)
 {
-    if (!is_file($sSqlFile)) return false;
+    if (!is_file($sSqlFile)) {
+        return false;
+    }
 
     $sSqlContent = file_get_contents($sSqlFile);
     $sSqlContent = str_replace(PH7_TABLE_PREFIX, $_SESSION['db']['prefix'], $sSqlContent);
@@ -234,12 +250,13 @@ function remove_install_dir()
  */
 function client_ip()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $sIp = $_SERVER['HTTP_CLIENT_IP'];
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $sIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else
+    } else {
         $sIp = $_SERVER['REMOTE_ADDR'];
+    }
 
     return preg_match('/^[a-z0-9:.]{7,}$/', $sIp) ? $sIp : '0.0.0.0';
 }
@@ -284,15 +301,17 @@ function generate_hash($iLength = 80)
  */
 function is_url_rewrite()
 {
-    if (!is_file(PH7_ROOT_INSTALL . '.htaccess')) return false;
+    if (!is_file(PH7_ROOT_INSTALL . '.htaccess')) {
+        return false;
+    }
 
     // Check if mod_rewrite is installed and is configured to be used via .htaccess
-    if (!$bIsRewrite = (strtolower(getenv('HTTP_MOD_REWRITE')) == 'on'))
-    {
+    if (!$bIsRewrite = (strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')) {
         $sOutputMsg = 'mod_rewrite Works!';
 
-        if (!empty($_GET['a']) && $_GET['a'] == 'test_mod_rewrite')
+        if (!empty($_GET['a']) && $_GET['a'] == 'test_mod_rewrite') {
             exit($sOutputMsg);
+        }
 
         $sPage = @file_get_contents(PH7_URL_INSTALL . 'test_mod_rewrite');
 
@@ -345,8 +364,7 @@ function zip_extract($sFile, $sDir)
 
     $mRes = $oZip->open($sFile);
 
-    if ($mRes === true)
-    {
+    if ($mRes === true) {
         $oZip->extractTo($sDir);
         $oZip->close();
         return true;
@@ -412,8 +430,9 @@ function send_mail($aParams)
 EOF;
 
     // If the email sender is empty, we define the server email.
-    if (empty($aParams['from']))
+    if (empty($aParams['from'])) {
         $aParams['from'] = $_SERVER['SERVER_ADMIN'];
+    }
 
     /*** Headers ***/
     // To avoid the email goes in the spam folder of email client.

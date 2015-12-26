@@ -24,12 +24,9 @@ class ReportModel extends Framework\Mvc\Model\Engine\Model
         $rStmt->bindValue(':type', $aData['type'], \PDO::PARAM_STR);
         $rStmt->execute();
 
-        if ($rStmt->fetchColumn() > 0)
-        {
+        if ($rStmt->fetchColumn() > 0) {
             return 'already_reported';
-        }
-        else
-        {
+        } else {
             $rStmt = Db::getInstance()->prepare('INSERT INTO'.Db::prefix('Report').'(reporterId, spammerId, url, contentType, description, dateTime)
             VALUES (:reporterId, :spammerId, :url, :type, :desc, :time)');
             $rStmt->bindValue(':reporterId', $aData['reporter_id'], \PDO::PARAM_INT);
@@ -49,7 +46,9 @@ class ReportModel extends Framework\Mvc\Model\Engine\Model
 
         $sSqlId = (!empty($iId)) ? ' WHERE reportId = :id ' : ' ';
         $rStmt = Db::getInstance()->prepare('SELECT * FROM' . Db::prefix('Report') . $sSqlId . 'LIMIT :offset, :limit');
-        if (!empty($iId)) $rStmt->bindValue(':id', $iId, \PDO::PARAM_INT);
+        if (!empty($iId)) {
+            $rStmt->bindValue(':id', $iId, \PDO::PARAM_INT);
+        }
         $rStmt->bindValue(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindValue(':limit', $iLimit, \PDO::PARAM_INT);
         $rStmt->execute();
@@ -71,5 +70,4 @@ class ReportModel extends Framework\Mvc\Model\Engine\Model
         Db::free($rStmt);
         return (int) $oRow->totalRpts;
     }
-
 }

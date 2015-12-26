@@ -22,9 +22,15 @@ class ForumModel extends ForumCoreModel
         $sSqlCategoryId = (!empty($iCategoryId)) ? ' WHERE categoryId = :categoryId ' : '';
 
         $rStmt = Db::getInstance()->prepare('SELECT * FROM' . Db::prefix('ForumsCategories') . $sSqlCategoryId . 'ORDER BY title ASC' . $sSqlLimit);
-        if (!empty($iCategoryId)) $rStmt->bindParam(':categoryId', $iCategoryId, \PDO::PARAM_INT);
-        if ($bIsLimit) $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
-        if ($bIsLimit) $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
+        if (!empty($iCategoryId)) {
+            $rStmt->bindParam(':categoryId', $iCategoryId, \PDO::PARAM_INT);
+        }
+        if ($bIsLimit) {
+            $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
+        }
+        if ($bIsLimit) {
+            $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
+        }
         $rStmt->execute();
 
         return (!empty($iCategoryId)) ? $rStmt->fetch(\PDO::FETCH_OBJ) : $rStmt->fetchAll(\PDO::FETCH_OBJ);
@@ -45,13 +51,14 @@ class ForumModel extends ForumCoreModel
         $rStmt->bindValue(':forumName', $sForumName.'%', \PDO::PARAM_STR);
         $rStmt->bindValue(':forumId', $iForumId, \PDO::PARAM_INT);
 
-        if (isset($sTopicSubject, $iTopicId))
-        {
+        if (isset($sTopicSubject, $iTopicId)) {
             $rStmt->bindValue(':topicSubject', $sTopicSubject.'%', \PDO::PARAM_STR);
             $rStmt->bindValue(':topicId', $iTopicId, \PDO::PARAM_INT);
         }
 
-        if (isset($iProfileId)) $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        if (isset($iProfileId)) {
+            $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        }
         $rStmt->bindValue(':approved', $iApproved, \PDO::PARAM_INT);
         $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
         $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
@@ -248,21 +255,17 @@ class ForumModel extends ForumCoreModel
         $rStmt = Db::getInstance()->prepare('SELECT ' . $sSqlSelect . ' FROM' . Db::prefix('Forums') . 'AS f INNER JOIN' . Db::prefix('ForumsTopics') . 'AS t ON f.forumId = t.forumId LEFT JOIN' . Db::prefix('Members') . ' AS m ON t.profileId = m.profileId' . $sSqlWhere . $sSqlOrder . $sSqlLimit);
         (ctype_digit($mLooking)) ? $rStmt->bindValue(':looking', $mLooking, \PDO::PARAM_INT) : $rStmt->bindValue(':looking', '%' . $mLooking . '%', \PDO::PARAM_STR);
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         }
 
         $rStmt->execute();
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $mData = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
-        }
-        else
-        {
+        } else {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             $mData = (int) $oRow->totalTopics;
@@ -290,7 +293,9 @@ class ForumModel extends ForumCoreModel
     {
         $sSqlProfileId = (!empty($iProfileId)) ? ' WHERE profileId = :profileId' : '';
         $rStmt = Db::getInstance()->prepare('SELECT COUNT(forumId) AS totalForums FROM' . Db::prefix('Forums') . $sSqlProfileId);
-        if (!empty($iProfileId)) $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        if (!empty($iProfileId)) {
+            $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+        }
         $rStmt->execute();
         $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
         Db::free($rStmt);
@@ -413,11 +418,11 @@ class ForumModel extends ForumCoreModel
      */
      protected function getForumsIdFromCatId($iCategoryId)
      {
-        $rStmt = Db::getInstance()->prepare('SELECT forumId FROM' . Db::prefix('Forums') . 'WHERE categoryId = :categoryId');
-        $rStmt->bindValue(':categoryId', $iCategoryId, \PDO::PARAM_INT);
-        $rStmt->execute();
-        return $rStmt->fetchAll(\PDO::FETCH_OBJ);
-    }
+         $rStmt = Db::getInstance()->prepare('SELECT forumId FROM' . Db::prefix('Forums') . 'WHERE categoryId = :categoryId');
+         $rStmt->bindValue(':categoryId', $iCategoryId, \PDO::PARAM_INT);
+         $rStmt->execute();
+         return $rStmt->fetchAll(\PDO::FETCH_OBJ);
+     }
 
     /**
      * Delete Messages from Forum ID.
@@ -429,8 +434,7 @@ class ForumModel extends ForumCoreModel
     {
         $oTopicId = $this->getTopicsIdFromForumId($iForumId);
 
-        foreach ($oTopicId as $oId)
-        {
+        foreach ($oTopicId as $oId) {
             $iId = (int) $oId->topicId;
 
             $rStmt = Db::getInstance()->prepare('DELETE FROM' . Db::prefix('ForumsMessages') . 'WHERE topicId = :topicId');
@@ -449,8 +453,7 @@ class ForumModel extends ForumCoreModel
     {
         $oForumId = $this->getForumsIdFromCatId($iCategoryId);
 
-        foreach ($oForumId as $oId)
-        {
+        foreach ($oForumId as $oId) {
             $iId = (int) $oId->forumId;
 
             $this->_delMsgsFromForumId($iId);
@@ -460,5 +463,4 @@ class ForumModel extends ForumCoreModel
             $rStmt->execute();
         }
     }
-
 }

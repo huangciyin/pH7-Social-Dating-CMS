@@ -39,8 +39,9 @@ class Validate
     {
         $sType = strtolower($sType); // Case-insensitive type.
 
-        if (false === $bRequired && 0 === (new Str)->length($sValue)) // Yoga Condition ;-)
+        if (false === $bRequired && 0 === (new Str)->length($sValue)) { // Yoga Condition ;-)
             return true;
+        }
 
         switch ($sType) {
             case 'str':
@@ -102,14 +103,15 @@ class Validate
         $sValue = filter_var($sValue, FILTER_SANITIZE_STRING);
 
         if (!empty($sValue)) {
-            if (!empty($iMin) && $this->_oStr->length($sValue) < $iMin)
+            if (!empty($iMin) && $this->_oStr->length($sValue) < $iMin) {
                 return false;
-            elseif (!empty($iMax) && $this->_oStr->length($sValue) > $iMax)
+            } elseif (!empty($iMax) && $this->_oStr->length($sValue) > $iMax) {
                 return false;
-            elseif (!is_string($sValue))
+            } elseif (!is_string($sValue)) {
                 return false;
-            else
+            } else {
                 return true;
+            }
         }
         return false;
     }
@@ -126,7 +128,6 @@ class Validate
     {
         $iInt = filter_var($iInt, FILTER_SANITIZE_NUMBER_INT);
         return (filter_var($iInt, FILTER_VALIDATE_INT, static::getFilterOption($iMin, $iMax)) !== false);
-
     }
 
     /**
@@ -187,9 +188,9 @@ class Validate
      */
     public function username($sUsername, $iMin = 3, $iMax = PH7_MAX_USERNAME_LENGTH, $sTable = 'Members')
     {
-         $sUsername = trim($sUsername);
+        $sUsername = trim($sUsername);
 
-         return (preg_match('#^'.PH7_USERNAME_PATTERN.'{'.$iMin.','.$iMax.'}$#', $sUsername) && !is_file(PH7_PATH_ROOT . $sUsername . PH7_PAGE_EXT) && !Ban::isUsername($sUsername) && !(new \PH7\ExistsCoreModel)->username($sUsername, $sTable));
+        return (preg_match('#^'.PH7_USERNAME_PATTERN.'{'.$iMin.','.$iMax.'}$#', $sUsername) && !is_file(PH7_PATH_ROOT . $sUsername . PH7_PAGE_EXT) && !Ban::isUsername($sUsername) && !(new \PH7\ExistsCoreModel)->username($sUsername, $sTable));
     }
 
     /**
@@ -217,15 +218,15 @@ class Validate
     {
         $sEmail = filter_var($sEmail, FILTER_SANITIZE_EMAIL);
 
-        if($bRealHost)
-        {
+        if ($bRealHost) {
             $sEmailHost = substr(strrchr($sEmail, '@'), 1);
             // This function now works with Windows since version PHP 5.3, so we mustn't include the PEAR NET_DNS library.
-            if( !(checkdnsrr($sEmailHost, 'MX') && checkdnsrr($sEmailHost, 'A')) ) return false;
+            if ( !(checkdnsrr($sEmailHost, 'MX') && checkdnsrr($sEmailHost, 'A')) ) {
+                return false;
+            }
         }
         return (filter_var($sEmail, FILTER_VALIDATE_EMAIL) !== false && $this->_oStr->length($sEmail) <= PH7_MAX_EMAIL_LENGTH && !Ban::isEmail($sEmail));
     }
-
 
     /**
      * Validate Birthday.
@@ -237,10 +238,14 @@ class Validate
      */
     public function birthDate($sValue, $iMin = 18, $iMax = 99)
     {
-        if(empty($sValue) || !preg_match('#^\d\d/\d\d/\d\d\d\d$#', $sValue)) return false;
+        if (empty($sValue) || !preg_match('#^\d\d/\d\d/\d\d\d\d$#', $sValue)) {
+            return false;
+        }
 
         $aBirthDate = explode('/', $sValue); // Format is "mm/dd/yyyy"
-        if(!checkdate($aBirthDate[0], $aBirthDate[1], $aBirthDate[2])) return false;
+        if (!checkdate($aBirthDate[0], $aBirthDate[1], $aBirthDate[2])) {
+            return false;
+        }
 
         $iUserAge = (new \PH7\Framework\Math\Measure\Year($aBirthDate[2], $aBirthDate[0], $aBirthDate[1]))->get(); // Get the current user's age
         return ($iUserAge >= $iMin && $iUserAge <= $iMax);
@@ -257,7 +262,7 @@ class Validate
         try {
             new \DateTime($sValue);
             return true;
-        } catch(\Exception $oE) {
+        } catch (\Exception $oE) {
             return false;
         }
     }
@@ -273,11 +278,11 @@ class Validate
     {
         $sUrl = filter_var($sUrl, FILTER_SANITIZE_URL);
 
-        if (filter_var($sUrl, FILTER_VALIDATE_URL) === false || $this->_oStr->length($sUrl) >= PH7_MAX_URL_LENGTH)
+        if (filter_var($sUrl, FILTER_VALIDATE_URL) === false || $this->_oStr->length($sUrl) >= PH7_MAX_URL_LENGTH) {
             return false;
+        }
 
-        if($bRealUrl)
-        {
+        if ($bRealUrl) {
             /**
              * Checks if the URL is valid and contains the HTTP status code '200 OK', '301 Moved Permanently' or '302 Found'
              */
@@ -287,9 +292,7 @@ class Validate
             $iResponse = (int) curl_getinfo($rCurl, CURLINFO_HTTP_CODE);
             curl_close($rCurl);
             return ($iResponse === 200 || $iResponse === 301 || $iResponse === 302);
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -385,5 +388,4 @@ class Validate
     {
         return ['options' => ['min_range' => $mMin, 'max_range' => $mMax]];
     }
-
 }

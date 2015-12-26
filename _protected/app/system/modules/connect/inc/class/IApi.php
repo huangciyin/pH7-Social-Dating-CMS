@@ -47,5 +47,4 @@ interface IApi
      * @return void
      */
     public function add(array $aData, UserCoreModel $oUserModel);
-
 }

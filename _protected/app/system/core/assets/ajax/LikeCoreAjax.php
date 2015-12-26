@@ -51,20 +51,22 @@ class LikeCoreAjax
     protected function select()
     {
         $oResult = $this->_oLikeModel->select($this->_sKey);
-        if(!empty($oResult))
-        {
-            foreach($oResult as $mRow)
-            {
-                 static::$_iVotesLike = (int)$mRow->votes;
-                 $this->_fLastIpVoted = $mRow->lastIp;
+        if (!empty($oResult)) {
+            foreach ($oResult as $mRow) {
+                static::$_iVotesLike = (int)$mRow->votes;
+                $this->_fLastIpVoted = $mRow->lastIp;
             }
-            if($this->_iVote)
-                if($this->checkPerm()) $this->update();
-        }
-        else
-        {
-            if($this->_iVote)
-                if($this->checkPerm()) $this->insert();
+            if ($this->_iVote) {
+                if ($this->checkPerm()) {
+                    $this->update();
+                }
+            }
+        } else {
+            if ($this->_iVote) {
+                if ($this->checkPerm()) {
+                    $this->insert();
+                }
+            }
         }
     }
 
@@ -77,8 +79,7 @@ class LikeCoreAjax
     protected function checkPerm()
     {
         // Only for members
-        if(!UserCore::auth())
-        {
+        if (!UserCore::auth()) {
             $this->_sTxt = t('Please <b>register</b> or <b>login</b> to vote this.');
             return false;
         }
@@ -105,8 +106,7 @@ class LikeCoreAjax
      */
     protected function update()
     {
-        if($this->_fLastIpVoted != $this->_fLastIp)
-        {
+        if ($this->_fLastIpVoted != $this->_fLastIp) {
             static::$_iVotesLike++;
             $this->_oLikeModel->update($this->_sKey, $this->_fLastIp);
         }
@@ -136,7 +136,6 @@ class LikeCoreAjax
            $this->_fLastIpVoted
         );
     }
-
 }
 
 echo (new LikeCoreAjax)->show();

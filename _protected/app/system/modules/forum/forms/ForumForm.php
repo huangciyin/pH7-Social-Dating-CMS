@@ -14,18 +14,19 @@ class ForumForm
 
     public static function display()
     {
-        if (isset($_POST['submit_forum']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_forum']))
+        if (isset($_POST['submit_forum'])) {
+            if (\PFBC\Form::isValid($_POST['submit_forum'])) {
                 new ForumFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
 
         $oCategoriesData = (new ForumModel)->getCategory();
         $aCategoriesName = array();
-        foreach ($oCategoriesData as $oId)
+        foreach ($oCategoriesData as $oId) {
             $aCategoriesName[$oId->categoryId] = $oId->title;
+        }
         unset($oCategoriesData);
 
         $sTitlePattern = Config::getInstance()->values['module.setting']['url_title.pattern'];
@@ -43,5 +44,4 @@ class ForumForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

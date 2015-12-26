@@ -81,5 +81,4 @@ abstract class PermissionCore extends Framework\Core\Core
     {
         return t('Please upgrade your membership!');
     }
-
 }

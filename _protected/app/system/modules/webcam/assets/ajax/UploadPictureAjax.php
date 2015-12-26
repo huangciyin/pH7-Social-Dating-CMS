@@ -14,8 +14,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Util\Various,
 PH7\Framework\Error\CException\UserException;
@@ -32,7 +31,9 @@ class UploadPictureAjax
          */
 
         // We only need to handle POST requests:
-        if ((new Http)->getMethod() !== Http::METHOD_POST) throw new UserException('The method must be post request!');
+        if ((new Http)->getMethod() !== Http::METHOD_POST) {
+            throw new UserException('The method must be post request!');
+        }
 
         return $this;
     }
@@ -57,13 +58,12 @@ class UploadPictureAjax
         $rInput = Framework\File\Stream::getInput();
 
         // Blank image. We don't need this one.
-        if (md5($rInput) == '7d4df9cc423720b7f1f3d672b89362be')
+        if (md5($rInput) == '7d4df9cc423720b7f1f3d672b89362be') {
             exit(1);
-
+        }
 
         $rResult = file_put_contents($this->sTmpPathFile, $rInput);
-        if (!$rResult)
-        {
+        if (!$rResult) {
             echo '{
         "error"     : 1,
         "message"   : "Failed save the image. Make sure you chmod the uploads folder and its subfolders to 777."
@@ -78,8 +78,7 @@ class UploadPictureAjax
     {
         $aInfo = getimagesize($this->sTmpPathFile);
 
-        if ($aInfo['mime'] != 'image/jpeg')
-        {
+        if ($aInfo['mime'] != 'image/jpeg') {
             unlink($this->sTmpPathFile);
             throw new UserException('Image type invalid!');
         }
@@ -122,7 +121,6 @@ class UploadPictureAjax
             $this->sPath, $this->sTmpPathFile, $this->sOriginalPathFile, $this->sThumbPathFile, $this->sFile, $this->sIsManualApproval
         );
     }
-
 }
 
 // Init Class!

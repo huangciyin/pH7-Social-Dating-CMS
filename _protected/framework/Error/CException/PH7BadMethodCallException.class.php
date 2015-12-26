@@ -22,5 +22,4 @@ class PH7BadMethodCallException extends \BadMethodCallException
     {
         static::init($sMsg);
     }
-
 }

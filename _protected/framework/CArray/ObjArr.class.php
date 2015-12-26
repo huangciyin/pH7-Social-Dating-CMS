@@ -16,7 +16,7 @@ defined('PH7') or exit('Restricted access');
 class ObjArr
 {
 
-     /**
+    /**
       * Converting an Array to an Object.
       *
       * @static
@@ -26,14 +26,14 @@ class ObjArr
     public static function toObject(array $aArr)
     {
         $oData = new \stdClass;
-        if (is_array($aArr))
-        {
-            foreach ($aArr as $sKey => $mVal)
-            {
-                if (is_array($mVal))
-                    $oData->$sKey = self::toObject($mVal); // Recursive method
-                else
+        if (is_array($aArr)) {
+            foreach ($aArr as $sKey => $mVal) {
+                if (is_array($mVal)) {
+                    $oData->$sKey = self::toObject($mVal);
+                } // Recursive method
+                else {
                     $oData->$sKey = $mVal;
+                }
             }
         }
         return $oData;
@@ -48,14 +48,13 @@ class ObjArr
      */
     public static function toArray($oObj)
     {
-        if (is_array($oObj) || is_object($oObj))
-        {
+        if (is_array($oObj) || is_object($oObj)) {
             $aRes = array();
-            foreach ($oObj as $sKey => $sVal)
-                $aRes[$sKey] = self::toArray($sVal); // Recursive method
+            foreach ($oObj as $sKey => $sVal) {
+                $aRes[$sKey] = self::toArray($sVal);
+            } // Recursive method
             return $aRes;
         }
         return $oObj;
     }
-
 }

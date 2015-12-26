@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or die('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mail\Mail,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
@@ -33,39 +32,24 @@ class MailFormProcess extends Form
         $iRecipientId = $oUserModel->getId(null, $sRecipient);
         $iSenderId = (int) ($bIsAdmin ? PH7_ADMIN_ID : $this->session->get('member_id'));
 
-        if ($iSenderId == $iRecipientId)
-        {
+        if ($iSenderId == $iRecipientId) {
             \PFBC\Form::setError('form_compose_mail', t('Oops! You can not send a message to yourself.'));
-        }
-        elseif ($sRecipient == PH7_ADMIN_USERNAME)
-        {
+        } elseif ($sRecipient == PH7_ADMIN_USERNAME) {
             \PFBC\Form::setError('form_compose_mail', t('Oops! You cannot reply to administrator! If you want to contact us, please use our <a href="%0%">contact form</a>.', Uri::get('contact', 'contact', 'index')));
-        }
-        elseif ( ! (new ExistsCoreModel)->id($iRecipientId, 'Members') )
-        {
+        } elseif ( ! (new ExistsCoreModel)->id($iRecipientId, 'Members') ) {
             \PFBC\Form::setError('form_compose_mail', t('Oops! The username "%0%" does not exist.', escape(substr($this->httpRequest->post('recipient'),0, PH7_MAX_USERNAME_LENGTH), true)));
-        }
-        elseif (!$bIsAdmin && !$oMailModel->checkWaitSend($iSenderId, $iTimeDelay, $sCurrentTime))
-        {
+        } elseif (!$bIsAdmin && !$oMailModel->checkWaitSend($iSenderId, $iTimeDelay, $sCurrentTime)) {
             \PFBC\Form::setError('form_compose_mail', Form::waitWriteMsg($iTimeDelay));
-        }
-        elseif (!$bIsAdmin && $oMailModel->isDuplicateContent($iSenderId, $sMessage))
-        {
+        } elseif (!$bIsAdmin && $oMailModel->isDuplicateContent($iSenderId, $sMessage)) {
             \PFBC\Form::setError('form_compose_mail', Form::duplicateContentMsg());
-        }
-        else
-        {
+        } else {
             $mSendMsg = $oMailModel->sendMsg($iSenderId, $iRecipientId, $this->httpRequest->post('title'), $sMessage, $sCurrentTime);
 
-            if (false === $mSendMsg)
-            {
+            if (false === $mSendMsg) {
                 \PFBC\Form::setError('form_compose_mail', t('Problem while sending the message. Please try again later.'));
-            }
-            else
-            {
+            } else {
                 // If the notification is accepted and the message recipient isn't connected NOW, we send a message.
-                if (!$oUserModel->isNotification($iRecipientId, 'newMsg') && $oUserModel->isOnline($iRecipientId, 0))
-                {
+                if (!$oUserModel->isNotification($iRecipientId, 'newMsg') && $oUserModel->isOnline($iRecipientId, 0)) {
                     $this->view->content = t('Hello %0%!<br />You have received a new message from <strong>%1%</strong>.<br /> <a href="%2%">Click here</a> to read your message.', $this->httpRequest->post('recipient'), $this->session->get('member_username'), Uri::get('mail', 'main', 'inbox', $mSendMsg));
 
                     $sRecipientEmail = $oUserModel->getEmail($iRecipientId);
@@ -87,5 +71,4 @@ class MailFormProcess extends Form
             unset($oUserModel, $oMailModel);
         }
     }
-
 }

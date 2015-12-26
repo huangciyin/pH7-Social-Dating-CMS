@@ -67,5 +67,4 @@ class State extends Select
 
         parent::__construct($sLabel, $sName, $aOptions, $aProperties);
     }
-
 }

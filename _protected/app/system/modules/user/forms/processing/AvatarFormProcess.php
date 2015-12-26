@@ -19,30 +19,23 @@ class AvatarFormProcess extends Form
 
         $iApproved = (AdminCore::auth() || DbConfig::getSetting('avatarManualApproval') == 0) ? '1' : '0';
 
-        if (AdminCore::auth() && !User::auth() && $this->httpRequest->getExists( array('profile_id', 'username') ))
-        {
+        if (AdminCore::auth() && !User::auth() && $this->httpRequest->getExists( array('profile_id', 'username') )) {
             $iProfileId = $this->httpRequest->get('profile_id');
             $sUsername = $this->httpRequest->get('username');
-        }
-        else
-        {
+        } else {
             $iProfileId = $this->session->get('member_id');
             $sUsername = $this->session->get('member_username');
         }
 
         $bAvatar = (new UserCore)->setAvatar($iProfileId, $sUsername, $_FILES['avatar']['tmp_name'], $iApproved);
 
-        if (!$bAvatar)
-        {
+        if (!$bAvatar) {
             \PFBC\Form::setError('form_avatar', Form::wrongImgFileTypeMsg());
-        }
-        else
-        {
+        } else {
             $sModerationText = t('Your avatar has been received! But it will not be visible until it is approved by our moderators. Please do not send a new not.');
             $sText =  t('Your avatar has been updated successfully!');
             $sMsg = ($iApproved == '0') ? $sModerationText : $sText;
             \PFBC\Form::setSuccess('form_avatar', $sMsg);
         }
     }
-
 }

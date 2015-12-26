@@ -78,5 +78,4 @@ class CDateTime
     {
         unset($this->_oConfig, $this->_oDateTime);
     }
-
 }

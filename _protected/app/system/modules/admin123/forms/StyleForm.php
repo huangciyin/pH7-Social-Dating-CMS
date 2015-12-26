@@ -14,10 +14,10 @@ class StyleForm
 
     public static function display()
     {
-        if (isset($_POST['submit_style']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_style']))
+        if (isset($_POST['submit_style'])) {
+            if (\PFBC\Form::isValid($_POST['submit_style'])) {
                 new StyleFormProcess;
+            }
             Framework\Url\Header::redirect();
         }
 
@@ -29,5 +29,4 @@ class StyleForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

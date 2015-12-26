@@ -195,8 +195,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
         // call compiler
         try {
             $code = $this->compiler->compileTemplate($this);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             // restore old timestamp in case of error
             if ($this->smarty->compile_locking && !$this->source->recompiled && $saved_timestamp) {
                 touch($this->compiled->filepath, $saved_timestamp);

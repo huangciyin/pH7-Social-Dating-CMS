@@ -55,10 +55,7 @@ class CountryController extends Controller
             $this->view->h1_title = t('Meet new people in %0% %1%', '<span class="pH1">'.$this->registry->country.'</span>', '<span class="pH1">'.$this->registry->city.'</span>');
             $sMemberTxt = nt('%n% member', '%n% members', $iTotalUsers);
             $this->view->h3_title = t('%0% lives near %1% %2%', $sMemberTxt, $this->registry->country, $this->registry->city);
-
-        }
-        else
-        {
+        } else {
             // Not found page
             Framework\Http\Http::setHeadersByCode(404);
             $this->view->error = t('Error, country is empty.');
@@ -72,5 +69,4 @@ class CountryController extends Controller
         $sCountryCode = Framework\CArray\CArray::getKeyByValIgnoreCase($this->registry->country, $this->registry->lang);
         return (strlen($sCountryCode) == 2) ? $sCountryCode : substr($this->registry->country, 0, 2);
     }
-
 }

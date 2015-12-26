@@ -39,13 +39,10 @@ class MainController extends Controller
         $oGames = $this->oGameModel->get(null, null, $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
         $this->setMenuVars();
 
-        if (empty($oGames))
-        {
+        if (empty($oGames)) {
             $this->sTitle = t('No Games Found!');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->view->page_title = t('Games Zone - Free Games');
             $this->view->h1_title = t('Games Zone Party');
             $this->view->meta_description = t('Free Games for Gamers, Flash Games, Free Online Games');
@@ -61,13 +58,10 @@ class MainController extends Controller
     {
         $oGame = $this->oGameModel->get(strstr($this->httpRequest->get('title'), '-', true), $this->httpRequest->get('id'), 0, 1);
 
-        if (empty($oGame))
-        {
+        if (empty($oGame)) {
             $this->sTitle = t('No Games Found!');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Game - %0%', substr($oGame->description, 0, 100));
             $this->view->page_title = t('%0% Games Zone - %1%', $oGame->name, $oGame->title);
             $this->view->h1_title = $oGame->title;
@@ -98,13 +92,10 @@ class MainController extends Controller
         $this->setMenuVars();
 
         $sCategoryTxt = substr($sCategory,0,60);
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('No "%0%" category found.', $sCategoryTxt);
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Search by Category: "%0%" Game', $sCategoryTxt);
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -136,13 +127,10 @@ class MainController extends Controller
         $oSearch = $this->oGameModel->search($this->httpRequest->get('looking'), false, $this->httpRequest->get('order'), $this->httpRequest->get('sort'), $this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage());
         $this->setMenuVars();
 
-        if (empty($oSearch))
-        {
+        if (empty($oSearch)) {
             $this->sTitle = t('Sorry, Your search returned no results!');
             $this->_notFound();
-        }
-        else
-        {
+        } else {
             $this->sTitle = t('Game - Your search returned');
             $this->view->page_title = $this->sTitle;
             $this->view->h2_title = $this->sTitle;
@@ -159,17 +147,14 @@ class MainController extends Controller
 
     public function download()
     {
-        if ($this->httpRequest->getExists('id'))
-        {
+        if ($this->httpRequest->getExists('id')) {
             $iId = $this->httpRequest->get('id');
 
-            if (is_numeric($iId))
-            {
+            if (is_numeric($iId)) {
                 $sFile = @$this->oGameModel->getFile($iId);
                 $sPathFile = PH7_PATH_PUBLIC_DATA_SYS_MOD . 'game/file/' . $sFile;
 
-                if (!empty($sFile) && is_file($sPathFile))
-                {
+                if (!empty($sFile) && is_file($sPathFile)) {
                     $sFileName = basename($sFile);
                     $this->file->download($sPathFile, $sFileName);
                     $this->oGameModel->setDownloadStat($iId);
@@ -210,10 +195,8 @@ class MainController extends Controller
         $this->view->error = $this->sTitle . '<br />' . t('Please return to the <a href="%0%">main game page</a> or <a href="%1%">the previous page</a>.', Framework\Mvc\Router\Uri::get('game','main','index'), 'javascript:history.back();');
     }
 
-
     public function __destruct()
     {
         unset($this->oGameModel, $this->oPage, $this->sTitle, $this->sMetaKeywords, $this->iTotalGames);
     }
-
 }

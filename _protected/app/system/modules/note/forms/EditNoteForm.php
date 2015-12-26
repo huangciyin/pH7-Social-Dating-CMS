@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Str\Str,
+use PH7\Framework\Str\Str,
 PH7\Framework\Session\Session,
 PH7\Framework\Security\CSRF\Token,
 PH7\Framework\Mvc\Request\Http,
@@ -19,11 +18,10 @@ class EditNoteForm
 
     public static function display()
     {
-
-        if (isset($_POST['submit_edit_note']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_note']))
+        if (isset($_POST['submit_edit_note'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_note'])) {
                 new EditNoteFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -36,20 +34,21 @@ class EditNoteForm
         $sPostId = $oNoteModel->getPostId($iNoteId);
         $oPost = $oNoteModel->readPost($sPostId, $iProfileId);
 
-        if (!empty($oPost) && (new Str)->equals($iNoteId, $oPost->noteId))
-        {
+        if (!empty($oPost) && (new Str)->equals($iNoteId, $oPost->noteId)) {
             $oCategoriesData = $oNoteModel->getCategory(null, 0, 300);
 
             $aCategoriesName = array();
-            foreach ($oCategoriesData as $oId)
+            foreach ($oCategoriesData as $oId) {
                 $aCategoriesName[$oId->categoryId] = $oId->name;
+            }
 
             $aSelectedCategories = array();
             $oCategoryId = $oNoteModel->getCategory($iNoteId, 0, 300);
             unset($oNoteModel);
 
-            foreach ($oCategoryId as $iId)
+            foreach ($oCategoryId as $iId) {
                 $aSelectedCategories[] = $iId->categoryId;
+            }
 
             $oForm = new \PFBC\Form('form_note', 650);
             $oForm->configure(array('action' => ''));
@@ -65,11 +64,13 @@ class EditNoteForm
             $oForm->addElement(new \PFBC\Element\Textbox(t('Slogan:'), 'slogan', array('value' => $oPost->slogan, 'validation' => new \PFBC\Validation\Str(2, 200))));
             $oForm->addElement(new \PFBC\Element\File(t('Thumbnail:'), 'thumb', array('accept' => 'image/*')));
 
-            if (!empty($oPost->thumb))
+            if (!empty($oPost->thumb)) {
                 $oForm->addElement(new \PFBC\Element\HTMLExternal('<p><br /><img src="' . PH7_URL_DATA_SYS_MOD . 'note/' . PH7_IMG . $oPost->username . PH7_SH . $oPost->thumb . '" alt="' . t('Thumbnail') . '" title="' . t('The current thumbnail of your post.') . '" class="avatar" /></p>'));
+            }
 
-            if (!empty($oPost->thumb))
+            if (!empty($oPost->thumb)) {
                 $oForm->addElement(new \PFBC\Element\HTMLExternal('<a href="' . Uri::get('note', 'main', 'removethumb', $oPost->noteId . (new Token)->url(), false) . '">' . t('Remove this thumbnail?') . '</a>'));
+            }
 
             $oForm->addElement(new \PFBC\Element\Textbox(t('Tags:'), 'tags', array('value' => $oPost->tags, 'description' => t('Separate keywords by commas and without spaces between the commas.'), 'validation' => new \PFBC\Validation\Str(2, 200))));
             $oForm->addElement(new \PFBC\Element\Textbox(t('Title (meta tag):'), 'page_title', array('value' => $oPost->pageTitle, 'validation' => new \PFBC\Validation\Str(2, 100), 'required' => 1)));
@@ -82,10 +83,8 @@ class EditNoteForm
             $oForm->addElement(new \PFBC\Element\Button);
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="' . PH7_URL_TPL_SYS_MOD . 'note/' . PH7_TPL . PH7_TPL_MOD_NAME . PH7_SH . PH7_JS . 'common.js"></script>'));
             $oForm->render();
-        }
-        else
+        } else {
             echo '<p class="center bold">' . t('Post Not Found!') . '</p>';
+        }
     }
-
 }
-

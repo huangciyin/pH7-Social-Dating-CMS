@@ -35,13 +35,14 @@ final class Version
     const PFBC_VERSION = '2.3';
     const PFBC_RELASE_DATE = '2011-09-22';
 
-
     /**
      * Private constructor to prevent instantiation of class since it's a static class.
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Gets information on the lastest software version.
@@ -51,15 +52,14 @@ final class Version
     public static function getLatestInfo()
     {
         $oCache = (new \PH7\Framework\Cache\Cache)->start('str/security', 'version-info', 3600*24); // Stored for 1 day
-        if(!$mData = $oCache->get())
-        {
+        if (!$mData = $oCache->get()) {
             $oDom = new \DOMDocument;
-            if(!@$oDom->load(self::LATEST_VERSION_URL)) return false;
+            if (!@$oDom->load(self::LATEST_VERSION_URL)) {
+                return false;
+            }
 
-            foreach($oDom->getElementsByTagName('ph7') as $oSoft)
-            {
-                foreach($oSoft->getElementsByTagName('social-dating-cms') as $oInfo)
-                {
+            foreach ($oDom->getElementsByTagName('ph7') as $oSoft) {
+                foreach ($oSoft->getElementsByTagName('social-dating-cms') as $oInfo) {
                     $bIsAlert = (new Validate)->bool($oInfo->getElementsByTagName('upd-alert')->item(0)->nodeValue);
                     $sVerName = $oInfo->getElementsByTagName('name')->item(0)->nodeValue;
                     $sVerNumber = $oInfo->getElementsByTagName('version')->item(0)->nodeValue;
@@ -83,7 +83,9 @@ final class Version
      */
     public static function isUpdates()
     {
-        if(!$aLatestInfo = self::getLatestInfo()) return false;
+        if (!$aLatestInfo = self::getLatestInfo()) {
+            return false;
+        }
 
         $bIsAlert = $aLatestInfo['is_alert'];
         $sLastName = $aLatestInfo['name'];
@@ -91,19 +93,19 @@ final class Version
         $sLastBuild = $aLatestInfo['build'];
         unset($aLatestInfo);
 
-        if(!$bIsAlert || !is_string($sLastName) || !preg_match('#^' . self::PATTERN . '$#', $sLastVer)) return false;
-
-        if(version_compare(Kernel::SOFTWARE_VERSION, $sLastVer, '=='))
-        {
-            if(version_compare(Kernel::SOFTWARE_BUILD, $sLastBuild, '<'))
-                return true;
+        if (!$bIsAlert || !is_string($sLastName) || !preg_match('#^' . self::PATTERN . '$#', $sLastVer)) {
+            return false;
         }
-        else
-        {
-            if(version_compare(Kernel::SOFTWARE_VERSION, $sLastVer, '<'))
+
+        if (version_compare(Kernel::SOFTWARE_VERSION, $sLastVer, '==')) {
+            if (version_compare(Kernel::SOFTWARE_BUILD, $sLastBuild, '<')) {
                 return true;
+            }
+        } else {
+            if (version_compare(Kernel::SOFTWARE_VERSION, $sLastVer, '<')) {
+                return true;
+            }
         }
         return false;
     }
-
 }

@@ -25,5 +25,4 @@ class EditAlbumFormProcess extends Form
 
         Header::redirect(Uri::get('video', 'main', 'albums', $this->session->get('member_username'), $iAlbumId), t('Your album has been updated successfully!'));
     }
-
 }

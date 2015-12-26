@@ -66,7 +66,6 @@ class Mail
         return $iResult;
     }
 
-
     /**
      * Send an email with the native PHP mail() function in text and HTML format.
      *
@@ -76,8 +75,9 @@ class Mail
     protected function phpMail(array $aParams)
     {
         // If the email sender is empty, we define the server email.
-        if (empty($aParams['from']))
+        if (empty($aParams['from'])) {
             $aParams['from'] = $_SERVER['SERVER_ADMIN'];
+        }
 
         /*** Headers ***/
         // To avoid the email goes in the spam folder of email client.
@@ -90,5 +90,4 @@ class Mail
         /** Send Email ***/
         return @mail($aParams['to'], $aParams['subject'], $aParams['body'], $sHeaders);
     }
-
 }

@@ -63,7 +63,9 @@ class Various
         // Remember to change this path to suit your system
         $sDir = PH7_PATH_FRAMEWORK . 'Translate/Dict/';
         $sDict = (file_exists($sDir . PH7_LANG_CODE)) ? PH7_LANG_CODE : PH7_DEFAULT_LANG_CODE;
-        if (!$rHandle = @fopen($sDir . $sDict, 'r')) return false;
+        if (!$rHandle = @fopen($sDir . $sDict, 'r')) {
+            return false;
+        }
         $iSize = filesize($sDir . $sDict);
 
         // Go to a random location in dictionary
@@ -71,16 +73,16 @@ class Various
         fseek($rHandle, $iRandLocation);
 
         // Get the next whole word of the right length in the file
-        do
-        {
+        do {
             $iWordLength = (new \PH7\Framework\Str\Str)->length($sWord);
 
-            if (feof($rHandle)) fseek($rHandle, 0); // if at end, go to start
+            if (feof($rHandle)) {
+                fseek($rHandle, 0);
+            } // if at end, go to start
 
             $sWord = fgets($rHandle, 80);  // skip first word as it could be partial
             $sWord = fgets($rHandle, 80);  // the potential password
-        }
-        while ( ($iWordLength < $iMinLength) || ($iWordLength > $iMaxLength) || (strstr($sWord, "'")) );
+        } while ( ($iWordLength < $iMinLength) || ($iWordLength > $iMaxLength) || (strstr($sWord, "'")) );
 
         fclose($rHandle);
 
@@ -90,5 +92,4 @@ class Various
         $iRandNumber = mt_rand(0, 999);
         return $sWord . $iRandNumber;
     }
-
 }

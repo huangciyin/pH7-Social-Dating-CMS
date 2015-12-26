@@ -14,28 +14,28 @@ class Select extends \PFBC\OptionElement
     {
         $sAttr = ($this->isRequired()) ? ' required="required"' : '';
 
-        if (isset($this->attributes['value']))
-        {
-            if (!is_array($this->attributes['value']))
+        if (isset($this->attributes['value'])) {
+            if (!is_array($this->attributes['value'])) {
                 $this->attributes['value'] = array($this->attributes['value']);
-        }
-        else
+            }
+        } else {
             $this->attributes['value'] = array();
+        }
 
-        if (!empty($this->attributes['multiple']) && substr($this->attributes['name'], -2) != '[]')
+        if (!empty($this->attributes['multiple']) && substr($this->attributes['name'], -2) != '[]') {
             $this->attributes['name'] .= '[]';
+        }
 
         echo '<select', $this->getAttributes(array('value', 'selected')), $sAttr, '>';
-        foreach ($this->options as $value => $text)
-        {
+        foreach ($this->options as $value => $text) {
             $value = $this->getOptionValue($value);
             echo '<option value="', $this->filter($value), '"';
             $selected = false;
-            if (in_array($value, $this->attributes['value']))
+            if (in_array($value, $this->attributes['value'])) {
                 echo ' selected="selected"';
+            }
             echo '>', $text, '</option>';
         }
         echo '</select>';
     }
-
 }

@@ -20,5 +20,4 @@ class Db extends \PDO
         parent::__construct("{$aParams['db_type']}:host={$aParams['db_hostname']};dbname={$aParams['db_name']};", $aParams['db_username'], $aParams['db_password'], $aDriverOptions);
         $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
-
 }

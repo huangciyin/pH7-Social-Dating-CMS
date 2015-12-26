@@ -14,10 +14,10 @@ class MembershipForm
 
     public static function display()
     {
-        if (isset($_POST['submit_membership']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_membership']))
+        if (isset($_POST['submit_membership'])) {
+            if (\PFBC\Form::isValid($_POST['submit_membership'])) {
                 new MembershipFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -30,8 +30,7 @@ class MembershipForm
         $oForm->addElement(new \PFBC\Element\Textarea(t('Description:'), 'description', array('required'=>1, 'validation' => new \PFBC\Validation\Str(5, 255))));
 
         $aPerms = include dirname(__DIR__) . PH7_DS . PH7_CONFIG . 'perms.inc.php';
-        foreach ($aPerms as $sKey => $sVal)
-        {
+        foreach ($aPerms as $sKey => $sVal) {
             $sLabel = (new Str)->upperFirstWords( str_replace('_', ' ', $sKey) );
             $oForm->addElement(new \PFBC\Element\Select($sLabel, 'perms[' . $sKey . ']', array(1=>t('Yes'), 0=>t('No')), array('value'=>$sVal)));
         }
@@ -43,5 +42,4 @@ class MembershipForm
         $oForm->addElement(new \PFBC\Element\Button(t('Add')));
         $oForm->render();
     }
-
 }

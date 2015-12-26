@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri,
@@ -30,20 +29,14 @@ class MsgFormProcess extends Form
         $iProfileId = (int) $this->session->get('member_id');
         $iForumId = $this->httpRequest->get('forum_id', 'int');
 
-        if (!$oForumModel->checkWaitTopic($iProfileId, $iTimeDelay, $sCurrentTime))
-        {
+        if (!$oForumModel->checkWaitTopic($iProfileId, $iTimeDelay, $sCurrentTime)) {
             \PFBC\Form::setError('form_msg', Form::waitWriteMsg($iTimeDelay));
-        }
-        elseif ($oForumModel->isDuplicateTopic($iProfileId, $sMessage))
-        {
+        } elseif ($oForumModel->isDuplicateTopic($iProfileId, $sMessage)) {
             \PFBC\Form::setError('form_msg', Form::duplicateContentMsg());
-        }
-        else
-        {
+        } else {
             $oForumModel->addTopic($iProfileId, $iForumId, $this->httpRequest->post('title'), $sMessage, $sCurrentTime);
             Header::redirect(Uri::get('forum', 'forum', 'post', $this->httpRequest->get('forum_name').','.$iForumId.','.$this->httpRequest->post('title').','.Db::getInstance()->lastInsertId()), t('Your message has been added successfully!'));
         }
         unset($oForumModel);
     }
-
 }

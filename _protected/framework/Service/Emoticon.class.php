@@ -26,7 +26,9 @@ abstract class Emoticon
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Gets the list of emoticons.
@@ -97,6 +99,7 @@ abstract class Emoticon
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

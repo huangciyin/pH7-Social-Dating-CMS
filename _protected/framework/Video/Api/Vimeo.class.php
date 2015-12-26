@@ -36,8 +36,7 @@ class Vimeo extends Api implements IApi
     public function getInfo($sUrl)
     {
         $sDataUrl = static::API_URL . $this->getVideoId($sUrl) . '.json';
-        if ($oData = $this->getData($sDataUrl))
-        {
+        if ($oData = $this->getData($sDataUrl)) {
             $this->oData = $oData[0];
             return $this;
         }
@@ -47,16 +46,12 @@ class Vimeo extends Api implements IApi
 
     public function getMeta($sUrl, $sMedia, $iWidth, $iHeight)
     {
-
-        if ($sMedia == 'preview')
-        {
+        if ($sMedia == 'preview') {
             // First load the video information.
             $this->getInfo($sUrl);
             // Then retrieve the thumbnail.
             return $this->oData->thumbnail_medium;
-        }
-        else
-        {
+        } else {
             $sParam = ($this->bAutoplay) ? '?autoplay=1' : '';
             return '<iframe src="' . $this->getEmbedUrl($sUrl) . $sParam . '&amp;title=0&amp;byline=0&amp;portrait=0" width="' . $iWidth . '" height="' . $iHeight . '" frameborder="0"></iframe>';
         }
@@ -71,5 +66,4 @@ class Vimeo extends Api implements IApi
         preg_match('#/(\d+)($|/)#i', $sUrl, $aMatch);
         return (!empty($aMatch[1])) ? $aMatch[1] : false;
     }
-
 }

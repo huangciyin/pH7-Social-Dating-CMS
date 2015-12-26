@@ -13,7 +13,7 @@ use PH7\Framework\Mvc\Router\Uri, PH7\Framework\Url\Header;
 class WallFormProcess extends Form
 {
 
-/*
+    /*
  * Wall form processing class is still under development, if you are a developer and you want to help us and join our volunteer team of developers to continue development of this module, you are welcome!
  * Please contact us by email: ph7software@gmail.com
  *
@@ -29,5 +29,4 @@ class WallFormProcess extends Form
 
         Header::redirect(Uri::get('user', 'main', 'index'), t('Your message has been added successfully!'));
     }
-
 }

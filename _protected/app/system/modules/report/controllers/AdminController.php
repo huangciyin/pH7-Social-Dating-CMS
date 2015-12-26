@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Navigation\Page,
+use PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -73,14 +72,10 @@ class AdminController extends Controller
 
     public function deleteAll()
     {
-        if (!(new Framework\Security\CSRF\Token)->check('report_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('report_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $iId)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $iId) {
                 $iId = (int) $iId;
                 $this->oReportModel->delete($iId);
             }
@@ -89,5 +84,4 @@ class AdminController extends Controller
 
         Header::redirect(Uri::get('report', 'admin', 'index'), $this->sMsg);
     }
-
 }

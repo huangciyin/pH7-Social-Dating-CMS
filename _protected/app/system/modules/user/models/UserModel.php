@@ -62,5 +62,4 @@ class UserModel extends UserCoreModel
     {
         return $this->exec('join' . $sJoinStep, $this->_sQueryPath, $aData);
     }
-
 }

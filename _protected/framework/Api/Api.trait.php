@@ -25,8 +25,8 @@ trait Api
      */
     public function set($mData)
     {
-        if (is_array($mData))
+        if (is_array($mData)) {
             return json_encode($mData);
+        }
     }
-
 }

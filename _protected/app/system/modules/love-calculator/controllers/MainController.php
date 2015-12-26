@@ -34,8 +34,7 @@ class MainController extends Controller
         $sSecondUsername = $this->httpRequest->get('second_username');
 
         // Verifies that the username exists and that both user names are not the same.
-        if ($this->oExists->username($sSecondUsername) && $sUsername != $sSecondUsername)
-        {
+        if ($this->oExists->username($sSecondUsername) && $sUsername != $sSecondUsername) {
             // Get ID
             $iId = $this->session->get('member_id');
             $iSecondId = $this->oUserModel->getId(null, $sSecondUsername);
@@ -69,11 +68,8 @@ class MainController extends Controller
 
             // Display
             $this->output();
-        }
-        else
-        {
+        } else {
             $this->displayPageNotFound(t('No Name Found for the Love Calculator!'));
         }
     }
-
 }

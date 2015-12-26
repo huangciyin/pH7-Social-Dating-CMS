@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Mvc\Model\DbConfig,
+use PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -29,26 +28,16 @@ class CommentFormProcess extends Form
         $iRecipientId = $this->httpRequest->get('recipient', 'int');
         $iSenderId = (int) $this->session->get('member_id');
 
-        if (!$oCommentModel->idExists($iRecipientId, $sTable))
-        {
+        if (!$oCommentModel->idExists($iRecipientId, $sTable)) {
             \PFBC\Form::setError('form_comment', t('The comment recipient does not exists.'));
-        }
-        elseif (!$oCommentModel->checkWaitSend($iSenderId, $iTimeDelay, $sCurrentTime, $sTable))
-        {
+        } elseif (!$oCommentModel->checkWaitSend($iSenderId, $iTimeDelay, $sCurrentTime, $sTable)) {
             \PFBC\Form::setError('form_comment', Form::waitWriteMsg($iTimeDelay));
-        }
-        elseif ($oCommentModel->isDuplicateContent($iSenderId, $sComment, $sTable))
-        {
+        } elseif ($oCommentModel->isDuplicateContent($iSenderId, $sComment, $sTable)) {
             \PFBC\Form::setError('form_comment', Form::duplicateContentMsg());
-        }
-        else
-        {
-            if (!$oCommentModel->add($sComment, $iRecipientId, $iSenderId, 1, $sCurrentTime, $sTable))
-            {
+        } else {
+            if (!$oCommentModel->add($sComment, $iRecipientId, $iSenderId, 1, $sCurrentTime, $sTable)) {
                 \PFBC\Form::setError('form_comment', t('Oops! Error when adding comment.'));
-            }
-            else
-            {
+            } else {
                 /* Clean All Data of CommentModel Cache */
                 (new Framework\Cache\Cache)->start(CommentCoreModel::CACHE_GROUP, null, null)->clear();
 
@@ -57,5 +46,4 @@ class CommentFormProcess extends Form
         }
         unset($oCommentModel);
     }
-
 }

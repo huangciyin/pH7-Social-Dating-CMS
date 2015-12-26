@@ -23,8 +23,7 @@ defined('PH7') or exit('Restricted access');
 
      public function __toString()
      {
-         switch ($this->severity)
-         {
+         switch ($this->severity) {
              case E_USER_ERROR : // If the user issues a fatal error
                  $sType = 'Fatal error ';
              break;
@@ -46,7 +45,6 @@ defined('PH7') or exit('Restricted access');
 
          return '<strong>' . $sType . '</strong> : [' . $this->code . '] ' . htmlspecialchars($this->message, ENT_QUOTES) . '<br /><strong>' . $this->file . '</strong> to line <strong>' . $this->line . '</strong>';
      }
-
  }
 
 }

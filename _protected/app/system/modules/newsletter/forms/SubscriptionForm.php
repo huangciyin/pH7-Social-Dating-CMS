@@ -16,10 +16,10 @@ class SubscriptionForm
     {
         $sActUrl = Uri::get('newsletter', 'home', 'subscription');
 
-        if (isset($_POST['submit_subscription']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_subscription']))
+        if (isset($_POST['submit_subscription'])) {
+            if (\PFBC\Form::isValid($_POST['submit_subscription'])) {
                 new SubscriptionFormProcess();
+            }
 
             Framework\Url\Header::redirect($sActUrl);
         }
@@ -40,5 +40,4 @@ class SubscriptionForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="' . PH7_URL_STATIC . PH7_JS . 'validate.js"></script>'));
         $oForm->render();
     }
-
 }

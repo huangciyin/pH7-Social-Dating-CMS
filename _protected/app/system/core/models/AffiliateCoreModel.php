@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Model\Engine\Db,
+use PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Mvc\Model\Engine\Util\Various;
 
 // Abstract Class
@@ -42,8 +41,7 @@ class AffiliateCoreModel extends AdminCoreModel
     {
         $this->cache->start(static::CACHE_GROUP, 'affiliatedId' . $iProfileId . $sTable, static::CACHE_TIME);
 
-        if (!$iData = $this->cache->get())
-        {
+        if (!$iData = $this->cache->get()) {
             Various::checkModelTable($sTable);
             $iProfileId = (int) $iProfileId;
 
@@ -75,5 +73,4 @@ class AffiliateCoreModel extends AdminCoreModel
         $oDb->exec('DELETE FROM' . Db::prefix('Affiliates') . 'WHERE profileId = ' . $iProfileId . ' LIMIT 1');
         unset($oDb);
     }
-
 }

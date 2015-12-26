@@ -46,8 +46,9 @@ class Uri
         $this->_sUri = (new HttpRequest)->requestUri();
 
         /*** We remove the latest slash in order to avoid taking a wrong fragment URL ***/
-        if (substr($this->_sUri, -1) === PH7_SH)
+        if (substr($this->_sUri, -1) === PH7_SH) {
             $this->_sUri = substr($this->_sUri, 0, -1);
+        }
 
         /*** Here, we put the string into array ***/
         self::$_aFragments = explode(PH7_SH, $this->_sUri);
@@ -71,8 +72,9 @@ class Uri
      */
     public function fragment($iKey)
     {
-        if (array_key_exists($iKey, self::$_aFragments))
+        if (array_key_exists($iKey, self::$_aFragments)) {
             return self::$_aFragments[$iKey];
+        }
 
         return false;
     }
@@ -87,5 +89,4 @@ class Uri
     {
         return array_slice(self::$_aFragments, $iOffset);
     }
-
 }

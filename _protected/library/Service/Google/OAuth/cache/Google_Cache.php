@@ -23,9 +23,10 @@ require_once "Google_MemcacheCache.php";
  *
  * @author Chris Chabot <chabotc@google.com>
  */
-abstract class Google_Cache {
+abstract class Google_Cache
+{
 
-  /**
+    /**
    * Retrieves the data for the given key, or false if they
    * key is unknown or expired
    *
@@ -51,5 +52,3 @@ abstract class Google_Cache {
    */
   abstract function delete($key);
 }
-
-

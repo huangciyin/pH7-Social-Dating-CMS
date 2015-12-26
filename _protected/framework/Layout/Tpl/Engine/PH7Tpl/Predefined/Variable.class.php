@@ -75,5 +75,4 @@ class Variable extends Predefined
 
         return $this;
     }
-
 }

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Geo\Ip\Geo,
+use PH7\Framework\Geo\Ip\Geo,
 PH7\Framework\Mvc\Model\DbConfig,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
@@ -18,10 +17,10 @@ class JoinForm
 
     public static function step1()
     {
-        if (isset($_POST['submit_join_aff']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_join_aff']))
+        if (isset($_POST['submit_join_aff'])) {
+            if (\PFBC\Form::isValid($_POST['submit_join_aff'])) {
                 (new JoinFormProcess)->step1();
+            }
 
             Header::redirect();
         }
@@ -51,10 +50,9 @@ class JoinForm
         $oForm->addElement(new \PFBC\Element\Textbox(t('Your ZIP/Postal Code:'), 'zip_code', array('id'=>'str_zip_code', 'value'=>Geo::getZipCode(), 'onblur'=>'CValid(this.value,this.id,2,15)', 'title'=>t('Enter your post code (Zip).'), 'validation'=>new \PFBC\Validation\Str(2,15), 'required'=>1)));
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error str_zip_code"></span>'));
 
-        if (DbConfig::getSetting('isCaptchaAffiliateSignup'))
-        {
-          $oForm->addElement(new \PFBC\Element\CCaptcha(t('Captcha:'), 'captcha', array('id'=>'ccaptcha', 'onkeyup'=>'CValid(this.value, this.id)', 'description'=>t('Enter the code above:'))));
-          $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error ccaptcha"></span>'));
+        if (DbConfig::getSetting('isCaptchaAffiliateSignup')) {
+            $oForm->addElement(new \PFBC\Element\CCaptcha(t('Captcha:'), 'captcha', array('id'=>'ccaptcha', 'onkeyup'=>'CValid(this.value, this.id)', 'description'=>t('Enter the code above:'))));
+            $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error ccaptcha"></span>'));
         }
 
         $oForm->addElement(new \PFBC\Element\Checkbox(t('Terms of Service'), 'terms', array(1=>'<em>' . t('I have read and agree to the %0%.', '<a href="' . Uri::get('page','main','affiliateterms') . '" rel="nofollow" target="_blank">' . t('Terms of Service') . '</a>') . '</em>'), array('id'=>'terms', 'onblur'=>'CValid(this.checked, this.id)', 'required'=>1)));
@@ -63,5 +61,4 @@ class JoinForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script><script src="'.PH7_URL_STATIC.PH7_JS.'geo/autocompleteCity.js"></script>'));
         $oForm->render();
     }
-
 }

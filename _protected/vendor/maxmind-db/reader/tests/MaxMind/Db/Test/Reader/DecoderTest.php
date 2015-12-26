@@ -151,7 +151,6 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
         65535 => array(0xa2, 0xff, 0xff),
     );
 
-
     private $int32 = array(
         '0' => array(0x0, 0x1),
         '-1' => array(0x4, 0x1, 0xff, 0xff, 0xff, 0xff),
@@ -234,14 +233,12 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
         foreach ($bytes as $key => $byte_array) {
             $byte_array[0] ^= 0xc0;
             $bytes[$key] = $byte_array;
-
         }
         return $bytes;
     }
 
     public function generateLargeUint($bits)
     {
-
         $ctrlByte = $bits == 64 ? 0x2 : 0x3;
 
         $uints = array(
@@ -328,7 +325,6 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
 
     private function validateTypeDecoding($type, $tests)
     {
-
         foreach ($tests as $expected => $input) {
             $this->checkDecoding($type, $input, $expected);
         }
@@ -364,6 +360,5 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expected, $actual, $description);
-
     }
 }

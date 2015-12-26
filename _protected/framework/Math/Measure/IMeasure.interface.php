@@ -21,5 +21,4 @@ interface IMeasure
      * @return integer
      */
     public function get();
-
 }

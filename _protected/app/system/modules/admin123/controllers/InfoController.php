@@ -38,5 +38,4 @@ class InfoController extends Controller
     {
         unset($this->sTitle);
     }
-
 }

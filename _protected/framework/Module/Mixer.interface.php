@@ -19,5 +19,4 @@ interface Mixer
     public function framework();
 
     public function mixer();
-
 }

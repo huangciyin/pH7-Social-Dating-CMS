@@ -19,8 +19,7 @@ class LikeCoreModel extends Framework\Mvc\Model\Engine\Model
     {
         $this->cache->start(self::CACHE_GROUP, 'select' . $sKey, 3600*168);
 
-        if (!$oData = $this->cache->get())
-        {
+        if (!$oData = $this->cache->get()) {
             $rStmt = Db::getInstance()->prepare('SELECT * FROM' . Db::prefix('Likes') . 'WHERE keyId =:key LIMIT 1');
             $rStmt->bindValue(':key', $sKey, \PDO::PARAM_STR);
             $rStmt->execute();
@@ -47,5 +46,4 @@ class LikeCoreModel extends Framework\Mvc\Model\Engine\Model
         $rStmt->bindValue(':lastIp', $fLastIp, \PDO::PARAM_INT);
         return $rStmt->execute();
     }
-
 }

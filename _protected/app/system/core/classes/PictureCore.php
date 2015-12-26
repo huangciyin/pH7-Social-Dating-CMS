@@ -35,5 +35,4 @@ class PictureCore
         (new File)->deleteFile($aFiles);
         unset($aFiles);
     }
-
 }

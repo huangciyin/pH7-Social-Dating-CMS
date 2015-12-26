@@ -7,4 +7,6 @@
  */
 
 namespace PH7;
-interface IController {}
+interface IController
+{
+}

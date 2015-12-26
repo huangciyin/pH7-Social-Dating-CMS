@@ -26,5 +26,4 @@ abstract class Measure
     {
         $this->iUnit = $iUnit;
     }
-
 }

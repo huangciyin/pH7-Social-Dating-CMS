@@ -42,10 +42,10 @@ class Height extends Measure implements IMeasure
         $aData = $this->get();
         $sHeightTxt = t('%0% &prime; %1% &Prime; &ndash; %2% cm', $aData['ft'], $aData['in'], $aData['cm']);
 
-        if($bPrint)
+        if ($bPrint) {
             echo $sHeightTxt;
-        else
+        } else {
             return $sHeightTxt;
+        }
     }
-
 }

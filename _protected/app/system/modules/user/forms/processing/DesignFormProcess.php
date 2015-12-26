@@ -19,30 +19,23 @@ class DesignFormProcess extends Form
 
         $iApproved = (AdminCore::auth() || DbConfig::getSetting('profileBackgroundManualApproval') == 0) ? '1' : '0';
 
-        if (AdminCore::auth() && !User::auth() && $this->httpRequest->getExists( array('profile_id', 'username') ))
-        {
+        if (AdminCore::auth() && !User::auth() && $this->httpRequest->getExists( array('profile_id', 'username') )) {
             $iProfileId = $this->httpRequest->get('profile_id');
             $sUsername = $this->httpRequest->get('username');
-        }
-        else
-        {
+        } else {
             $iProfileId = $this->session->get('member_id');
             $sUsername = $this->session->get('member_username');
         }
 
         $bWallpaper = (new UserCore)->setBackground($iProfileId, $sUsername, $_FILES['wallpaper']['tmp_name'], $iApproved);
 
-        if (!$bWallpaper)
-        {
+        if (!$bWallpaper) {
             \PFBC\Form::setError('form_design', Form::wrongImgFileTypeMsg());
-        }
-        else
-        {
+        } else {
             $sModerationText = t('Your Wallpaper has been received! But it will not be visible until it is approved by our moderators. Please do not send a new not.');
             $sText =  t('Your Wallpaper has been updated successfully!');
             $sMsg = (DbConfig::getSetting('profileBackgroundManualApproval')) ? $sModerationText : $sText;
             \PFBC\Form::setSuccess('form_design', $sMsg);
         }
     }
-
 }

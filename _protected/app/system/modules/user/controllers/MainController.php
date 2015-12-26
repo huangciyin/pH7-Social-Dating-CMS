@@ -25,8 +25,7 @@ class MainController extends Controller
         $this->view->userDesign = new UserDesignCore;
 
         // Only visitors
-        if (!UserCore::auth())
-        {
+        if (!UserCore::auth()) {
             // Set CSS and JS files
             $this->design->addCss(PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_CSS, 'splash.css,tooltip.css,js/jquery/carousel.css');
             $this->design->addJs(PH7_DOT, PH7_STATIC . PH7_JS . 'jquery/carouFredSel.js,' . PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_JS . 'splash.js');
@@ -44,10 +43,8 @@ class MainController extends Controller
              * When you are in the development mode, you can force the guest page by set a "force" GET request with the "splash" or "classic" parameter.
              * Example: "/?force=splash" or "/?force=classic"
              */
-             if (isDebug() && $this->httpRequest->getExists('force'))
-             {
-                 switch ($this->httpRequest->get('force'))
-                 {
+             if (isDebug() && $this->httpRequest->getExists('force')) {
+                 switch ($this->httpRequest->get('force')) {
                      case 'classic':
                          $sPage = 'index.guest';
                      break;
@@ -59,20 +56,16 @@ class MainController extends Controller
                      default:
                          exit('You can only choose between "classic" or "splash"');
                 }
-            }
-            elseif ($bMobApp)
-            {
-                $sPage = 'index.guest_splash';
-            }
-            else
-            {
-                $bIsSplashPage = (bool) DbConfig::getSetting('splashPage');
-                $sPage = ($bIsSplashPage) ? 'index.guest_splash' : 'index.guest';
-            }
+             } elseif ($bMobApp) {
+                 $sPage = 'index.guest_splash';
+             } else {
+                 $bIsSplashPage = (bool) DbConfig::getSetting('splashPage');
+                 $sPage = ($bIsSplashPage) ? 'index.guest_splash' : 'index.guest';
+             }
             $this->manualTplInclude($sPage . '.inc.tpl');
-        }
-        elseif (UserCore::auth()) // Only for Members
-        {
+        } elseif (UserCore::auth()) {
+            // Only for Members
+
             // Set CSS and JS files
             $this->design->addCss(PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_CSS, 'zoomer.css');
             $this->design->addJs(PH7_STATIC . PH7_JS, 'zoomer.js,Wall.js');
@@ -119,5 +112,4 @@ class MainController extends Controller
     {
         (new User)->logout();
     }
-
 }

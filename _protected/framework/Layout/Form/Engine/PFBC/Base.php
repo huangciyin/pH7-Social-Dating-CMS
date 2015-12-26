@@ -10,44 +10,42 @@ abstract class Base
 
     public function configure(array $properties = null)
     {
-        if(!empty($properties))
-        {
+        if (!empty($properties)) {
             $class = get_class($this);
 
             /*The property_reference lookup array is created so that properties can be set
             case-insensitively.*/
             $available = array_keys(get_class_vars($class));
             $property_reference = array();
-            foreach($available as $property)
+            foreach ($available as $property) {
                 $property_reference[strtolower($property)] = $property;
+            }
 
             /*The method reference lookup array is created so that "set" methods can be called
             case-insensitively.*/
             $available = get_class_methods($class);
             $method_reference = array();
-            foreach($available as $method)
+            foreach ($available as $method) {
                 $method_reference[strtolower($method)] = $method;
+            }
 
-            foreach($properties as $property => $value)
-            {
+            foreach ($properties as $property => $value) {
                 $property = strtolower($property);
                 /*The attributes property cannot be set directly.*/
-                if($property != 'attributes')
-                {
+                if ($property != 'attributes') {
                     /*If the appropriate class has a "set" method for the property provided, then
                     it is called instead or setting the property directly.*/
-                    if(isset($method_reference['set' . $property])) {
+                    if (isset($method_reference['set' . $property])) {
                         $methodName = $method_reference['set' . $property];
                         $this->$methodName($value);
-                    }
-                    elseif(isset($property_reference[$property])) {
+                    } elseif (isset($property_reference[$property])) {
                         $methodName = $property_reference[$property];
                         $this->$methodName = $value;
                     }
                     /*Entries that don't match an available class property are stored in the attributes
                     property if applicable.  Typically, these entries will be element attributes such as
                     class, value, onkeyup, etc.*/
-                    elseif(isset($property_reference['attributes'])) {
+                    elseif (isset($property_reference['attributes'])) {
                         $this->attributes[$property] = $value;
                     }
                 }
@@ -73,15 +71,15 @@ abstract class Base
     public function getAttributes($ignore = '')
     {
         $str = "";
-        if(!empty($this->attributes))
-        {
-            if(!is_array($ignore))
+        if (!empty($this->attributes)) {
+            if (!is_array($ignore)) {
                 $ignore = array($ignore);
+            }
             $attributes = array_diff(array_keys($this->attributes), $ignore);
-            foreach($attributes as $attribute)
+            foreach ($attributes as $attribute) {
                 $str .= ' ' . $attribute . '="' . $this->filter($this->attributes[$attribute]) . '"';
+            }
         }
         return $str;
     }
-
 }

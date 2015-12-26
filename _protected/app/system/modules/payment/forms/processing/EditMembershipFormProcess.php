@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Cache\Cache,
+use PH7\Framework\Cache\Cache,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -24,23 +23,28 @@ class EditMembershipFormProcess extends Form
         $oPayModel = new PaymentModel;
         $oMembership = $oPayModel->getMemberships($iGroupId);
 
-        if (!$this->str->equals($this->httpRequest->post('name'), $oMembership->name))
+        if (!$this->str->equals($this->httpRequest->post('name'), $oMembership->name)) {
             $oPayModel->updateMembershipGroup('name', $this->httpRequest->post('name'), $iGroupId);
+        }
 
-        if (!$this->str->equals($this->httpRequest->post('description'), $oMembership->description))
+        if (!$this->str->equals($this->httpRequest->post('description'), $oMembership->description)) {
             $oPayModel->updateMembershipGroup('description', $this->httpRequest->post('description'), $iGroupId);
+        }
 
         $aPerms = serialize($this->httpRequest->post('perms'));
         $oPayModel->updateMembershipGroup('permissions', $aPerms, $iGroupId);
 
-        if (!$this->str->equals($this->httpRequest->post('price'), $oMembership->price))
+        if (!$this->str->equals($this->httpRequest->post('price'), $oMembership->price)) {
             $oPayModel->updateMembershipGroup('price', $this->httpRequest->post('price'), $iGroupId);
+        }
 
-        if (!$this->str->equals($this->httpRequest->post('expiration_days'), $oMembership->expirationDays))
+        if (!$this->str->equals($this->httpRequest->post('expiration_days'), $oMembership->expirationDays)) {
             $oPayModel->updateMembershipGroup('expirationDays', $this->httpRequest->post('expiration_days'), $iGroupId);
+        }
 
-        if (!$this->str->equals($this->httpRequest->post('enable'), $oMembership->enable))
+        if (!$this->str->equals($this->httpRequest->post('enable'), $oMembership->enable)) {
             $oPayModel->updateMembershipGroup('enable', $this->httpRequest->post('enable'), $iGroupId);
+        }
 
         unset($oPayModel);
 
@@ -49,5 +53,4 @@ class EditMembershipFormProcess extends Form
 
         Header::redirect(Uri::get('payment','admin','membershiplist'), t('The Membership has been saved successfully!'));
     }
-
 }

@@ -15,11 +15,9 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (!Framework\Api\Tool::checkAccess($this->config, $this->httpRequest))
-        {
+        if (!Framework\Api\Tool::checkAccess($this->config, $this->httpRequest)) {
             Framework\Http\Http::setHeadersByCode(403);
             exit('Your API key and/or the URL of your external application don\'t match with the one in the pH7CMS\'s configuration system!');
         }
     }
-
 }

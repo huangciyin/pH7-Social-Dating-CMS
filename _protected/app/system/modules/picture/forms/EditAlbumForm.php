@@ -14,10 +14,10 @@ class EditAlbumForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_picture_album']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_picture_album']))
+        if (isset($_POST['submit_edit_picture_album'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_picture_album'])) {
                 new EditAlbumFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -33,5 +33,4 @@ class EditAlbumForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

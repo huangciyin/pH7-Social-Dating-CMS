@@ -24,7 +24,6 @@ class Rest extends \PH7\Framework\Http\Http
     $_aData,
     $_aRequest;
 
-
     /**
      * Calls Rest::_inputs() method and sets default values.
      */
@@ -65,8 +64,7 @@ class Rest extends \PH7\Framework\Http\Http
      */
     private function _inputs()
     {
-        switch ($this->getRequestMethod())
-        {
+        switch ($this->getRequestMethod()) {
             case HttpRequest::METHOD_POST:
                 $this->_aRequest = $this->_cleanInputs($_POST);
             break;
@@ -97,13 +95,11 @@ class Rest extends \PH7\Framework\Http\Http
     {
         $aCleanInput = array();
 
-        if (is_array($mData))
-        {
-            foreach($mData as $sKey => $sValue)
-                $aCleanInput[$sKey] = $this->_cleanInputs($sValue); // Recursive method
-        }
-        else
-        {
+        if (is_array($mData)) {
+            foreach ($mData as $sKey => $sValue) {
+                $aCleanInput[$sKey] = $this->_cleanInputs($sValue);
+            } // Recursive method
+        } else {
             $mData = (new \PH7\Framework\Str\Str)->escape($mData);
             $aCleanInput = trim($mData);
         }
@@ -123,5 +119,4 @@ class Rest extends \PH7\Framework\Http\Http
         echo $this->_aData;
         exit; // Stop the Script
     }
-
 }

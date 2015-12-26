@@ -18,7 +18,7 @@ defined('PH7') or exit('Restricted access');
 
 class GoogleKeywordsRankAPI
 {
-        /** URL of the website to check in the google results **/
+    /** URL of the website to check in the google results **/
         private $url = '';
 
         /** Max number of pages of google to parse (there is 10 results per page) **/
@@ -40,14 +40,14 @@ class GoogleKeywordsRankAPI
 
         public function __construct($url, $maxPages=1, $extension = 'en')
         {
-                $this->url = str_replace('http://www.','',$url);
-                $this->extension = $extension;
+            $this->url = str_replace('http://www.','',$url);
+            $this->extension = $extension;
 
-                if ($maxPages>0) {
-                        $this->maxPages = $maxPages;
-                } else {
-                        $this->maxPages = 1;
-                }
+            if ($maxPages>0) {
+                $this->maxPages = $maxPages;
+            } else {
+                $this->maxPages = 1;
+            }
         }
 
         /**
@@ -60,11 +60,11 @@ class GoogleKeywordsRankAPI
 
         public function setMaxPages ($maxPages)
         {
-                if ($maxPages>0) {
-                        $this->maxPages = $maxPages;
-                } else {
-                        $this->maxPages = 1;
-                }
+            if ($maxPages>0) {
+                $this->maxPages = $maxPages;
+            } else {
+                $this->maxPages = 1;
+            }
         }
 
         /**
@@ -75,7 +75,7 @@ class GoogleKeywordsRankAPI
 
         public function getMaxPages ()
         {
-                return $this->maxPages;
+            return $this->maxPages;
         }
 
         /**
@@ -88,19 +88,19 @@ class GoogleKeywordsRankAPI
 
         public function getContent($url)
         {
-                if (!extension_loaded('curl')) {
-                   throw new \PH7\Framework\Error\CException\PH7Exception('curl extension is not available');
-                }
+            if (!extension_loaded('curl')) {
+                throw new \PH7\Framework\Error\CException\PH7Exception('curl extension is not available');
+            }
 
-                $curl = curl_init();
-                curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-                curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-                curl_setopt($curl, CURLOPT_URL, $url);
-                $this->response = curl_exec($curl);
-                $infos = curl_getinfo($curl);
-                curl_close ($curl);
-                return $infos['http_code'];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($curl, CURLOPT_URL, $url);
+            $this->response = curl_exec($curl);
+            $infos = curl_getinfo($curl);
+            curl_close ($curl);
+            return $infos['http_code'];
         }
 
         /**
@@ -111,46 +111,40 @@ class GoogleKeywordsRankAPI
           * @return array array with keywords=>rank
           */
 
-
         public function getKeywordsRank ($keywords)
         {
+            if (isset($this->url) && isset($keywords)) {
+                $base_url = 'http://www.google.'.$this->extension.'/search?hl=fr&q=' . urlencode($keywords) . '&start=';
 
-                if (isset($this->url) && isset($keywords)) {
-                        $base_url = 'http://www.google.'.$this->extension.'/search?hl=fr&q=' . urlencode($keywords) . '&start=';
-
-                        $index = 0; // counting start from here
+                $index = 0; // counting start from here
                         $page  = 0;
 
-                        for ($page = 0; $page < $this->maxPages; $page++) {
+                for ($page = 0; $page < $this->maxPages; $page++) {
+                    $make_url = $base_url . ($page*10);
 
-                                $make_url = $base_url . ($page*10);
+                    $getContentCode = $this->getContent($make_url);
 
-                                $getContentCode = $this->getContent($make_url);
-
-                                if($getContentCode == 200) {
-
-                                        if (preg_match_all('/a href="([^"]+)" class=l.+?>.+?<\/a>/',$this->response,$results)>0) {
-                                                foreach ($results[1] as $link) {
-                                                        $link = preg_replace('(^http://|/$)','',$link);
-                                                        $index++;
-                                                        if (strlen(stristr($link,$this->url))>0) {
-                                                                return array($keywords,$index);
-                                                        }
-                                                }
-                                        } else {
-                                                trigger_error('Google results parse problem : could not find the html result code ',E_USER_WARNING);
-                                                return null;
-                                        }
-
-                                } else {
-                                        trigger_error('Google results parse problem : http error '.$getContentCode,E_USER_WARNING);
-                                        return null;
+                    if ($getContentCode == 200) {
+                        if (preg_match_all('/a href="([^"]+)" class=l.+?>.+?<\/a>/',$this->response,$results)>0) {
+                            foreach ($results[1] as $link) {
+                                $link = preg_replace('(^http://|/$)','',$link);
+                                $index++;
+                                if (strlen(stristr($link,$this->url))>0) {
+                                    return array($keywords,$index);
                                 }
-
+                            }
+                        } else {
+                            trigger_error('Google results parse problem : could not find the html result code ',E_USER_WARNING);
+                            return null;
                         }
+                    } else {
+                        trigger_error('Google results parse problem : http error '.$getContentCode,E_USER_WARNING);
+                        return null;
+                    }
+                }
+            }
+            return null;
         }
-                return null;
-   }
 
         /**
            * Get the position of the keywords array
@@ -161,24 +155,20 @@ class GoogleKeywordsRankAPI
           * @return array arrays with keywords=>rank
           */
 
-
         public function getKeywordsArrayRank ($keywords)
         {
-                $keywords_rank = array();
+            $keywords_rank = array();
 
-                foreach ($keywords as $keyword) {
-                        $rank = $this->getKeywordsRank($keyword);
-                        if ($rank) {
-                                $keywords_rank []= $rank;
-                        } else {
-                                $keywords_rank []= array($keyword,0);
-                        }
-                        sleep(3);
+            foreach ($keywords as $keyword) {
+                $rank = $this->getKeywordsRank($keyword);
+                if ($rank) {
+                    $keywords_rank []= $rank;
+                } else {
+                    $keywords_rank []= array($keyword,0);
                 }
+                sleep(3);
+            }
 
-                return $keywords_rank;
-   }
-
+            return $keywords_rank;
+        }
 }
-
-?>

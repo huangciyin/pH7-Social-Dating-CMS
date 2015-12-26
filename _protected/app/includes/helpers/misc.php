@@ -31,8 +31,9 @@ function html_body($sTitle, $sMsg)
  */
 function is_internet($sCheckHost = 'www.google.com', $bEnable = PH7_INTERNET_NEEDED)
 {
-    if (!$bEnable)
+    if (!$bEnable) {
         return true;
+    }
 
     return (bool) @fsockopen($sCheckHost, 80, $iErrno, $sErrStr, 5);
 }

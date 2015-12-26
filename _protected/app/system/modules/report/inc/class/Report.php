@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mail\Mail,
+use PH7\Framework\Mail\Mail,
 PH7\Framework\Layout\Tpl\Engine\PH7Tpl\PH7Tpl,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Mvc\Model\DbConfig;
@@ -36,10 +35,8 @@ class Report
     {
         $this->_mStatus = (new ReportModel)->add($aData);
 
-        if ($this->_mStatus == true)
-        {
-            if (DbConfig::getSetting('sendReportMail'))
-            {
+        if ($this->_mStatus == true) {
+            if (DbConfig::getSetting('sendReportMail')) {
                 $oUser = new UserCore;
                 $oUserModel = new UserCoreModel;
                 $sReporterUsername = $oUserModel->getUsername($aData['reporter_id']);
@@ -78,5 +75,4 @@ class Report
     {
         return $this->_mStatus;
     }
-
 }

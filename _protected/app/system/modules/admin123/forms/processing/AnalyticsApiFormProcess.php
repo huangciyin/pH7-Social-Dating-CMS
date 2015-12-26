@@ -17,8 +17,7 @@ class AnalyticsApiFormProcess extends Form
     {
         parent::__construct();
 
-        if (!$this->str->equals($this->httpRequest->post('code', Http::NO_CLEAN), (new Design)->analyticsApi(false, false)))
-        {
+        if (!$this->str->equals($this->httpRequest->post('code', Http::NO_CLEAN), (new Design)->analyticsApi(false, false))) {
             (new Framework\Mvc\Model\Analytics)->updateApi($this->httpRequest->post('code', Http::NO_CLEAN));
 
             /* Clean Model\Design for STATIC / analyticsApi data */
@@ -26,5 +25,4 @@ class AnalyticsApiFormProcess extends Form
         }
         \PFBC\Form::setSuccess('form_analytics', t('The code Analytics Api was saved successfully!'));
     }
-
 }

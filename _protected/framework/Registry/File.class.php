@@ -105,8 +105,9 @@ abstract class File implements \Serializable
      */
     private function _close()
     {
-        if(null === $this->_rFile)
+        if (null === $this->_rFile) {
             return false;
+        }
 
         fclose($this->_rFile);
         $this->_rFile = null;
@@ -118,8 +119,8 @@ abstract class File implements \Serializable
      */
     public function __destruct()
     {
-        if(null !== $this->_rFile)
+        if (null !== $this->_rFile) {
             $this->_close();
+        }
     }
-
 }

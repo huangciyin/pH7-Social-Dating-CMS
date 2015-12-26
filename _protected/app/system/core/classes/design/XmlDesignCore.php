@@ -17,7 +17,9 @@ class XmlDesignCore
      * @desc Private constructor to prevent instantiation of class since it's a static class.
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function xslHeader()
     {
@@ -69,18 +71,13 @@ class XmlDesignCore
     {
         $aNews = (new NewsFeedCore)->getSoftware($iNum);
 
-        if (sizeof($aNews) > 0)
-        {
-            foreach($aNews as $aItems)
-            {
+        if (sizeof($aNews) > 0) {
+            foreach ($aNews as $aItems) {
                 echo '<h4><a href="', $aItems['link'], '" target="_blank">', escape($aItems['title'], true), '</a></h4>';
                 echo '<p>', escape($aItems['description'], true), '</p>';
             }
-        }
-        else
-        {
+        } else {
             echo '<p>', t('No News Software.'), '</p>';
         }
     }
-
 }

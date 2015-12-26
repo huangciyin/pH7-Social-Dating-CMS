@@ -17,10 +17,10 @@ class PrivacyForm
         $oUserModel = new UserCoreModel;
         $iProfileId = (int) (new Session)->get('member_id');
 
-        if (isset($_POST['submit_privacy_account']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_privacy_account']))
+        if (isset($_POST['submit_privacy_account'])) {
+            if (\PFBC\Form::isValid($_POST['submit_privacy_account'])) {
                 new PrivacyFormProcess($iProfileId, $oUserModel);
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -44,5 +44,4 @@ class PrivacyForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

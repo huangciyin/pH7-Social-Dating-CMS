@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\File\Import,
+use PH7\Framework\File\Import,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Config\Config,
 PH7\Framework\Mvc\Model\DbConfig,
@@ -52,7 +51,7 @@ class Google extends Api implements IApi
 
         $oOauth = new \Google_Oauth2Service($oClient);
 
-        if($oHttpRequest->getExists('code')) {
+        if ($oHttpRequest->getExists('code')) {
             $oClient->authenticate();
             $oSession->set('token', $oClient->getAccessToken());
             $this->sUrl = Uri::get('connect','main','home');
@@ -62,28 +61,25 @@ class Google extends Api implements IApi
             $oClient->setAccessToken($oSession->get('token', false));
         }
 
-        if ($oClient->getAccessToken())
-        {
+        if ($oClient->getAccessToken()) {
             // User info is ok? Here we will be connect the user and/or adding the login and registering routines...
             $oUserModel = new UserCoreModel;
 
             // Get information of user
             $aUserData = $oOauth->userinfo->get();
 
-            if(!$iId = $oUserModel->getId($aUserData['email']))
-            {
+            if (!$iId = $oUserModel->getId($aUserData['email'])) {
                 // Add User if it does not exist in our database
                 $this->add(escape($aUserData, true), $oUserModel);
 
                 // Add User Avatar
-                if(!empty($aUserData['picture']))
+                if (!empty($aUserData['picture'])) {
                     $this->setAvatar($aUserData['picture']);
+                }
 
                 $this->oDesign->setFlashMsg( t('You have now been registered! %0%', (new Registration)->sendMail($this->_aUserInfo, true)->getMsg()) );
                 $this->sUrl = Uri::get('connect','main','register');
-            }
-            else
-            {
+            } else {
                 // Login
                 $this->setLogin($iId, $oUserModel);
                 $this->sUrl = Uri::get('connect','main','home');
@@ -93,9 +89,7 @@ class Google extends Api implements IApi
             $oSession->set('token', $oClient->getAccessToken());
 
             unset($oUserModel);
-        }
-        else
-        {
+        } else {
             $this->sUrl = $oClient->createAuthUrl();
         }
 
@@ -150,8 +144,7 @@ class Google extends Api implements IApi
     {
         $this->_sAvatarFile = $this->getAvatar($sUrl);
 
-        if($this->_sAvatarFile)
-        {
+        if ($this->_sAvatarFile) {
             $iApproved = (DbConfig::getSetting('avatarManualApproval') == 0) ? '1' : '0';
             (new UserCore)->setAvatar($this->_iProfileId, $this->_sUsername, $this->_sAvatarFile, $iApproved);
         }
@@ -173,5 +166,4 @@ class Google extends Api implements IApi
         $oClient->setRedirectUri(Uri::get('connect','main','login','google'));
         $oClient->setDeveloperKey(Config::getInstance()->values['module.api']['google.developer_key']);
     }
-
 }

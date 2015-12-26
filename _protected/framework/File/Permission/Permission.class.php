@@ -28,10 +28,11 @@ class Permission
         $oFile = new File;
         $bRet = false; // Default value
 
-        if ($iMode == static::READABLE_WRITABLE)
+        if ($iMode == static::READABLE_WRITABLE) {
             $bRet = $oFile->canReadWrite($sFile);
-        elseif ($iMode == static::EXECUTABLE)
+        } elseif ($iMode == static::EXECUTABLE) {
             $bRet = $oFile->canExecute($sFile);
+        }
 
         unset($oFile);
         return $bRet;
@@ -49,11 +50,11 @@ class Permission
         $oFolder = new Folder;
         $bRet = false; // Default value
 
-        if ($iMode == static::READABLE_WRITABLE)
+        if ($iMode == static::READABLE_WRITABLE) {
             $bRet = $oFolder->canReadWrite($sFolder);
+        }
 
         unset($oFolder);
         return $bRet;
     }
-
 }

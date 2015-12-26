@@ -10,8 +10,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mvc\Router\Uri,
+use PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Analytics\Statistic,
 PH7\Framework\Parse\Emoticon,
 PH7\Framework\Security\Ban\Ban,
@@ -45,17 +44,18 @@ class ProfileController extends Controller
         $this->sUsername = $this->httpRequest->get('username', 'string');
 
         // Set the Profile ID and Visitor ID
-        $this->iProfileId = $oUserModel->getId(null, $this->sUsername);;
+        $this->iProfileId = $oUserModel->getId(null, $this->sUsername);
+        ;
         $this->iVisitorId = (int) $this->session->get('member_id');
 
         // Read the Profile information
         $oUser = $oUserModel->readProfile($this->iProfileId);
 
-        if (!empty($oUser->username) && $this->str->equalsIgnoreCase($this->sUsername, $oUser->username))
-        {
+        if (!empty($oUser->username) && $this->str->equalsIgnoreCase($this->sUsername, $oUser->username)) {
             // The administrators can view all profiles and profile visits are not saved.
-            if (!AdminCore::auth())
+            if (!AdminCore::auth()) {
                 $this->_initPrivacy($oUserModel, $this->iProfileId, $this->iVisitorId);
+            }
 
             // Gets the Profile background
             $this->view->img_background = $oUserModel->getBackground($this->iProfileId, 1);
@@ -84,8 +84,7 @@ class ProfileController extends Controller
             $sFriendTxt = ($iNbFriend <= 1) ? ($iNbFriend == 1) ? t('Friend:') : t('No Friends') :
                 t('Friends:');
 
-            if ($this->sUserAuth)
-            {
+            if ($this->sUserAuth) {
                 $iNbMutFriend = (new FriendModel)->get($this->iVisitorId, $this->iProfileId, null, true, null, null, null, null);
                 $sNbMutFriend = ($iNbMutFriend > 0) ? ' (' . $iNbMutFriend . ')' : '';
                 $sMutFriendTxt = ($iNbMutFriend <= 1) ? ($iNbMutFriend == 1) ? t('Mutual Friend:') : t('No Mutual Friends') : t('Mutuals Friends:');
@@ -112,12 +111,13 @@ class ProfileController extends Controller
             $this->view->h2_title = t('A <span class="pH1">%0%</span> of <span class="pH3">%1% years</span>, from <span class="pH2">%2%, %3% %4%</span>',
                 t($oUser->sex), $iAge, t($sCountry), $sCity, $sState);
 
-
             $this->view->avatarDesign = new AvatarDesignCore; // Avatar Design Class
 
             // Member Menubar
             $this->view->friend_link = $sFriendTxt . $sNbFriend;
-            if ($this->sUserAuth) $this->view->mutual_friend_link = $sMutFriendTxt . $sNbMutFriend;
+            if ($this->sUserAuth) {
+                $this->view->mutual_friend_link = $sMutFriendTxt . $sNbMutFriend;
+            }
             $this->view->mail_link = $sMailLink;
             $this->view->messenger_link = $sMessengerLink;
             $this->view->befriend_link = $sBefriendLink;
@@ -155,9 +155,7 @@ class ProfileController extends Controller
 
             // Stat Profile
             Statistic::setView($this->iProfileId, 'Members');
-        }
-        else
-        {
+        } else {
             $this->_notFound();
         }
 
@@ -175,38 +173,29 @@ class ProfileController extends Controller
         // Check Privacy Profile
         $oPrivacyViewsUser = $oUserModel->getPrivacySetting($this->iProfileId);
 
-        if ($oPrivacyViewsUser->searchProfile == 'no')
-        {
+        if ($oPrivacyViewsUser->searchProfile == 'no') {
             // Exclude profile of search engines
             $this->view->header = '<meta name="robots" content="noindex" />';
         }
 
-        if (!$this->sUserAuth && $oPrivacyViewsUser->privacyProfile == 'only_members')
-        {
+        if (!$this->sUserAuth && $oPrivacyViewsUser->privacyProfile == 'only_members') {
             $this->view->error = t('Whoops! The "%0%" profile is only visible to members. Please <a href="%1%">login</a> or <a href="%2%">register</a> to see this profile.',
                 $this->sUsername, Uri::get('user', 'main', 'login'), Uri::get('user', 'signup', 'step1'));
-        }
-        elseif ($oPrivacyViewsUser->privacyProfile == 'only_me' && !$this->str->equals($this->iProfileId, $this->iVisitorId))
-        {
+        } elseif ($oPrivacyViewsUser->privacyProfile == 'only_me' && !$this->str->equals($this->iProfileId, $this->iVisitorId)) {
             $this->view->error = t('Whoops! The "%0%" profile is not available to you.', $this->sUsername);
         }
 
         // Update the "Who's Viewed Your Profile"
-        if ($this->sUserAuth)
-        {
+        if ($this->sUserAuth) {
             $oPrivacyViewsVisitor = $oUserModel->getPrivacySetting($this->iVisitorId);
 
-            if ($oPrivacyViewsUser->userSaveViews == 'yes' && $oPrivacyViewsVisitor->userSaveViews == 'yes' && !$this->str->equals($this->iProfileId, $this->iVisitorId))
-            {
+            if ($oPrivacyViewsUser->userSaveViews == 'yes' && $oPrivacyViewsVisitor->userSaveViews == 'yes' && !$this->str->equals($this->iProfileId, $this->iVisitorId)) {
                 $oVisitorModel = new VisitorModel($this->iProfileId, $this->iVisitorId, $this->dateTime->get()->dateTime('Y-m-d H:i:s'));
 
-                if (!$oVisitorModel->already())
-                {
+                if (!$oVisitorModel->already()) {
                     // Add a new visit
                     $oVisitorModel->set();
-                }
-                else
-                {
+                } else {
                     // Update the date of last visit
                     $oVisitorModel->update();
                 }
@@ -235,5 +224,4 @@ class ProfileController extends Controller
         <a href="' . $this->registry->site_url . '">' . t('Return home') . '</a><br />
         <a href="javascript:history.back();">' . t('Go back to the previous page') . '</a><br />';
     }
-
 }

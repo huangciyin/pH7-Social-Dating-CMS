@@ -71,14 +71,14 @@ class PH7Xsl
      */
     public function generateXMLNode($aData, $sNamespace = '')
     {
-        if (!is_array($aData))
+        if (!is_array($aData)) {
             throw new Exception('The data value ​​must be of type array!');
+        }
 
         $sRoot = $this->_oXml->createElement($sNamespace);
         $this->_oRoot->appendChild($sRoot);
 
-        foreach ($aData as $sKey => $sValue)
-        {
+        foreach ($aData as $sKey => $sValue) {
             $sNode = $this->_oXml->createElement($sKey);
             $sRoot->appendChild($sNode);
             $sContent = $this->_oXml->createTextNode(utf8_encode($sValue));
@@ -96,8 +96,9 @@ class PH7Xsl
      */
     public function render()
     {
-        if (!@$this->_sOutput = $this->_oXslProcessor->transformToXML($this->_oXml))
+        if (!@$this->_sOutput = $this->_oXslProcessor->transformToXML($this->_oXml)) {
             throw new Exception('Transformation syntax!');
+        }
 
         header('Content-Type: text/xml');
         echo $this->_sOutput;
@@ -113,13 +114,11 @@ class PH7Xsl
      */
     public function setParam($mKey, $sValue = '', $sNamespace = '')
     {
-        if (is_array($mKey))
-        {
-            foreach ($mKey as $sKey => $sVal)
-                $this->setParam($sKey, $sVal, $sNamespace); // Recursive method
-        }
-        else
-        {
+        if (is_array($mKey)) {
+            foreach ($mKey as $sKey => $sVal) {
+                $this->setParam($sKey, $sVal, $sNamespace);
+            } // Recursive method
+        } else {
             $this->_oXslProcessor->setParameter($sNamespace, $mKey, $sValue);
         }
 
@@ -137,14 +136,12 @@ class PH7Xsl
     {
         $sPath = realpath($this->_sFile);
 
-        if (!@$this->_oXsl->load($sPath))
-        {
+        if (!@$this->_oXsl->load($sPath)) {
             throw new Exception('While loading file: "' . $sPath . '"');
-        }
-        else
-        {
-            if ($this->_bPhpFunc)
+        } else {
+            if ($this->_bPhpFunc) {
                 $this->_oXslProcessor->registerPHPFunctions();
+            }
 
             $this->_oXslProcessor->importStylesheet($this->_oXsl);
         }
@@ -156,5 +153,4 @@ class PH7Xsl
     {
         unset($this->_oXml, $this->_oXsl, $this->_oXslProcessor, $this->_sOutput, $this->_oRoot, $this->_sFile);
     }
-
 }

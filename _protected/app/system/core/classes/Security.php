@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Mail\Mail,
+use PH7\Framework\Mail\Mail,
 PH7\Framework\Layout\Tpl\Engine\PH7Tpl\PH7Tpl,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Mvc\Model\Engine\Util\Various;
@@ -50,5 +49,4 @@ class Security
 
         (new Mail)->send($aInfo, $sMessageHtml);
     }
-
 }

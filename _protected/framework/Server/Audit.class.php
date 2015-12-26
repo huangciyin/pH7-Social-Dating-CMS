@@ -26,5 +26,4 @@ class Audit extends Server
     public function __construct()
     {
     }
-
 }

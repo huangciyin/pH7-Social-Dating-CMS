@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Util\Various,
+use PH7\Framework\Util\Various,
 PH7\Framework\Mvc\Model\Engine\Util\Various as VariousModel,
 PH7\Framework\Mail\Mail,
 PH7\Framework\Mvc\Router\Uri,
@@ -34,12 +33,9 @@ class MainController extends Controller
 
         $sTable = VariousModel::convertModToTable($sMod);
 
-        if ( ! (new UserCoreModel)->checkHashValidation($sMail, $sHash, $sTable) )
-        {
+        if ( ! (new UserCoreModel)->checkHashValidation($sMail, $sHash, $sTable) ) {
             Header::redirect($this->registry->site_url, t('Oops! Email or hash is invalid.'), 'error');
-        }
-        else
-        {
+        } else {
             $sNewPassword = Various::genRndWord(8,40);
 
             (new UserCoreModel)->changePassword($sMail, $sNewPassword, $sTable);
@@ -53,33 +49,33 @@ class MainController extends Controller
                 'subject' => t('Your new password - %site_name%')
             ];
 
-            if ( ! (new Mail)->send($aInfo, $sMessageHtml) )
+            if ( ! (new Mail)->send($aInfo, $sMessageHtml) ) {
                 Header::redirect($this->registry->site_url, Form::errorSendingEmail(), 'error');
-            else
+            } else {
                 Header::redirect($this->registry->site_url, t('Your new password has been emailed to you.'));
+            }
         }
-
     }
 
     public function account()
     {
-        if (UserCore::auth())
+        if (UserCore::auth()) {
             $sUrl = Uri::get('user', 'account', 'index');
-        elseif (AffiliateCore::auth())
+        } elseif (AffiliateCore::auth()) {
             $sUrl = Uri::get('affiliate', 'account', 'index');
-        elseif (AdminCore::auth())
+        } elseif (AdminCore::auth()) {
             $sUrl = Uri::get(PH7_ADMIN_MOD, 'main', 'index');
-        else
+        } else {
             $sUrl = $this->registry->site_url;
+        }
 
         Header::redirect($sUrl);
-
     }
 
     private function checkMod($sMod)
     {
-        if ($sMod != 'user' && $sMod != 'affiliate' && $sMod != PH7_ADMIN_MOD)
+        if ($sMod != 'user' && $sMod != 'affiliate' && $sMod != PH7_ADMIN_MOD) {
             Header::redirect($this->registry->site_url, t('No module found!'), 'error');
+        }
     }
-
 }

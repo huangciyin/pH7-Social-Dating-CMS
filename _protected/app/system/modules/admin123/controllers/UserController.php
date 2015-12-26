@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Navigation\Page,
+use PH7\Framework\Navigation\Page,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -45,13 +44,10 @@ class UserController extends Controller
         $oBrowse = $this->oAdminModel->browse($oPage->getFirstItem(), $oPage->getNbItemsByPage());
         unset($oPage);
 
-        if (empty($oBrowse))
-        {
+        if (empty($oBrowse)) {
             $this->design->setRedirect(Uri::get(PH7_ADMIN_MOD, 'user', 'browse'));
             $this->displayPageNotFound(t('No user were found.'));
-        }
-        else
-        {
+        } else {
             // Adding the static files
             $this->design->addCss(PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_CSS, 'browse.css');
             $this->design->addJs(PH7_STATIC . PH7_JS, 'form.js');
@@ -107,13 +103,10 @@ class UserController extends Controller
         $sWhere = $this->httpRequest->get('where');
         $sWhat = $this->httpRequest->get('what');
 
-        if ($sWhere !== 'all' && $sWhere !== SearchCoreModel::USERNAME && $sWhere !== SearchCoreModel::EMAIL && $sWhere !== SearchCoreModel::FIRST_NAME && $sWhere !== SearchCoreModel::LAST_NAME && $sWhere !== SearchCoreModel::IP)
-        {
+        if ($sWhere !== 'all' && $sWhere !== SearchCoreModel::USERNAME && $sWhere !== SearchCoreModel::EMAIL && $sWhere !== SearchCoreModel::FIRST_NAME && $sWhere !== SearchCoreModel::LAST_NAME && $sWhere !== SearchCoreModel::IP) {
             \PFBC\Form::setError('form_user_search', 'Invalid argument.');
             Header::redirect(Uri::get(PH7_ADMIN_MOD, 'user', 'search'));
-        }
-        else
-        {
+        } else {
             $this->iTotalUsers = $this->oAdminModel->searchUser($sWhat, $sWhere, $iGroupId, $iBan, true,
                 $this->httpRequest->get('order'), $this->httpRequest->get('sort'), null, null);
             $this->view->total_users = $this->iTotalUsers;
@@ -126,13 +119,10 @@ class UserController extends Controller
                 getFirstItem(), $oPage->getNbItemsByPage());
             unset($oPage);
 
-            if (empty($oSearch))
-            {
+            if (empty($oSearch)) {
                 $this->design->setRedirect(Uri::get(PH7_ADMIN_MOD, 'user', 'search'));
                 $this->displayPageNotFound('Empty search result. Please try again with wider or new search parameters.');
-            }
-            else
-            {
+            } else {
                 // Adding the static files
                 $this->design->addCss(PH7_LAYOUT . PH7_TPL . PH7_TPL_NAME . PH7_SH . PH7_CSS, 'browse.css');
                 $this->design->addJs(PH7_STATIC . PH7_JS, 'form.js');
@@ -204,14 +194,10 @@ class UserController extends Controller
 
     public function approveAll($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->check('user_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('user_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
                 $this->sMsg = $this->_moderateRegistration($iId, 1);
             }
@@ -222,14 +208,10 @@ class UserController extends Controller
 
     public function disapproveAll($iId)
     {
-        if(!(new Framework\Security\CSRF\Token)->check('user_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('user_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
                 $this->sMsg = $this->_moderateRegistration($iId, 0);
             }
@@ -242,13 +224,10 @@ class UserController extends Controller
     {
         $iId = $this->httpRequest->post('id');
 
-        if ($this->oAdminModel->ban($iId, 1))
-        {
+        if ($this->oAdminModel->ban($iId, 1)) {
             $this->oAdmin->clearReadProfileCache($iId);
             $this->sMsg = t('The profile has been banned.');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! An error has occurred while banishment the profile.');
         }
 
@@ -259,13 +238,10 @@ class UserController extends Controller
     {
         $iId = $this->httpRequest->post('id');
 
-        if ($this->oAdminModel->ban($iId, 0))
-        {
+        if ($this->oAdminModel->ban($iId, 0)) {
             $this->oAdmin->clearReadProfileCache($iId);
             $this->sMsg = t('The profile has been unbanned.');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! An error has occurred while unban the profile.');
         }
 
@@ -284,14 +260,10 @@ class UserController extends Controller
 
     public function banAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('user_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('user_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
 
                 $this->oAdminModel->ban($iId, 1);
@@ -306,14 +278,10 @@ class UserController extends Controller
 
     public function unBanAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('user_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('user_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $iId = (int) explode('_', $sAction)[0];
 
                 $this->oAdminModel->ban($iId, 0);
@@ -327,14 +295,10 @@ class UserController extends Controller
 
     public function deleteAll()
     {
-        if(!(new Framework\Security\CSRF\Token)->check('user_action'))
-        {
+        if (!(new Framework\Security\CSRF\Token)->check('user_action')) {
             $this->sMsg = Form::errorTokenMsg();
-        }
-        elseif (count($this->httpRequest->post('action')) > 0)
-        {
-            foreach ($this->httpRequest->post('action') as $sAction)
-            {
+        } elseif (count($this->httpRequest->post('action')) > 0) {
+            foreach ($this->httpRequest->post('action') as $sAction) {
                 $aData = explode('_', $sAction);
                 $iId = (int) $aData[0];
                 $sUsername = (string) $aData[1];
@@ -349,18 +313,13 @@ class UserController extends Controller
 
     private function _moderateRegistration($iId, $iStatus)
     {
-        if (isset($iId, $iStatus))
-        {
-            if ($oUser = $this->oAdminModel->readProfile($iId))
-            {
-                if ($iStatus == 0)
-                {
+        if (isset($iId, $iStatus)) {
+            if ($oUser = $this->oAdminModel->readProfile($iId)) {
+                if ($iStatus == 0) {
                     // We leave the user in disapproval, after we can ban or delete it.
                     $sSubject = t('Your membership account has been declined');
                     $this->sMsg = t('Sorry, Your membership account has been declined.');
-                }
-                elseif ($iStatus == 1)
-                {
+                } elseif ($iStatus == 1) {
                     // Approve User
                     $this->oAdminModel->approve($oUser->profileId, 1);
 
@@ -370,15 +329,12 @@ class UserController extends Controller
                     $sSubject = t('Your membership account has been activated');
                     $this->sMsg = t('Congratulations! Your account has been approved by our team of administrators.<br />You can now %0% to meeting new people!',
                         '<a href="' . Uri::get('user', 'main', 'login') . '"><b>' . t('log in') . '</b></a>');
-                }
-                else
-                {
+                } else {
                     // Error...
                     $this->sMsg = null;
                 }
 
-                if (!empty($this->sMsg))
-                {
+                if (!empty($this->sMsg)) {
                     // Set message
                     $this->view->content = t('Dear %0%,', $oUser->firstName) . '<br />' . $this->sMsg;
                     $this->view->footer = t('You are receiving this mail because we received an application for registration with the email "%0%" has been provided in the form of %site_name% (%site_url%).', $oUser->email) . '<br />' .
@@ -392,19 +348,13 @@ class UserController extends Controller
                     $this->oAdmin->clearReadProfileCache($oUser->profileId);
 
                     $sOutputMsg = t('Done!');
-                }
-                else
-                {
+                } else {
                     $sOutputMsg = t('Error! Bad argument in the url.');
                 }
-            }
-            else
-            {
+            } else {
                 $sOutputMsg = t('The user is not found!');
             }
-        }
-        else
-        {
+        } else {
             $sOutputMsg = t('Error! Missing argument in the url.');
         }
 
@@ -415,5 +365,4 @@ class UserController extends Controller
     {
         unset($this->oAdmin, $this->oAdminModel, $this->sTitle, $this->sMsg, $this->iTotalUsers);
     }
-
 }

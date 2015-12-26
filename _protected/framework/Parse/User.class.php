@@ -30,10 +30,9 @@ class User
      */
     public static function atUsernameToLink($sContents)
     {
-        foreach(static::getAtUsernames($sContents) as $sUsername)
-        {
-                $sUsernameLink = (new \PH7\UserCore)->getProfileLink($sUsername);
-                $sContents = str_replace(static::AT . $sUsername, '<a href="' . $sUsernameLink . '">' . static::AT . $sUsername . '</a>', $sContents);
+        foreach (static::getAtUsernames($sContents) as $sUsername) {
+            $sUsernameLink = (new \PH7\UserCore)->getProfileLink($sUsername);
+            $sContents = str_replace(static::AT . $sUsername, '<a href="' . $sUsernameLink . '">' . static::AT . $sUsername . '</a>', $sContents);
         }
 
         return $sContents;
@@ -51,13 +50,10 @@ class User
     {
         $aUsername = array();//remove it for yield
 
-        if (preg_match_all('#' . static::AT . '('.PH7_USERNAME_PATTERN.'{'.DbConfig::getSetting('minUsernameLength').','.DbConfig::getSetting('maxUsernameLength').'})#u', $sContents, $aMatches, PREG_PATTERN_ORDER))
-        {
+        if (preg_match_all('#' . static::AT . '('.PH7_USERNAME_PATTERN.'{'.DbConfig::getSetting('minUsernameLength').','.DbConfig::getSetting('maxUsernameLength').'})#u', $sContents, $aMatches, PREG_PATTERN_ORDER)) {
             $aMatches[1] = array_unique($aMatches[1]); // Delete duplicate usernames.
-            foreach ($aMatches[1] as $sUsername)
-            {
-                if ((new \PH7\ExistsCoreModel)->username($sUsername))
-                {
+            foreach ($aMatches[1] as $sUsername) {
+                if ((new \PH7\ExistsCoreModel)->username($sUsername)) {
                     //yield $sUsername; // PHP 5.5
                     $aUsername[] = $sUsername;//remove it for yield
                 }
@@ -66,5 +62,4 @@ class User
 
         return $aUsername;//remove it for yield
     }
-
 }

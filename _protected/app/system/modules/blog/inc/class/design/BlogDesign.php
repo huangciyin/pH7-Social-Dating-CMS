@@ -7,4 +7,6 @@
  */
 namespace PH7;
 
-class BlogDesign extends WriteDesignCoreModel {}
+class BlogDesign extends WriteDesignCoreModel
+{
+}

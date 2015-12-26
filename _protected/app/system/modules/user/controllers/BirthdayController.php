@@ -48,7 +48,9 @@ class BirthdayController extends Controller
         $this->sTitle = t('Users Birthday (<span class="pH3">%0%</span>)', $this->sCurrentDate);
         $this->view->page_title = $this->sTitle;
         $this->view->h2_title = $this->sTitle;
-        if ($sGender != BirthdayModel::ALL) $this->view->h3_title = '<span class="pH0">' . t($sGender) . '</span>';
+        if ($sGender != BirthdayModel::ALL) {
+            $this->view->h3_title = '<span class="pH0">' . t($sGender) . '</span>';
+        }
         $this->view->total_births = $this->iTotalBirths;
         $this->view->births = $oBirths;
 
@@ -57,8 +59,7 @@ class BirthdayController extends Controller
 
     protected function checkType($sSexType)
     {
-        switch ($sSexType)
-        {
+        switch ($sSexType) {
             case BirthdayModel::ALL:
             case BirthdayModel::COUPLE:
             case BirthdayModel::MALE:
@@ -70,5 +71,4 @@ class BirthdayController extends Controller
                 $this->displayPageNotFound();
         }
     }
-
 }

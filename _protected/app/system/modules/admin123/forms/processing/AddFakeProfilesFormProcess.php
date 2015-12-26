@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Util\Various,
+use PH7\Framework\Util\Various,
 PH7\Framework\Security\Validate\Validate,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Mvc\Router\Uri,
@@ -32,14 +31,12 @@ class AddFakeProfilesFormProcess extends Form
 
         $aUserData = json_decode($this->file->getFile('http://api.randomuser.me/?results=' . $this->httpRequest->post('num')), true);
 
-        foreach($aUserData['results'] as $aUser)
-        {
+        foreach ($aUserData['results'] as $aUser) {
             $aUser = $aUser['user'];
 
             $sEmail = trim($aUser['email']);
             $sUsername = trim($aUser['username']);
-            if ($oValidate->email($sEmail) && !$oExistsModel->email($sEmail) && $oValidate->username($sUsername))
-            {
+            if ($oValidate->email($sEmail) && !$oExistsModel->email($sEmail) && $oValidate->username($sUsername)) {
                 $aData['username'] = $sUsername;
                 $aData['email'] = $sEmail;
                 $aData['first_name'] = $aUser['name']['first'];
@@ -76,13 +73,11 @@ class AddFakeProfilesFormProcess extends Form
      */
     private function _addAvatar(array $aData, UserCore $oUser)
     {
-        if ($rFile = $this->file->getUrlContents($aData['avatar']))
-        {
+        if ($rFile = $this->file->getUrlContents($aData['avatar'])) {
             $sTmpFile = PH7_PATH_TMP . PH7_DS . uniqid() . sha1($aData['avatar']) . '.tmp';
             $this->file->putFile($sTmpFile, $rFile);
             $oUser->setAvatar($aData['profile_id'], $aData['username'], $sTmpFile, 1);
             $this->file->deleteFile($sTmpFile);
         }
     }
-
 }

@@ -14,5 +14,4 @@ class HTML extends \PFBC\Element
     {
         echo $this->attributes["value"];
     }
-
 }

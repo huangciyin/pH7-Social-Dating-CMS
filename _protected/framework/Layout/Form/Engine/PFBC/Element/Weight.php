@@ -13,10 +13,10 @@ class Weight extends Select
     {
         $aOptions = array();
 
-        for($iWeight = 30; $iWeight <= 150; $iWeight+=2)
+        for ($iWeight = 30; $iWeight <= 150; $iWeight+=2) {
             $aOptions[$iWeight] = (new W($iWeight))->display();
+        }
 
         parent::__construct($sLabel, $sName, $aOptions, $aProperties);
     }
-
 }

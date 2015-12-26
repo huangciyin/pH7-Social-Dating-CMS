@@ -22,13 +22,13 @@ class FriendAjax extends Core
     {
         parent::__construct();
 
-        if (!(new Framework\Security\CSRF\Token)->check('friend'))
-        exit(jsonMsg(0, Form::errorTokenMsg()));
+        if (!(new Framework\Security\CSRF\Token)->check('friend')) {
+            exit(jsonMsg(0, Form::errorTokenMsg()));
+        }
 
         $this->_oFriendModel = new FriendModel;
 
-        switch ($this->httpRequest->post('type'))
-        {
+        switch ($this->httpRequest->post('type')) {
             case 'add':
                 $this->add();
             break;
@@ -52,33 +52,22 @@ class FriendAjax extends Core
         $iFriendId = $this->httpRequest->post('friendId', 'int');
         $iMemberId = $this->session->get('member_id');
 
-        if ($iMemberId == $iFriendId)
-        {
+        if ($iMemberId == $iFriendId) {
             $this->_sMsg = jsonMsg(0, t('You cannot be your own friend.'));
-        }
-        else
-        {
+        } else {
             $this->_mStatus = $this->_oFriendModel->add($this->session->get('member_id'), $iFriendId, $this->dateTime->get()->dateTime('Y-m-d H:i:s'));
 
-            if ($this->_mStatus == 'error')
-            {
+            if ($this->_mStatus == 'error') {
                 $this->_sMsg = jsonMsg(0, t('Unable to add to friends list, please try later.'));
-            }
-            elseif ($this->_mStatus == 'friend_exists')
-            {
+            } elseif ($this->_mStatus == 'friend_exists') {
                 $this->_sMsg = jsonMsg(0, t('This profile already exists in your friends list.'));
-            }
-            elseif ($this->_mStatus == 'id_does_not_exist')
-            {
+            } elseif ($this->_mStatus == 'id_does_not_exist') {
                 $this->_sMsg = jsonMsg(0, t('Profile ID does not exist.')); // Should never happen unless someone changes the source code with firebug or other
-            }
-            elseif ($this->_mStatus == 'success')
-            {
+            } elseif ($this->_mStatus == 'success') {
                 $this->_sMsg = jsonMsg(1, t('This profile has been successfully added to your friends list.'));
 
                 $oUserModel = new UserCoreModel;
-                if (!$oUserModel->isNotification($iFriendId, 'friendRequest') && $oUserModel->isOnline($iFriendId, 0))
-                {
+                if (!$oUserModel->isNotification($iFriendId, 'friendRequest') && $oUserModel->isOnline($iFriendId, 0)) {
                     // Send mail if the notification is accepted and the user isn't connected NOW.
                     $this->sendMail($iFriendId, $oUserModel);
                 }
@@ -93,12 +82,9 @@ class FriendAjax extends Core
     {
         $this->_mStatus = $this->_oFriendModel->approval($this->session->get('member_id'), $this->httpRequest->post('friendId'));
 
-        if (!$this->_mStatus)
-        {
+        if (!$this->_mStatus) {
             $this->_sMsg = jsonMsg(0, t('Cannot approve friend, please try later.'));
-        }
-        else
-        {
+        } else {
             $this->_sMsg = jsonMsg(1, t('The friends has been approved.'));
         }
 
@@ -109,12 +95,9 @@ class FriendAjax extends Core
     {
         $this->_mStatus = $this->_oFriendModel->delete($this->session->get('member_id'), $this->httpRequest->post('friendId'));
 
-        if (!$this->_mStatus)
-        {
+        if (!$this->_mStatus) {
             $this->_sMsg = jsonMsg(0, t('Cannot remove friend, please try later.'));
-        }
-        else
-        {
+        } else {
             $this->_sMsg = jsonMsg(1, t('The friends we been deleted.'));
         }
 
@@ -164,9 +147,9 @@ class FriendAjax extends Core
 
         unset($this->_oFriendModel, $this->_sMsg, $this->_mStatus);
     }
-
 }
 
 // Only Members
-if (User::auth())
+if (User::auth()) {
     new FriendAjax;
+}

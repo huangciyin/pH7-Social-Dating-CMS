@@ -19,5 +19,4 @@ class Folder
         clearstatcache();
         return (is_folder($sFolder) && is_readable($sFolder) && is_writable($sFolder));
     }
-
 }

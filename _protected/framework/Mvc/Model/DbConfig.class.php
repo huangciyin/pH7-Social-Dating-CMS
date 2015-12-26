@@ -27,7 +27,9 @@ final class DbConfig
     /**
      * Private constructor to prevent instantiation of class, because it's a static class.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @param string $sSetting You can specify a specific parameter. Default NULL
@@ -38,10 +40,8 @@ final class DbConfig
         $oCache = (new Cache)->start(self::CACHE_GROUP, 'setting' . $sSetting, self::CACHE_TIME);
 
         // @return value of config the database
-        if (!empty($sSetting))
-        {
-            if (!$sData = $oCache->get())
-            {
+        if (!empty($sSetting)) {
+            if (!$sData = $oCache->get()) {
                 $rStmt = Engine\Db::getInstance()->prepare('SELECT value FROM' . Engine\Db::prefix('Settings') . 'WHERE name=:setting');
                 $rStmt->bindParam(':setting', $sSetting, \PDO::PARAM_STR);
                 $rStmt->execute();
@@ -52,11 +52,8 @@ final class DbConfig
                 $oCache->put($sData);
             }
             $mData = $sData;
-        }
-        else
-        {
-            if (!$oData = $oCache->get())
-            {
+        } else {
+            if (!$oData = $oCache->get()) {
                 $rStmt = Engine\Db::getInstance()->prepare('SELECT * FROM' . Engine\Db::prefix('Settings'));
                 $rStmt->execute();
                 $oData = $rStmt->fetch(\PDO::FETCH_OBJ);
@@ -85,8 +82,7 @@ final class DbConfig
         $oCache = (new Cache)->start(self::CACHE_GROUP, 'metaMain' . $sLangId, self::CACHE_TIME);
 
         // @return value of meta tags the database
-        if (!$oData = $oCache->get())
-        {
+        if (!$oData = $oCache->get()) {
             $sSql = 'SELECT * FROM' . Engine\Db::prefix('MetaMain') . 'WHERE langId = :langId';
 
             // Get meta data with the current language if it exists in the "MetaMain" table ...
@@ -96,8 +92,7 @@ final class DbConfig
             $oData = $rStmt->fetch(\PDO::FETCH_OBJ);
 
             // If the current language doesn't exist in the "MetaMain" table, we create a new table for the new language with default value
-            if (empty($oData))
-            {
+            if (empty($oData)) {
                 $aData = [
                     'langId' => $sLangId, // The new language key (e.g., de_DE)
                     'pageTitle' => 'Home',
@@ -144,12 +139,13 @@ final class DbConfig
      */
     public static function setSiteMode($sStatus)
     {
-        if ($sStatus != self::MAINTENANCE_SITE && $sStatus != self::ENABLE_SITE) exit('Wrong maintenance mode type!');
+        if ($sStatus != self::MAINTENANCE_SITE && $sStatus != self::ENABLE_SITE) {
+            exit('Wrong maintenance mode type!');
+        }
 
         self::setSetting($sStatus, 'siteStatus');
 
         /* Clean DbConfig Cache */
         (new Cache)->start(self::CACHE_GROUP, null, null)->clear();
     }
-
 }

@@ -31,7 +31,9 @@ class Ban
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Checks if the username is not a banned username.
@@ -104,8 +106,11 @@ class Ban
     {
         $aBans = file(PH7_PATH_APP_CONFIG . static::DIR . self::$_sFile);
 
-        if (self::$_bIsEmail)
-            if (self::_check(strrchr(self::$_sVal, '@'))) return true;
+        if (self::$_bIsEmail) {
+            if (self::_check(strrchr(self::$_sVal, '@'))) {
+                return true;
+            }
+        }
 
         return self::_check(self::$_sVal);
     }
@@ -121,8 +126,7 @@ class Ban
     {
         $aBans = file(PH7_PATH_APP_CONFIG . static::DIR . self::$_sFile);
 
-        foreach ($aBans as $sBan)
-        {
+        foreach ($aBans as $sBan) {
             $sBan = trim($sBan);
             $sWordReplace = ($bWordReplace) ? \PH7\Framework\Mvc\Model\DbConfig::getSetting('banWordReplace') : '';
             self::$_sVal = str_ireplace($sBan, $sWordReplace, self::$_sVal);
@@ -142,5 +146,4 @@ class Ban
 
         return in_array($sVal, array_map('trim', $aBans));
     }
-
 }

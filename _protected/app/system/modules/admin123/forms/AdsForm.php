@@ -14,10 +14,10 @@ class AdsForm
 
     public static function display()
     {
-        if (isset($_POST['submit_ads']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_ads']))
+        if (isset($_POST['submit_ads'])) {
+            if (\PFBC\Form::isValid($_POST['submit_ads'])) {
                 new AdsFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class AdsForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

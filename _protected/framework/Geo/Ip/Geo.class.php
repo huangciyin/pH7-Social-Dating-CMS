@@ -22,7 +22,9 @@ class Geo
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Get Country ISO Code (e.g., en, it, es, ru, fr, ...).
@@ -127,6 +129,7 @@ class Geo
      *
      * @access private
      */
-    private function __clone() {}
-
+    private function __clone()
+    {
+    }
 }

@@ -11,8 +11,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\File\Import,
+use PH7\Framework\File\Import,
 PH7\Framework\Date\CDateTime,
 PH7\Framework\Config\Config,
 PH7\Framework\Mvc\Model\DbConfig,
@@ -44,17 +43,12 @@ class Microsoft extends Api
         /* API permissions */
         $this->_oClient->scope = 'wl.basic wl.emails wl.birthday';
 
-        if(($bSuccess = $this->_oClient->Initialize()))
-        {
-            if(($bSuccess = $this->_oClient->Process()))
-            {
-                if(strlen($this->_oClient->authorization_error))
-                {
+        if (($bSuccess = $this->_oClient->Initialize())) {
+            if (($bSuccess = $this->_oClient->Process())) {
+                if (strlen($this->_oClient->authorization_error)) {
                     $this->_oClient->error = $this->_oClient->authorization_error;
                     $bSuccess = false;
-                }
-                elseif(strlen($this->_oClient->access_token))
-                {
+                } elseif (strlen($this->_oClient->access_token)) {
                     $bSuccess = $this->_oClient->CallAPI(
                         'https://apis.live.net/v5.0/me',
                         'GET',
@@ -68,37 +62,31 @@ class Microsoft extends Api
             $bSuccess = $this->_oClient->Finalize($bSuccess);
         }
 
-        if($this->_oClient->exit)
+        if ($this->_oClient->exit) {
             exit(1);
+        }
 
-        if($bSuccess)
-        {
+        if ($bSuccess) {
             // User info is ok? Here we will be connect the user and/or adding the login and registering routines...
             $oUserModel = new UserCoreModel;
 
-            if(!$iId = $oUserModel->getId($oUserData->emails->account))
-            {
+            if (!$iId = $oUserModel->getId($oUserData->emails->account)) {
                 // Add User if it does not exist in our database
                 $this->add(escape($oUserData, true), $oUserModel);
 
                 $this->oDesign->setFlashMsg( t('You have now been registered! %0%', (new Registration)->sendMail($this->_aUserInfo, true)->getMsg()) );
                 $this->sUrl = Uri::get('connect','main','register');
-            }
-            else
-            {   // Login
+            } else {   // Login
                 $this->setLogin($iId, $oUserModel);
                 $this->sUrl = Uri::get('connect','main','home');
             }
 
             unset($oUserModel);
-        }
-        else
-        {
+        } else {
             // For testing purposes, if there was an error, let's kill the script
             $this->oDesign->setFlashMsg(t('Oops! An error has occurred. Please try again later.'));
             $this->sUrl = Uri::get('connect','main','index');
         }
-
     }
 
     /**
@@ -154,5 +142,4 @@ class Microsoft extends Api
         $this->_oClient->client_id = Config::getInstance()->values['module.api']['microsoft.client_id'];
         $this->_oClient->client_secret = Config::getInstance()->values['module.api']['microsoft.client_secret_key'];
     }
-
 }

@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -17,10 +16,10 @@ class BankForm
 
     public static function display()
     {
-        if (isset($_POST['submit_bank_account']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_bank_account']))
+        if (isset($_POST['submit_bank_account'])) {
+            if (\PFBC\Form::isValid($_POST['submit_bank_account'])) {
                 new BankFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -34,8 +33,7 @@ class BankForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_bank_account', 'form_bank_account'));
         $oForm->addElement(new \PFBC\Element\Token('bank_account'));
 
-        if (AdminCore::auth() && !Affiliate::auth() && $oHR->getExists('profile_id'))
-        {
+        if (AdminCore::auth() && !Affiliate::auth() && $oHR->getExists('profile_id')) {
             $oForm->addElement(new \PFBC\Element\HTMLExternal('<p class="center"><a class="s_button" href="' . Uri::get('affiliate', 'admin', 'browse') . '">' . t('Return to back affiliates browse') . '</a></p>'));
         }
         unset($oHR);
@@ -48,5 +46,4 @@ class BankForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

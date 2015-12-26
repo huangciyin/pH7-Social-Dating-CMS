@@ -13,15 +13,14 @@ class Registration extends RegistrationCore
 
     public function __construct()
     {
-       parent::__construct();
+        parent::__construct();
 
-       $this->iActiveType = DbConfig::getSetting('affActivationType');
+        $this->iActiveType = DbConfig::getSetting('affActivationType');
     }
 
     public function sendMail(array $aInfo, $bIsUniversalLogin = false)
     {
-        switch($this->iActiveType)
-        {
+        switch ($this->iActiveType) {
             case 1:
               $sEmailMsg = t('Please %0% now to make money!', '<a href="' . Uri::get('affiliate','home','login') . '"><b>'.t('log in').'</b></a>');
             break;
@@ -61,5 +60,4 @@ class Registration extends RegistrationCore
 
         return $this;
     }
-
 }

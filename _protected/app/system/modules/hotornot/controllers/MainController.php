@@ -21,8 +21,9 @@ class MainController extends Controller
     public function rating()
     {
         /*** JS File Only to Members. For its part, the Rating System will redirect the visitors who are not connected to the registration form. ***/
-        if (UserCore::auth())
+        if (UserCore::auth()) {
             $this->design->addJs(PH7_LAYOUT . PH7_SYS . PH7_MOD . $this->registry->module . PH7_SH . PH7_TPL . PH7_TPL_MOD_NAME . PH7_SH . PH7_JS, 'script.js');
+        }
 
         /*** Meta Tags ***/
         /**
@@ -42,18 +43,14 @@ class MainController extends Controller
         $iProfileId = (UserCore::auth()) ? $this->session->get('member_id') : null;
         $oData = $this->oHoNModel->getPicture($iProfileId);
 
-        if (empty($oData))
-        {
+        if (empty($oData)) {
             Framework\Http\Http::setHeadersByCode(404);
             $this->view->error = t("Sorry, we haven't found any photo to Hot Or Not Party.");
-        }
-        else
-        {
+        } else {
             $this->view->avatarDesign = new AvatarDesignCore; // Avatar Design Class
             $this->view->data = $oData;
         }
 
         $this->output();
     }
-
 }

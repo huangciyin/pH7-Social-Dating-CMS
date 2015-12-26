@@ -47,17 +47,14 @@ class Image
     {
         $mImgType = $this->getType();
 
-        if (!is_uploaded_file($this->sFile) || !$mImgType)
-        {
-            if (isDebug())
+        if (!is_uploaded_file($this->sFile) || !$mImgType) {
+            if (isDebug()) {
                 throw new \PH7\Framework\Error\CException\PH7BadMethodCallException('The file could not be uploaded. Possibly too large.');
-            else
+            } else {
                 return false;
-        }
-        else
-        {
-            switch ($mImgType)
-            {
+            }
+        } else {
+            switch ($mImgType) {
                 // JPG
                 case static::JPG:
                     $this->rImage = imagecreatefromjpeg($this->sFile);
@@ -90,8 +87,9 @@ class Image
             $this->iHeight = imagesy($this->rImage);
 
             // Automatic resizing if the image is too large
-            if ($this->iWidth > $this->iMaxWidth OR $this->iHeight > $this->iMaxHeight)
+            if ($this->iWidth > $this->iMaxWidth OR $this->iHeight > $this->iMaxHeight) {
                 $this->dynamicResize($this->iMaxWidth, $this->iMaxHeight);
+            }
 
             return true;
         }
@@ -128,13 +126,11 @@ class Image
     public function resize($iX = null, $iY = null)
     {
         // Width not given
-        if (!$iX)
-        {
+        if (!$iX) {
             $iX = $this->iWidth * ($iY / $this->iHeight);
         }
         // Height not given
-        elseif (!$iY)
-        {
+        elseif (!$iY) {
             $iY = $this->iHeight * ($iX / $this->iWidth);
         }
 
@@ -158,7 +154,6 @@ class Image
      */
     public function crop($iX = 0, $iY = 0, $iWidth = 1, $iHeight = 1)
     {
-
         $rTmp = imagecreatetruecolor($iWidth, $iHeight);
         imagecopyresampled($rTmp, $this->rImage, 0, 0, $iX, $iY, $iWidth, $iHeight, $iWidth, $iHeight);
         $this->rImage =& $rTmp;
@@ -178,16 +173,14 @@ class Image
     public function dynamicResize($iNewWidth, $iNewHeight)
     {
         // Taller image
-        if ($iNewHeight > $iNewWidth OR ($iNewHeight == $iNewWidth AND $this->iHeight < $this->iWidth))
-        {
+        if ($iNewHeight > $iNewWidth OR ($iNewHeight == $iNewWidth AND $this->iHeight < $this->iWidth)) {
             $this->resize(NULL, $iNewHeight);
 
             $iW = ($iNewWidth - $this->iWidth) / -2;
             $this->crop($iW, 0, $iNewWidth, $iNewHeight);
         }
         // Wider image
-        else
-        {
+        else {
             $this->resize($iNewWidth, NULL);
 
             $iY = ($iNewHeight - $this->iHeight) / -2;
@@ -222,9 +215,7 @@ class Image
      */
     public function zoneCrop($iWidth, $iHeight, $sZone = 'center')
     {
-
-        switch ($sZone)
-        {
+        switch ($sZone) {
             // Center
             case 'center':
                 $iX = ($iWidth - $this->iWidth) / -2;
@@ -315,13 +306,14 @@ class Image
          $rBlack = imagecolorallocate($this->rImage, 0, 0, 0);
          $rGray = imagecolorallocate($this->rImage, 127, 127, 127);
 
-         if ($iWidthText > 0 && $iHeightText > 0)
-         {
-             if (imagecolorat($this->rImage, $iWidthText, $iHeightText) > $rGray) $rColor = $rBlack;
-                 if (imagecolorat($this->rImage, $iWidthText, $iHeightText) < $rGray) $rColor = $rWhite;
-         }
-         else
-         {
+         if ($iWidthText > 0 && $iHeightText > 0) {
+             if (imagecolorat($this->rImage, $iWidthText, $iHeightText) > $rGray) {
+                 $rColor = $rBlack;
+             }
+             if (imagecolorat($this->rImage, $iWidthText, $iHeightText) < $rGray) {
+                 $rColor = $rWhite;
+             }
+         } else {
              $rColor = $rWhite;
          }
 
@@ -346,8 +338,7 @@ class Image
      */
     public function save($sFile)
     {
-        switch ($this->sType)
-        {
+        switch ($this->sType) {
             // JPG
             case 'jpg':
                 imagejpeg($this->rImage, $sFile, $this->iQuality);
@@ -378,8 +369,7 @@ class Image
      */
     public function show()
     {
-        switch ($this->sType)
-        {
+        switch ($this->sType) {
             // JPG
             case 'jpg':
                 header('Content-type: image/jpeg');
@@ -457,5 +447,4 @@ class Image
             $this->iCompression
         );
     }
-
 }

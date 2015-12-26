@@ -28,13 +28,10 @@ class AdminController extends MainController
         $oPosts = $this->oNoteModel->getPosts($this->oPage->getFirstItem(), $this->oPage->getNbItemsByPage(), SearchCoreModel::CREATED, '0');
         $this->setMenuVars();
 
-        if(empty($oPosts))
-        {
+        if (empty($oPosts)) {
             $this->sTitle = t('Not Note Posts for the treatment of moderate.');
             $this->notFound();
-        }
-        else
-        {
+        } else {
             $this->view->posts = $oPosts;
         }
 
@@ -47,15 +44,12 @@ class AdminController extends MainController
         $sPostId = $this->httpRequest->post('post_id');
         $iProfileId = $this->httpRequest->post('profile_id', 'int');
 
-        if(isset($iNoteId, $iProfileId, $sPostId) && $this->oNoteModel->approved($iNoteId))
-        {
+        if (isset($iNoteId, $iProfileId, $sPostId) && $this->oNoteModel->approved($iNoteId)) {
             /* Clean NoteModel Cache */
             (new Framework\Cache\Cache)->start(NoteModel::CACHE_GROUP, null, null)->clear();
 
             $this->sMsg = t('The Note has been approved!');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! The Note could not be approved!');
         }
 
@@ -68,19 +62,15 @@ class AdminController extends MainController
         $sPostId = $this->httpRequest->post('post_id');
         $iProfileId = $this->httpRequest->post('profile_id', 'int');
 
-        if(isset($iNoteId, $iProfileId, $sPostId) && $this->oNoteModel->approved($iNoteId, '0'))
-        {
+        if (isset($iNoteId, $iProfileId, $sPostId) && $this->oNoteModel->approved($iNoteId, '0')) {
             /* Clean NoteModel Cache */
             (new Framework\Cache\Cache)->start(NoteModel::CACHE_GROUP, null, null)->clear();
 
             $this->sMsg = t('The Note has been approved!');
-        }
-        else
-        {
+        } else {
             $this->sMsg = t('Oops! The Note could not be approved!');
         }
 
         Header::redirect(Uri::get('note', 'main', 'index'), $this->sMsg);
     }
-
 }

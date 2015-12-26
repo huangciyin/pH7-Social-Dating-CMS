@@ -29,5 +29,4 @@ class Username extends \PFBC\Validation
     {
         return $this->oValidate->username($sValue, $this->iMin, $this->iMax, $this->sTable);
     }
-
 }

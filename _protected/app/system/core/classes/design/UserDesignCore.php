@@ -20,5 +20,4 @@ class UserDesignCore extends Framework\Layout\Html\Design
         $this->staticFiles('js', PH7_STATIC . PH7_JS, 'jquery/counter.js,Stat.js');
         echo '<div class="stat_total_users"></div>';
     }
-
 }

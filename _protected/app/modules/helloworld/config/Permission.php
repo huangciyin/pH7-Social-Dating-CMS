@@ -28,5 +28,4 @@ class Permission extends PermissionCore
          * }
          */
     }
-
 }

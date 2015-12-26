@@ -28,10 +28,10 @@ class MainController extends Controller
      */
     public function test()
     {
-        if ($this->oRest->getRequestMethod() != 'POST')
+        if ($this->oRest->getRequestMethod() != 'POST') {
             $this->oRest->response('', 406);
-        else
+        } else {
             $this->oRest->response($this->set(array('return' => 'It Works!')));
+        }
     }
-
 }

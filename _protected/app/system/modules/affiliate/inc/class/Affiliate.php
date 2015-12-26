@@ -6,8 +6,7 @@
  * @package        PH7 / App / System / Module / Affiliate / Inc / Class
  */
 namespace PH7;
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Cookie\Cookie,
 PH7\Framework\Url\Header,
 PH7\Framework\Mvc\Router\Uri;
@@ -41,13 +40,10 @@ class Affiliate extends AffiliateCore
 
         $iAffId = $oAffModel->getId(null, $sUsername, 'Affiliates');
 
-        if (!$oCookie->exists(static::COOKIE_NAME))
-        {
+        if (!$oCookie->exists(static::COOKIE_NAME)) {
             $this->_setCookie($iAffId, $oCookie); // Set a week
             $oAffModel->addRefer($iAffId); // Add a reference only for new clicks (if the cookie does not exist)
-        }
-        else
-        {
+        } else {
             $this->_setCookie($iAffId, $oCookie); // Add an extra week
         }
 
@@ -65,5 +61,4 @@ class Affiliate extends AffiliateCore
     {
         $oCookie->set(static::COOKIE_NAME, $iAffId, 3600*24*7);
     }
-
 }

@@ -30,13 +30,14 @@ class Emoticon extends \PH7\Framework\Service\Emoticon
     {
         $aEmoticons = static::gets();
 
-        foreach ($aEmoticons as $sEmoticonKey => $aEmoticon)
-            if ($bIsDataUri)
+        foreach ($aEmoticons as $sEmoticonKey => $aEmoticon) {
+            if ($bIsDataUri) {
                 $sContents = str_ireplace(static::getCode($aEmoticon), '<img src=\'' . Optimization::dataUri(static::getPath($sEmoticonKey)) . '\' alt=\'' . static::getName($aEmoticon) . '\' />', $sContents);
-            else
+            } else {
                 $sContents = str_ireplace(static::getCode($aEmoticon), '<img src=\'' . static::getUrl($sEmoticonKey) . '\' alt=\'' . static::getName($aEmoticon) . '\' />', $sContents);
+            }
+        }
 
         return $sContents;
     }
-
 }

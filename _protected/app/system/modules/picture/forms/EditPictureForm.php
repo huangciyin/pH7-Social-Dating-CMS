@@ -13,10 +13,10 @@ class EditPictureForm
 {
     public static function display()
     {
-        if (isset($_POST['submit_edit_picture']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_picture']))
+        if (isset($_POST['submit_edit_picture'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_picture'])) {
                 new EditPictureFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -35,5 +35,4 @@ class EditPictureForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

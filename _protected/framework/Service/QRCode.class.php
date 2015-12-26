@@ -198,8 +198,8 @@ class QRCode
      */
     public function impp($sVal)
     {
-       $this->_sData .= 'IMPP:' . $sVal . "\n";
-       return $this;
+        $this->_sData .= 'IMPP:' . $sVal . "\n";
+        return $this;
     }
 
     /**
@@ -213,10 +213,11 @@ class QRCode
     {
         $bIsImgExt = (new File)->getFileExt($sImgUrl); // Get the file extension.
 
-        if ($bIsImgExt == 'jpeg' || $bIsImgExt == 'jpg' || $bIsImgExt == 'png' || $bIsImgExt == 'gif')
+        if ($bIsImgExt == 'jpeg' || $bIsImgExt == 'jpg' || $bIsImgExt == 'png' || $bIsImgExt == 'gif') {
             $sExt = strtoupper($bIsImgExt);
-        else
+        } else {
             throw new \PH7\Framework\Error\CException\PH7InvalidArgumentException('Invalid format Image!');
+        }
 
         $this->_sData .= 'PHOTO;VALUE=URL;TYPE=' . $sExt . ':' . $sImgUrl . "\n";
         return $this;
@@ -349,5 +350,4 @@ class QRCode
     {
         echo '<p class="center"><img src="' . Url::clean($this->get()) . '" alt="QR Code" /></p>';
     }
-
 }

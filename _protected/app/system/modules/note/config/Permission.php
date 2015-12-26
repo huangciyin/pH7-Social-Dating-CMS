@@ -18,28 +18,21 @@ class Permission extends PermissionCore
         // Level for Notes
         $bAdminAuth = AdminCore::auth();
 
-        if(!UserCore::auth() && ($this->registry->action === 'add' || $this->registry->action === 'edit' || $this->registry->action === 'delete'))
-        {
+        if (!UserCore::auth() && ($this->registry->action === 'add' || $this->registry->action === 'edit' || $this->registry->action === 'delete')) {
             $this->signUpRedirect();
         }
 
-        if (!$bAdminAuth)
-        {
-            if (!$this->checkMembership() || ($this->registry->action === 'read' && !$this->group->read_notes))
-            {
+        if (!$bAdminAuth) {
+            if (!$this->checkMembership() || ($this->registry->action === 'read' && !$this->group->read_notes)) {
                 $this->paymentRedirect();
-            }
-            elseif ($this->registry->action === 'add' && !$this->group->write_notes)
-            {
+            } elseif ($this->registry->action === 'add' && !$this->group->write_notes) {
                 $this->paymentRedirect();
             }
         }
 
-        if(!$bAdminAuth && $this->registry->controller === 'AdminController')
-        {
+        if (!$bAdminAuth && $this->registry->controller === 'AdminController') {
             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Framework\Url\Header::redirect(Framework\Mvc\Router\Uri::get('blog','main','index'), $this->adminSignInMsg(), 'error');
         }
     }
-
 }

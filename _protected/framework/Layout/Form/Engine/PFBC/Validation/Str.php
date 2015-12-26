@@ -30,24 +30,20 @@ class Str extends \PFBC\Validation
     {
         $sValue = trim($sValue);
 
-        if ($this->isNotApplicable($sValue)) return true; // Field not required
+        if ($this->isNotApplicable($sValue)) {
+            return true;
+        } // Field not required
 
-        if (!empty($this->iMin) && $this->oStr->length($sValue) < $this->iMin)
-        {
+        if (!empty($this->iMin) && $this->oStr->length($sValue) < $this->iMin) {
             $this->message = t('Error: this %element% must contain %0% character(s) or more.', $this->iMin);
             return false;
-        }
-        elseif (!empty($this->iMax) && $this->oStr->length($sValue) > $this->iMax)
-        {
+        } elseif (!empty($this->iMax) && $this->oStr->length($sValue) > $this->iMax) {
             $this->message = t('Error: this %element% must contain %0% character(s) or less.', $this->iMax);
             return false;
-        }
-        elseif (!is_string($sValue))
-        {
+        } elseif (!is_string($sValue)) {
             $this->message = t('Please enter a string.');
             return false;
         }
         return true;
     }
-
 }

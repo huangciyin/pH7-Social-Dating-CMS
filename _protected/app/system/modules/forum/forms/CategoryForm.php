@@ -14,10 +14,10 @@ class CategoryForm
 
     public static function display()
     {
-        if (isset($_POST['submit_category']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_category']))
+        if (isset($_POST['submit_category'])) {
+            if (\PFBC\Form::isValid($_POST['submit_category'])) {
                 new CategoryFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -34,5 +34,4 @@ class CategoryForm
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<script src="'.PH7_URL_STATIC.PH7_JS.'validate.js"></script>'));
         $oForm->render();
     }
-
 }

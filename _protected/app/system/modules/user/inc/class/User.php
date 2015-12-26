@@ -6,8 +6,7 @@
  * @package        PH7 / App / System / Module / User / Inc / Class
  */
 namespace PH7;
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Router\Uri,
 PH7\Framework\Url\Header;
 
@@ -25,5 +24,4 @@ class User extends UserCore
 
         Header::redirect(Uri::get('user','main','soon'), t('You are successfully logged out. See you soon!'));
     }
-
 }

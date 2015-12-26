@@ -23,8 +23,9 @@ class Statistic
      *
      * @access private
      */
-    private function __construct() {}
-
+    private function __construct()
+    {
+    }
 
     /**
      * Set Views (pH Views) Statistics with a verification session to avoid duplication in the number of page views.
@@ -39,13 +40,11 @@ class Statistic
         $oSession = new \PH7\Framework\Session\Session;
         $sSessionName = 'pHV' . $iId . $sTable;
 
-        if (!$oSession->exists($sSessionName))
-        {
+        if (!$oSession->exists($sSessionName)) {
             Mvc\Model\Statistic::setView($iId, $sTable);
             $oSession->set($sSessionName, 1);
         }
 
         unset($oSession);
     }
-
 }

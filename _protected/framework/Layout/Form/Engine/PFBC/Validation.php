@@ -15,8 +15,9 @@ abstract class Validation extends Base
     {
         $this->oValidate = new Validate;
 
-        if(!empty($message))
+        if (!empty($message)) {
             $this->message = t('%element% is invalid.');
+        }
     }
 
     public function getMessage()
@@ -35,5 +36,4 @@ abstract class Validation extends Base
     {
         unset($this->oValidate, $this->message);
     }
-
 }

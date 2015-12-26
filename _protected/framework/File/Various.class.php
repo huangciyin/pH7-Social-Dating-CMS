@@ -19,7 +19,9 @@ class Various
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Convert bytes to human readable format.
@@ -54,8 +56,7 @@ class Various
         $cSuffix = strtolower(substr(trim($sSize), -1));
         $iSize = (int) $sSize;
 
-        switch ($cSuffix)
-        {
+        switch ($cSuffix) {
             // kilobyte
             case 'k':
                 $iSize *= 1024;
@@ -77,5 +78,4 @@ class Various
 
         return $iSize;
     }
-
 }

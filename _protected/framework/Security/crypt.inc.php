@@ -17,11 +17,10 @@
 namespace {
 defined('PH7') or exit('Restricted access');
 
- if (!function_exists('hash_pbkdf2'))
- {
-    function hash_pbkdf2($algo, $password, $salt, $iterations, $length = 0, $rawOutput = false)
-    {
-    // check for hashing algorithm
+ if (!function_exists('hash_pbkdf2')) {
+     function hash_pbkdf2($algo, $password, $salt, $iterations, $length = 0, $rawOutput = false)
+     {
+         // check for hashing algorithm
     if (!in_array(strtolower($algo), hash_algos())) {
         trigger_error(sprintf(
             '%s(): Unknown hashing algorithm: %s',
@@ -43,23 +42,23 @@ defined('PH7') or exit('Restricted access');
 
     // check iterations
     $iterations = (int)$iterations;
-    if ($iterations <= 0) {
-        trigger_error(sprintf(
+         if ($iterations <= 0) {
+             trigger_error(sprintf(
             '%s(): Iterations must be a positive integer: %d',
             __FUNCTION__, $iterations
         ), E_USER_WARNING);
-        return false;
-    }
+             return false;
+         }
 
     // check length
     $length = (int)$length;
-    if ($length < 0) {
-        trigger_error(sprintf(
+         if ($length < 0) {
+             trigger_error(sprintf(
             '%s(): Iterations must be greater than or equal to 0: %d',
             __FUNCTION__, $length
         ), E_USER_WARNING);
-        return false;
-    }
+             return false;
+         }
 
     // check salt
     if (strlen($salt) > PHP_INT_MAX - 4) {
@@ -72,10 +71,10 @@ defined('PH7') or exit('Restricted access');
 
     // initialize
     $derivedKey = '';
-    $loops = 1;
-    if ($length > 0) {
-        $loops = (int)ceil($length / strlen(hash($algo, '', $rawOutput)));
-    }
+         $loops = 1;
+         if ($length > 0) {
+             $loops = (int)ceil($length / strlen(hash($algo, '', $rawOutput)));
+         }
 
     // hash for each blocks
     for ($i = 1; $i <= $loops; $i++) {
@@ -88,16 +87,16 @@ defined('PH7') or exit('Restricted access');
         $derivedKey .= $block;
     }
 
-    if (!$rawOutput) {
-        $derivedKey = bin2hex($derivedKey);
-    }
+         if (!$rawOutput) {
+             $derivedKey = bin2hex($derivedKey);
+         }
 
-    if ($length > 0) {
-        return substr($derivedKey, 0, $length);
-    }
+         if ($length > 0) {
+             return substr($derivedKey, 0, $length);
+         }
 
-    return $derivedKey;
-    }
+         return $derivedKey;
+     }
  }
 
 }
@@ -113,7 +112,6 @@ defined('PH7') or exit('Restricted access');
 namespace {
 
 if (!defined('PASSWORD_DEFAULT')) {
-
     define('PASSWORD_BCRYPT', 1);
     define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
 
@@ -126,7 +124,8 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * @return string|false The hashed password, or false on error.
      */
-    function password_hash($password, $algo, array $options = array()) {
+    function password_hash($password, $algo, array $options = array())
+    {
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
             return null;
@@ -269,7 +268,8 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * @return array The array of information about the hash.
      */
-    function password_get_info($hash) {
+    function password_get_info($hash)
+    {
         $return = array(
             'algo' => 0,
             'algoName' => 'unknown',
@@ -295,7 +295,8 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * @return boolean True if the password needs to be rehashed.
      */
-    function password_needs_rehash($hash, $algo, array $options = array()) {
+    function password_needs_rehash($hash, $algo, array $options = array())
+    {
         $info = password_get_info($hash);
         if ($info['algo'] != $algo) {
             return true;
@@ -319,7 +320,8 @@ if (!defined('PASSWORD_DEFAULT')) {
      *
      * @return boolean If the password matches the hash
      */
-    function password_verify($password, $hash) {
+    function password_verify($password, $hash)
+    {
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_verify to function", E_USER_WARNING);
             return false;
@@ -353,11 +355,12 @@ namespace PasswordCompat\binary {
      * @internal
      * @return int The number of bytes
      */
-    function _strlen($binary_string) {
-           if (function_exists('mb_strlen')) {
-               return mb_strlen($binary_string, '8bit');
-           }
-           return strlen($binary_string);
+    function _strlen($binary_string)
+    {
+        if (function_exists('mb_strlen')) {
+            return mb_strlen($binary_string, '8bit');
+        }
+        return strlen($binary_string);
     }
 
     /**
@@ -372,11 +375,12 @@ namespace PasswordCompat\binary {
      * @internal
      * @return string The substring
      */
-    function _substr($binary_string, $start, $length) {
-       if (function_exists('mb_substr')) {
-           return mb_substr($binary_string, $start, $length, '8bit');
-       }
-       return substr($binary_string, $start, $length);
-   }
+    function _substr($binary_string, $start, $length)
+    {
+        if (function_exists('mb_substr')) {
+            return mb_substr($binary_string, $start, $length, '8bit');
+        }
+        return substr($binary_string, $start, $length);
+    }
 
 }

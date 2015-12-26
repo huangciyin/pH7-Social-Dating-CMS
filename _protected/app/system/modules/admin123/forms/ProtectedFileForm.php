@@ -13,10 +13,10 @@ class ProtectedFileForm
 
     public static function display()
     {
-        if (isset($_POST['submit_file']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_file']))
+        if (isset($_POST['submit_file'])) {
+            if (\PFBC\Form::isValid($_POST['submit_file'])) {
                 new ProtectedFileFormProcess;
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -31,5 +31,4 @@ class ProtectedFileForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

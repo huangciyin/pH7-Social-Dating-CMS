@@ -29,18 +29,15 @@ namespace PH7\Framework\Translate
          $oCookie = new Cookie;
 
          // Check a template name has been entered and if it meets the required length.
-         if (!empty($_REQUEST['l']) && strlen($_REQUEST['l']) == 5)
-         {
+         if (!empty($_REQUEST['l']) && strlen($_REQUEST['l']) == 5) {
              $this->_sUserLang = $_REQUEST['l'];
              $oCookie->set(static::COOKIE_NAME, $this->_sUserLang, 60*60*48);
-         }
-         else if ($oCookie->exists(static::COOKIE_NAME))
-         {
-             $this->_sUserLang = $oCookie->get(static::COOKIE_NAME);
-         }
-         else
-         {
-             $this->_sUserLang = (new \PH7\Framework\Navigation\Browser)->getLanguage();
+         } else {
+             if ($oCookie->exists(static::COOKIE_NAME)) {
+                 $this->_sUserLang = $oCookie->get(static::COOKIE_NAME);
+             } else {
+                 $this->_sUserLang = (new \PH7\Framework\Navigation\Browser)->getLanguage();
+             }
          }
 
          unset($oCookie);
@@ -105,17 +102,14 @@ namespace PH7\Framework\Translate
       */
      public static function getJsFile($sPath, $sFileName = PH7_LANG_CODE)
      {
-         if (is_file($sPath . $sFileName . '.js'))
-         {
+         if (is_file($sPath . $sFileName . '.js')) {
              return $sFileName . '.js';
-         }
-         else if (is_file($sPath . PH7_DEFAULT_LANG_CODE . '.js'))
-         {
-             return PH7_DEFAULT_LANG_CODE . '.js';
-         }
-         else
-         {
-             throw new Exception('Language file \'' . $sPath . PH7_DEFAULT_LANG_CODE . '.js\' not found.');
+         } else {
+             if (is_file($sPath . PH7_DEFAULT_LANG_CODE . '.js')) {
+                 return PH7_DEFAULT_LANG_CODE . '.js';
+             } else {
+                 throw new Exception('Language file \'' . $sPath . PH7_DEFAULT_LANG_CODE . '.js\' not found.');
+             }
          }
      }
 
@@ -141,27 +135,24 @@ namespace PH7\Framework\Translate
       */
      private function _loading()
      {
-         if (!empty($this->_sUserLang) && $this->_oConfig->load(PH7_PATH_APP_LANG . $this->_sUserLang . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . $this->_sUserLang . '/language.php' ))
-         {
+         if (!empty($this->_sUserLang) && $this->_oConfig->load(PH7_PATH_APP_LANG . $this->_sUserLang . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . $this->_sUserLang . '/language.php' )) {
              $this->_sLangName = $this->_sUserLang;
              include PH7_PATH_APP_LANG . $this->_sUserLang . '/language.php';
              date_default_timezone_set($this->_oConfig->values['language.application']['timezone']);
-         }
-         else if ($this->_oConfig->load(PH7_PATH_APP_LANG . $this->_sDefaultLang . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . $this->_sDefaultLang . '/language.php' ))
-         {
-             $this->_sLangName = $this->_sDefaultLang;
-             include PH7_PATH_APP_LANG . $this->_sDefaultLang . '/language.php';
-             date_default_timezone_set($this->_oConfig->values['language.application']['timezone']);
-         }
-         else if ($this->_oConfig->load(PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . '/language.php' ))
-         {
-             $this->_sLangName = PH7_DEFAULT_LANG;
-             include PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . '/language.php';
-             date_default_timezone_set($this->_oConfig->values['language.application']['timezone']);
-         }
-         else
-         {
-             throw new Exception('Language file \'' . PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE . '\' and/or Language file \'' . PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . 'language.php\' not found.');
+         } else {
+             if ($this->_oConfig->load(PH7_PATH_APP_LANG . $this->_sDefaultLang . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . $this->_sDefaultLang . '/language.php' )) {
+                 $this->_sLangName = $this->_sDefaultLang;
+                 include PH7_PATH_APP_LANG . $this->_sDefaultLang . '/language.php';
+                 date_default_timezone_set($this->_oConfig->values['language.application']['timezone']);
+             } else {
+                 if ($this->_oConfig->load(PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE) && is_file( PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . '/language.php' )) {
+                     $this->_sLangName = PH7_DEFAULT_LANG;
+                     include PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . '/language.php';
+                     date_default_timezone_set($this->_oConfig->values['language.application']['timezone']);
+                 } else {
+                     throw new Exception('Language file \'' . PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE . '\' and/or Language file \'' . PH7_PATH_APP_LANG . PH7_DEFAULT_LANG . PH7_DS . 'language.php\' not found.');
+                 }
+             }
          }
      }
 
@@ -169,7 +160,6 @@ namespace PH7\Framework\Translate
      {
          unset($this->_oConfig, $this->_sDefaultLang, $this->_sUserLang, $this->_sLangName);
      }
-
  }
 
 }
@@ -182,8 +172,9 @@ namespace
  /**
   * Check if GetText PHP extension exists, if not, it'll includes the GetText library.
   */
- if (!function_exists('gettext'))
+ if (!function_exists('gettext')) {
      require __DIR__ . '/Adapter/Gettext/gettext.inc.php';
+ }
 
  /**
   * Language helper function.
@@ -197,8 +188,9 @@ namespace
 
      $sToken = (Registry::getInstance()->lang !== '' && array_key_exists($sToken, Registry::getInstance()->lang)) ? Registry::getInstance()->lang[$sToken] : gettext($sToken);
 
-     for ($i = 1, $iFuncArgs = func_num_args(); $i < $iFuncArgs; $i++)
+     for ($i = 1, $iFuncArgs = func_num_args(); $i < $iFuncArgs; $i++) {
          $sToken = str_replace('%'. ($i-1) . '%', func_get_arg($i), $sToken);
+     }
 
      return (new SysVar)->parse($sToken);
  }

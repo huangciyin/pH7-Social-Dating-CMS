@@ -145,8 +145,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                         ob_start();
                         eval("?>" . $code);
                         unset($code);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         ob_get_clean();
                         throw $e;
                     }
@@ -191,8 +190,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                             $_template->capture_error();
                         }
                         array_shift($_template->_capture_stack);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         ob_get_clean();
                         throw $e;
                     }
@@ -205,8 +203,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                     try {
                         ob_start();
                         $_template->source->renderUncompiled($_template);
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         ob_get_clean();
                         throw $e;
                     }
@@ -264,8 +261,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                     ob_start();
                     eval("?>" . $output);
                     $_output = ob_get_clean();
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     ob_get_clean();
                     throw $e;
                 }
@@ -299,8 +295,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 }
                 array_shift($_template->_capture_stack);
                 $_output = ob_get_clean();
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 ob_get_clean();
                 throw $e;
             }
@@ -849,7 +844,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 }
             } else {
                 throw new SmartyException("property '$property_name' does not exist.");
-           }
+            }
         }
         if ($name == 'Smarty') {
             throw new SmartyException("PHP5 requires you to call __construct() instead of Smarty()");

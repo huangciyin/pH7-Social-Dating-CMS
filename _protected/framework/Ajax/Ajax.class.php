@@ -24,7 +24,6 @@ defined('PH7') or exit('Restricted access');
      {
          return '{"status":' . $iStatus . ',"txt":"' . $sTxt . '"}';
      }
-
  }
 
 }

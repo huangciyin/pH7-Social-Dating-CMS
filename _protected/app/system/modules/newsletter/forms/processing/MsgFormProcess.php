@@ -15,10 +15,10 @@ class MsgFormProcess
     {
         $aData = (new Newsletter)->sendMessages();
 
-        if (!$aData['status'])
+        if (!$aData['status']) {
             \PFBC\Form::setError('form_msg', Form::errorSendingEmail());
-        else
+        } else {
             \PFBC\Form::setSuccess('form_msg', nt('%n% newsletters were sent successfully!', '%n% newsletter has been sent successfully', $aData['nb_mail_sent']));
+        }
     }
-
 }

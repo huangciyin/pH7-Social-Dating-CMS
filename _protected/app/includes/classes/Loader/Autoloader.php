@@ -27,7 +27,6 @@ final class Autoloader
      * We do not put a "__construct" and "__clone" "private" because it is already included in the class \PH7\Framework\Pattern\Base that is included in the \PH7\Framework\Pattern\Singleton class.
      */
 
-
     /**
      * Init Autoload Class.
      *
@@ -55,8 +54,9 @@ final class Autoloader
         $sClass = $this->_removeNamespace($sClass);
 
         // For the Controllers of the modules
-        if (is_file(Registry::getInstance()->path_module_controllers . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_controllers . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_controllers . $sClass . '.php';
+        }
     }
 
     /**
@@ -70,24 +70,29 @@ final class Autoloader
         $sClass = $this->_removeNamespace($sClass);
 
         // For the global Classes of the pH7Framework
-        if (is_file(PH7_PATH_APP . 'includes/classes/' . $sClass . '.php'))
+        if (is_file(PH7_PATH_APP . 'includes/classes/' . $sClass . '.php')) {
             require_once PH7_PATH_APP . 'includes/classes/' . $sClass . '.php';
+        }
 
         // For the Core Classes
-        if (is_file(PH7_PATH_SYS . 'core/classes/' . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/classes/' . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/classes/' . $sClass . '.php';
+        }
 
         // For the Classes of the modules
-        if (is_file(Registry::getInstance()->path_module_inc . 'class/' . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_inc . 'class/' . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_inc . 'class/' . $sClass . '.php';
+        }
 
         // For the Core Designs Classes
-        if (is_file(PH7_PATH_SYS . 'core/classes/design/' . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/classes/design/' . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/classes/design/' . $sClass . '.php';
+        }
 
         // For the Designs Classes of the modules
-        if (is_file(Registry::getInstance()->path_module_inc . 'class/design/' . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_inc . 'class/design/' . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_inc . 'class/design/' . $sClass . '.php';
+        }
     }
 
     /**
@@ -101,16 +106,19 @@ final class Autoloader
         $sClass = $this->_removeNamespace($sClass);
 
         // For the Core Models
-        if (is_file(PH7_PATH_SYS . 'core/' . PH7_MODELS . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/' . PH7_MODELS . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/' . PH7_MODELS . $sClass . '.php';
+        }
 
         // For the Models of the modules
-        if (is_file(Registry::getInstance()->path_module_models . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_models . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_models . $sClass . '.php';
+        }
 
         // For the Core Designs Models
-        if (is_file(PH7_PATH_SYS . 'core/' . PH7_MODELS . 'design/' . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/' . PH7_MODELS . 'design/' . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/' . PH7_MODELS . 'design/' . $sClass . '.php';
+        }
 
         // For the Core Designs Models of the modules
         /**
@@ -129,18 +137,22 @@ final class Autoloader
         $sClass = $this->_removeNamespace($sClass);
 
         // For the Core Forms
-        if (is_file(PH7_PATH_SYS . 'core/' . PH7_FORMS . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/' . PH7_FORMS . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/' . PH7_FORMS . $sClass . '.php';
+        }
 
-        if (is_file(PH7_PATH_SYS . 'core/' . PH7_FORMS . 'processing/' . $sClass . '.php'))
+        if (is_file(PH7_PATH_SYS . 'core/' . PH7_FORMS . 'processing/' . $sClass . '.php')) {
             require_once PH7_PATH_SYS . 'core/' . PH7_FORMS . 'processing/' . $sClass . '.php';
+        }
 
         // For the Forms of the modules
-        if (is_file(Registry::getInstance()->path_module_forms . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_forms . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_forms . $sClass . '.php';
+        }
 
-        if (is_file(Registry::getInstance()->path_module_forms . 'processing/' . $sClass . '.php'))
+        if (is_file(Registry::getInstance()->path_module_forms . 'processing/' . $sClass . '.php')) {
             require_once Registry::getInstance()->path_module_forms . 'processing/' . $sClass . '.php';
+        }
     }
 
     /**
@@ -153,5 +165,4 @@ final class Autoloader
     {
         return str_replace('PH7\\', '', $sClass);
     }
-
 }

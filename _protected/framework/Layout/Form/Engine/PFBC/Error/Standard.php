@@ -5,8 +5,10 @@
  */
 namespace PFBC\Error;
 
-class Standard extends \PFBC\Error {
-    public function applyAjaxErrorResponse() {
+class Standard extends \PFBC\Error
+{
+    public function applyAjaxErrorResponse()
+    {
         $id = $this->form->getId();
         echo <<<JS
 var errorSize = response.errors.length;
@@ -21,36 +23,40 @@ for(e = 0; e < errorSize; ++e)
 errorHTML += '</ul></div>';
 jQuery("#$id").prepend(errorHTML);
 JS;
-
     }
 
-    private function parse($errors) {
+    private function parse($errors)
+    {
         $list = array();
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $keys = array_keys($errors);
             $keySize = sizeof($keys);
-            for($k = 0; $k < $keySize; ++$k)
+            for ($k = 0; $k < $keySize; ++$k) {
                 $list = array_merge($list, $errors[$keys[$k]]);
+            }
         }
         return $list;
     }
 
-    public function render() {
+    public function render()
+    {
         $errors = $this->parse($this->form->getErrors());
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $size = sizeof($errors);
-            if($size == 1)
+            if ($size == 1) {
                 $format = "error was";
-            else
+            } else {
                 $format = $size . " errors were";
+            }
 
             echo '<div class="pfbc-error ui-state-error ui-corner-all">The following ', $format, ' found:<ul><li>', implode('</li><li>', $errors), '</li></ul></div>';
         }
     }
 
-    public function renderAjaxErrorResponse() {
+    public function renderAjaxErrorResponse()
+    {
         $errors = $this->parse($this->form->getErrors());
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             \PH7\Framework\Http\Http::setContentType('application/json');
             echo json_encode(array('errors' => $errors));
         }

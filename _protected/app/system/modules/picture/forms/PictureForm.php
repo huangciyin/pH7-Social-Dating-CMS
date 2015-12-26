@@ -7,8 +7,7 @@
  */
 namespace PH7;
 
-use
-PH7\Framework\Session\Session,
+use PH7\Framework\Session\Session,
 PH7\Framework\Mvc\Request\Http,
 PH7\Framework\Mvc\Router\Uri;
 
@@ -17,10 +16,10 @@ class PictureForm
 
     public static function display()
     {
-        if (isset($_POST['submit_picture']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_picture']))
+        if (isset($_POST['submit_picture'])) {
+            if (\PFBC\Form::isValid($_POST['submit_picture'])) {
                 new PictureFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -32,7 +31,9 @@ class PictureForm
         $oAlbumId = (new PictureModel)->getAlbumsName((new Session)->get('member_id'));
 
         $aAlbumName = array();
-        foreach ($oAlbumId as $iId) $aAlbumName[$iId->albumId] = $iId->name;
+        foreach ($oAlbumId as $iId) {
+            $aAlbumName[$iId->albumId] = $iId->name;
+        }
 
         $oForm = new \PFBC\Form('form_picture', 500);
         $oForm->configure(array('action' =>''));
@@ -50,5 +51,4 @@ class PictureForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

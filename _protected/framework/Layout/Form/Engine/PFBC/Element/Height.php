@@ -13,10 +13,10 @@ class Height extends Select
     {
         $aOptions = array();
 
-        for($iHeight = 120; $iHeight <= 220; $iHeight+=2)
+        for ($iHeight = 120; $iHeight <= 220; $iHeight+=2) {
             $aOptions[$iHeight] = (new H($iHeight))->display();
+        }
 
         parent::__construct($sLabel, $sName, $aOptions, $aProperties);
     }
-
 }

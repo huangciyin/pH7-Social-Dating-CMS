@@ -12,7 +12,7 @@ use PH7\Framework\Session\Session, PH7\Framework\Mvc\Request\Http;
 class EditWallForm
 {
 
-/*
+    /*
  * This class is still under development, if you are a developer and you want to help us and join our volunteer team of developers to continue development of this module, you are welcome!
  * Please contact us by email: ph7software@gmail.com
  *
@@ -22,10 +22,10 @@ class EditWallForm
 
     public static function display()
     {
-        if (isset($_POST['submit_edit_wall']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_edit_wall']))
+        if (isset($_POST['submit_edit_wall'])) {
+            if (\PFBC\Form::isValid($_POST['submit_edit_wall'])) {
                 new EditWallFormProcess();
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -40,5 +40,4 @@ class EditWallForm
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

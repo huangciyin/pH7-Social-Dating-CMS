@@ -15,8 +15,7 @@
 namespace PH7\Framework\Mvc\Router;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Translate\Lang,
+use PH7\Framework\Translate\Lang,
 PH7\Framework\Layout\LoadTemplate,
 PH7\Framework\Mvc\Model\Engine\Db,
 PH7\Framework\Registry\Registry,
@@ -53,8 +52,7 @@ final class FrontController
 
         $this->indexFileRouter();
 
-        if ($this->oUri->fragment(0) === 'asset' && $this->oUri->fragment(1) === 'gzip')
-        {
+        if ($this->oUri->fragment(0) === 'asset' && $this->oUri->fragment(1) === 'gzip') {
             // Loading and compress CSS and JavaScript files
             $this->gzipRouter();
             exit;
@@ -71,10 +69,8 @@ final class FrontController
         $this->_languageInitialize();
 
         // For the resources of the assets folders
-        if ($this->oUri->fragment(0) === 'asset')
-        {
-            switch ($this->oUri->fragment(1))
-            {
+        if ($this->oUri->fragment(0) === 'asset') {
+            switch ($this->oUri->fragment(1)) {
                 case 'ajax':
                     // Loading Asynchronous Ajax files
                     $this->ajaxRouter();
@@ -107,10 +103,8 @@ final class FrontController
         }
 
         $oUrl = UriRoute::loadFile(new \DomDocument);
-        foreach ($oUrl->getElementsByTagName('route') as $oRoute)
-        {
-            if (preg_match('`^' . $oRoute->getAttribute('url') . '/?(?:\?[^/]+\=[^/]+)?$`', $this->oHttpRequest->requestUri(), $aMatches))
-            {
+        foreach ($oUrl->getElementsByTagName('route') as $oRoute) {
+            if (preg_match('`^' . $oRoute->getAttribute('url') . '/?(?:\?[^/]+\=[^/]+)?$`', $this->oHttpRequest->requestUri(), $aMatches)) {
                 $this->bRouterRewriting = true;
 
                 $sPathModule = $oRoute->getAttribute('path') . PH7_SH;
@@ -119,8 +113,7 @@ final class FrontController
                 $this->oRegistry->module = $oRoute->getAttribute('module');
 
                 // Check if file exist
-                if (!$this->oConfig->load(PH7_PATH_APP . $sPathModule . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE))
-                {
+                if (!$this->oConfig->load(PH7_PATH_APP . $sPathModule . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE)) {
                     $this->notFound('The <b>' . $this->oRegistry->module .
                             '</b> system module is not found.<br />File: <b>' . PH7_PATH_APP . $sPathModule . $this->oRegistry->module . PH7_DS .
                             '</b><br /> or the <b>' . PH7_CONFIG_FILE . '</b> file is not found.<br />File: <b>' . PH7_PATH_APP . $sPathModule . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE . '</b>');
@@ -145,15 +138,12 @@ final class FrontController
 
                 // Get the default action
                 $this->oRegistry->action = $oRoute->getAttribute('action');
-                if ($oRoute->hasAttribute('vars'))
-                {
+                if ($oRoute->hasAttribute('vars')) {
                     $aVars = explode(',', $oRoute->getAttribute('vars'));
                     $iOffset = count($aVars);
 
-                    foreach ($aMatches as $sKey => $sMatch)
-                    {
-                        if ($sKey !== 0)
-                        {
+                    foreach ($aMatches as $sKey => $sMatch) {
+                        if ($sKey !== 0) {
                             $this->oHttpRequest->setGet($aVars[$sKey-1], $sMatch);
 
                             /** Request Parameter for the Router Rewriting mode. * */
@@ -166,12 +156,12 @@ final class FrontController
         }
         unset($oUrl);
 
-        if (empty($this->bRouterRewriting))
-        {
-            if ($this->oUri->fragment(0) === 'm')
+        if (empty($this->bRouterRewriting)) {
+            if ($this->oUri->fragment(0) === 'm') {
                 $this->simpleModuleRouter();
-            else
+            } else {
                 $this->simpleRouter();
+            }
         }
     }
 
@@ -183,20 +173,16 @@ final class FrontController
      */
     private function simpleRouter()
     {
-        if ($this->oUri->fragment(0) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(0)))
-        {
+        if ($this->oUri->fragment(0) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(0))) {
             // Set system module
             $this->oRegistry->module = $this->oUri->fragment(0);
-        }
-        else
-        {
+        } else {
             // Get system module
             $this->oRegistry->module = $this->oConfig->values['system']['default_module'];
         }
 
         // Check if file exist
-        if (!$this->oConfig->load(PH7_PATH_SYS . PH7_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE))
-        {
+        if (!$this->oConfig->load(PH7_PATH_SYS . PH7_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE)) {
             $this->notFound('The <b>' . $this->oRegistry->module . '</b> system module is not found.<br />File: <b>' . PH7_PATH_SYS . PH7_MOD . $this->oRegistry->module . PH7_DS .
                 '</b><br /> or the <b>' . PH7_CONFIG_FILE . '</b> file is not found.<br />File: <b>' . PH7_PATH_SYS . PH7_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE . '</b>');
 
@@ -216,31 +202,22 @@ final class FrontController
         /***** URL THE TEMPLATE *****/
         $this->oRegistry->url_themes_module = PH7_URL_TPL_SYS_MOD . $this->oRegistry->module . PH7_SH . PH7_TPL;
 
-        if ($this->oUri->fragment(1) === 'asset' && $this->oUri->fragment(2) === 'ajax')
-        {
+        if ($this->oUri->fragment(1) === 'asset' && $this->oUri->fragment(2) === 'ajax') {
             // Loading files Asynchronous Ajax
             $this->ajaxRouter($this->oRegistry->path_module);
             exit;
-
-        }
-        elseif ($this->oUri->fragment(1) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(1)))
-        {
+        } elseif ($this->oUri->fragment(1) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(1))) {
             // Set the controller
             $this->oRegistry->controller = ucfirst($this->oUri->fragment(1)) . 'Controller';
-        }
-        else
-        {
+        } else {
             // Get the default controller
             $this->oRegistry->controller = ucfirst($this->oConfig->values['module']['default_controller']) . 'Controller';
         }
 
-        if ($this->oUri->fragment(2) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(2)))
-        {
+        if ($this->oUri->fragment(2) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(2))) {
             // Set the action
             $this->oRegistry->action = $this->oUri->fragment(2);
-        }
-        else
-        {
+        } else {
             // Get the default action
             $this->oRegistry->action = $this->oConfig->values['module']['default_action'];
         }
@@ -257,20 +234,16 @@ final class FrontController
      */
     private function simpleModuleRouter()
     {
-        if ($this->oUri->fragment(1) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(1)))
-        {
+        if ($this->oUri->fragment(1) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(1))) {
             // Set module
             $this->oRegistry->module = $this->oUri->fragment(1);
-        }
-        else
-        {
+        } else {
             // Get default module
             $this->oRegistry->module = $this->oConfig->values['system']['default_module'];
         }
 
         // Check if file exist
-        if (!$this->oConfig->load(PH7_PATH_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE))
-        {
+        if (!$this->oConfig->load(PH7_PATH_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE)) {
             $this->notFound('The <b>' . $this->oRegistry->module . '</b> module is not found.<br />File: <b>' . PH7_PATH_MOD . $this->oRegistry->module . PH7_DS .
                 '</b><br /> or the <b>' . PH7_CONFIG_FILE . '</b> file is not found.<br />File: <b>' . PH7_PATH_MOD . $this->oRegistry->module . PH7_DS . PH7_CONFIG . PH7_CONFIG_FILE . '</b>');
             // It reloads the config.ini file for the new module "error"
@@ -286,30 +259,22 @@ final class FrontController
         /***** URL THE TEMPLATE *****/
         $this->oRegistry->url_themes_module = PH7_URL_TPL_MOD . $this->oRegistry->module . PH7_SH . PH7_TPL;
 
-        if ($this->oUri->fragment(2) === 'asset' && $this->oUri->fragment(3) === 'ajax')
-        {
+        if ($this->oUri->fragment(2) === 'asset' && $this->oUri->fragment(3) === 'ajax') {
             // Loading files Asynchronous Ajax
             $this->ajaxRouter($this->oRegistry->path_module);
             exit;
-        }
-        elseif ($this->oUri->fragment(2) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(2)))
-        {
+        } elseif ($this->oUri->fragment(2) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(2))) {
             // Set the controller
             $this->oRegistry->controller = ucfirst($this->oUri->fragment(2)) . 'Controller';
-        }
-        else
-        {
+        } else {
             // Get the default controller
             $this->oRegistry->controller = ucfirst($this->oConfig->values['module']['default_controller']) . 'Controller';
         }
 
-        if ($this->oUri->fragment(3) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(3)))
-        {
+        if ($this->oUri->fragment(3) && preg_match('#^[a-z0-9\.\-_]+$#i', $this->oUri->fragment(3))) {
             // Set the action
             $this->oRegistry->action = $this->oUri->fragment(3);
-        }
-        else
-        {
+        } else {
             // Get the default action
             $this->oRegistry->action = $this->oConfig->values['module']['default_action'];
         }
@@ -359,18 +324,21 @@ final class FrontController
      */
     public function _languageInitialize()
     {
-        if (!defined('PH7_PREF_LANG'))
+        if (!defined('PH7_PREF_LANG')) {
             define('PH7_PREF_LANG', DbConfig::getSetting('defaultLanguage'));
+        }
 
-        if (!defined('PH7_LANG_NAME'))
+        if (!defined('PH7_LANG_NAME')) {
             define('PH7_LANG_NAME', (new Lang)->setDefaultLang(PH7_PREF_LANG)->getLang());
+        }
 
         /*** Get the ISO language code ***/
         define('PH7_DEFAULT_LANG_CODE', substr(PH7_DEFAULT_LANG, 0, 2));
         define('PH7_LANG_CODE', substr(PH7_LANG_NAME, 0, 2));
 
-        if (!defined('PH7_ENCODING'))
+        if (!defined('PH7_ENCODING')) {
             define('PH7_ENCODING', $this->oConfig->values['language']['charset']);
+        }
 
         putenv('LC_ALL=' . PH7_LANG_NAME);
         setlocale(LC_ALL, PH7_LANG_NAME);
@@ -434,39 +402,30 @@ final class FrontController
         \PH7\Framework\File\Import::pH7FwkClass('Ajax.Ajax');
 
         // Option for Content Type
-        if ($this->oHttpRequest->getExists('option'))
-        {
-            if ($this->oHttpRequest->get('option') == 'plain')
+        if ($this->oHttpRequest->getExists('option')) {
+            if ($this->oHttpRequest->get('option') == 'plain') {
                 header('Content-Type: text/plain; charset=utf-8');
+            }
         }
 
-        if (!empty($sMod))
-        {
+        if (!empty($sMod)) {
             // For module only!
 
             $this->_pathInitialize();
 
             $sFolder = ($this->oUri->fragment(4) && preg_match('#^[\w]+$#', $this->oUri->fragment(4))) ? PH7_DS . $this->oUri->fragment(4) : '';
-            if (is_file($sMod . 'assets/ajax/' . $this->oUri->fragment(3) . $sFolder . 'Ajax.php'))
-            {
+            if (is_file($sMod . 'assets/ajax/' . $this->oUri->fragment(3) . $sFolder . 'Ajax.php')) {
                 include_once $sMod . 'assets/ajax/' . $this->oUri->fragment(3) . $sFolder . 'Ajax.php';
-            }
-            else
-            {
+            } else {
                 $this->notFound('Error while loading the library of module ajax<br />File: ' . $sMod . 'assets' . PH7_DS . 'ajax' . PH7_DS . $this->oUri->fragment(3) . $sFolder . 'Ajax.php does not exist', 1);
             }
-        }
-        else
-        {
+        } else {
             // For all scripts of the pH7 DatingCms
             $sFolder = ($this->oUri->fragment(3) && preg_match('#^[\w]+$#', $this->oUri->fragment(3))) ? PH7_DS . $this->oUri->fragment(3) : '';
 
-            if (is_file(PH7_PATH_SYS . 'core/assets/ajax/' . $this->oUri->fragment(2) . $sFolder . 'CoreAjax.php'))
-            {
+            if (is_file(PH7_PATH_SYS . 'core/assets/ajax/' . $this->oUri->fragment(2) . $sFolder . 'CoreAjax.php')) {
                 include_once PH7_PATH_SYS . 'core/assets/ajax/' . $this->oUri->fragment(2) . $sFolder . 'CoreAjax.php';
-            }
-            else
-            {
+            } else {
                 $this->notFound('Error while loading the library of ajax<br />File: ' . PH7_PATH_SYS . 'core' . PH7_DS . 'assets' . PH7_DS . 'ajax' . PH7_DS . $this->oUri->fragment(2) . $sFolder . 'CoreAjax.php does not exist', 1);
             }
         }
@@ -478,10 +437,11 @@ final class FrontController
      */
     private function fileRouter()
     {
-        if (is_file(PH7_PATH_SYS . 'core/assets/file/' . $this->oUri->fragment(2) . 'CoreFile.php'))
+        if (is_file(PH7_PATH_SYS . 'core/assets/file/' . $this->oUri->fragment(2) . 'CoreFile.php')) {
             include_once PH7_PATH_SYS . 'core/assets/file/' . $this->oUri->fragment(2) . 'CoreFile.php';
-        else
+        } else {
             $this->notFound('Error while loading the file<br />File: ' . PH7_PATH_SYS . 'core' . PH7_DS . 'assets' . PH7_DS . 'file' . PH7_DS . $this->oUri->fragment(2) . 'CoreFile.php does not exist', 1);
+        }
     }
 
     /**
@@ -490,15 +450,13 @@ final class FrontController
      */
     private function cronRouter()
     {
-        if (strcmp($this->oHttpRequest->get('secret_word'), DbConfig::getSetting('cronSecurityHash')) === 0)
-        {
-            if (is_file(PH7_PATH_SYS . 'core/assets/cron/' . $this->oUri->fragment(2) . PH7_DS . $this->oUri->fragment(3) . 'CoreCron.php'))
+        if (strcmp($this->oHttpRequest->get('secret_word'), DbConfig::getSetting('cronSecurityHash')) === 0) {
+            if (is_file(PH7_PATH_SYS . 'core/assets/cron/' . $this->oUri->fragment(2) . PH7_DS . $this->oUri->fragment(3) . 'CoreCron.php')) {
                 require PH7_PATH_SYS . 'core/assets/cron/' . $this->oUri->fragment(2) . PH7_DS . $this->oUri->fragment(3) . 'CoreCron.php';
-            else
+            } else {
                 $this->notFound('Error while loading the Cron Jobs file<br />File: ' . PH7_PATH_SYS . 'core' . PH7_DS . 'assets' . PH7_DS . 'cron' . PH7_DS . $this->oUri->fragment(2) . PH7_DS . $this->oUri->fragment(3) . 'CoreCron.php does not exist', 1);
-        }
-        else
-        {
+            }
+        } else {
             \PH7\Framework\Http\Http::setHeadersByCode(403);
             exit('Secret word is invalid for the cron hash!');
         }
@@ -510,13 +468,10 @@ final class FrontController
      */
     private function cssRouter()
     {
-        if (is_file(PH7_PATH_SYS . 'core/assets/css/' . $this->oUri->fragment(2) . 'CoreCss.php'))
-        {
+        if (is_file(PH7_PATH_SYS . 'core/assets/css/' . $this->oUri->fragment(2) . 'CoreCss.php')) {
             header('Content-Type: text/css');
             include_once PH7_PATH_SYS . 'core/assets/css/' . $this->oUri->fragment(2) . 'CoreCss.php';
-        }
-        else
-        {
+        } else {
             $this->notFound('Error while loading the Javascript file<br />File: ' . PH7_PATH_SYS . 'core' . PH7_DS . 'assets' . PH7_DS . 'css' . PH7_DS . $this->oUri->fragment(2) . 'CoreCss.php does not exist', 1);
         }
     }
@@ -527,13 +482,10 @@ final class FrontController
      */
     private function jsRouter()
     {
-        if (is_file(PH7_PATH_SYS . 'core/assets/js/' . $this->oUri->fragment(2) . 'CoreJs.php'))
-        {
+        if (is_file(PH7_PATH_SYS . 'core/assets/js/' . $this->oUri->fragment(2) . 'CoreJs.php')) {
             header('Content-Type: text/javascript');
             include_once PH7_PATH_SYS . 'core/assets/js/' . $this->oUri->fragment(2) . 'CoreJs.php';
-        }
-        else
-        {
+        } else {
             $this->notFound('Error while loading the Javascript file<br />File: ' . PH7_PATH_SYS . 'core' . PH7_DS . 'assets' . PH7_DS . 'js' . PH7_DS . $this->oUri->fragment(2) . 'CoreJs.php does not exist', 1);
         }
     }
@@ -557,38 +509,30 @@ final class FrontController
 
         $this->_templateInitialize();
 
-        if (is_file($this->oRegistry->path_module_controller))
-        {
+        if (is_file($this->oRegistry->path_module_controller)) {
             // For additional options modules
-            if (is_file($this->oRegistry->path_module . 'Bootstrap.php'))
-                require_once $this->oRegistry->path_module . 'Bootstrap.php'; // Include Bootstrap Module if there exists
+            if (is_file($this->oRegistry->path_module . 'Bootstrap.php')) {
+                require_once $this->oRegistry->path_module . 'Bootstrap.php';
+            } // Include Bootstrap Module if there exists
 
             require_once $this->oRegistry->path_module_controller;
             $sController = 'PH7\\' . $this->oRegistry->controller;
             $oCtrl = new $sController;
 
-            if ((new \ReflectionClass($sController))->hasMethod($this->oRegistry->action))
-            {
+            if ((new \ReflectionClass($sController))->hasMethod($this->oRegistry->action)) {
                 $oMvc = new \ReflectionMethod($sController, $this->oRegistry->action);
-                if ($oMvc->isPublic())
-                {
+                if ($oMvc->isPublic()) {
                     // And finally we perform the controller's action
                     $oMvc->invokeArgs($oCtrl, $this->getRequestParameter());
-                }
-                else
-                {
+                } else {
                     $this->notFound('The <b>' . $this->oRegistry->action . '</b> method is not public!', 1);
                 }
-            }
-            else
-            {
+            } else {
                 $this->notFound('The <b>' . $this->oRegistry->action . '</b> method of the <b>' . $this->oRegistry->controller . '</b> controller does not exist.', 1);
             }
 
             unset($oCtrl); // Destruction of the object and minimize CPU resources
-        }
-        else
-        {
+        } else {
             $this->notFound('The <b>' . $this->oRegistry->controller . '</b> controller of the <b>' . $this->oRegistry->module .
                 '</b> module is not found.<br />File: <b>' . $this->oRegistry->path_module . '</b>', 1);
         }
@@ -604,14 +548,11 @@ final class FrontController
     {
         $aRequest = array();
 
-        if (count($this->aRequestParameter) > 0)
-        {
-            foreach ($this->aRequestParameter as $sVal)
-            {
+        if (count($this->aRequestParameter) > 0) {
+            foreach ($this->aRequestParameter as $sVal) {
                 $sVal = trim($this->secureRequestParameter($sVal));
 
-                if ($sVal !== '')
-                {
+                if ($sVal !== '') {
                     // Clean the slug URL
                     $sVal = $this->cleanSlugUrl($sVal);
 
@@ -685,8 +626,9 @@ final class FrontController
     private function indexFileRouter()
     {
         // The following code will be useless when pH7CMS will be able to work without mod_rewrite \\
-        if ($this->oHttpRequest->currentUrl() === PH7_URL_ROOT . static::INDEX_FILE)
+        if ($this->oHttpRequest->currentUrl() === PH7_URL_ROOT . static::INDEX_FILE) {
             $this->notFound('If we\'re in production mode, we display an error page if it on the index file to indicate no file extension in order to avoid utilization of a security vulnerability  in the language.');
+        }
 
         /*
 
@@ -716,16 +658,14 @@ final class FrontController
      */
     private function notFound($sMsg = null, $iRedirect = null)
     {
-        if (isDebug() && !empty($sMsg))
-        {
+        if (isDebug() && !empty($sMsg)) {
             throw new \PH7\Framework\Error\CException\PH7Exception($sMsg);
-        }
-        else
-        {
-            if (empty($iRedirect))
+        } else {
+            if (empty($iRedirect)) {
                 $this->oRegistry->module = 'error';
-            else
+            } else {
                 \PH7\Framework\Url\Header::redirect(UriRoute::get('error', 'http', 'index'));
+            }
         }
     }
 
@@ -733,5 +673,4 @@ final class FrontController
     {
         unset($this->oConfig, $this->oRegistry, $this->oHttpRequest, $this->oUri, $this->bRouterRewriting);
     }
-
 }

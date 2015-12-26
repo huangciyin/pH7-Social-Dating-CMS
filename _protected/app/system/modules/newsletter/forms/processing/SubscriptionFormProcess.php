@@ -8,8 +8,7 @@
 namespace PH7;
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Util\Various,
+use PH7\Framework\Util\Various,
 PH7\Framework\Cookie\Cookie,
 PH7\Framework\Ip\Ip,
 PH7\Framework\Date\CDateTime,
@@ -28,12 +27,10 @@ class SubscriptionFormProcess extends Form
         $sName = $this->httpRequest->post('name');
         $bIsSubscriber = (new ExistsCoreModel)->email($sEmail, 'Subscribers');
 
-        switch ($this->httpRequest->post('direction'))
-        {
+        switch ($this->httpRequest->post('direction')) {
             case 'subscrire':
             {
-                if (!$bIsSubscriber)
-                {
+                if (!$bIsSubscriber) {
                     $aData = [
                         'name' => $sName,
                         'email' => $sEmail,
@@ -59,18 +56,13 @@ class SubscriptionFormProcess extends Form
                         'to' => $sEmail
                     ];
 
-                    if ( (new Mail)->send($aInfo, $sMessageHtml) )
-                    {
+                    if ( (new Mail)->send($aInfo, $sMessageHtml) ) {
                         \PFBC\Form::setSuccess('form_subscription', t('Please activate your subscription by clicking the activation link you received by email. If you can not find the email, please look in your SPAM FOLDER and mark as not spam.'));
                         $oSubscriptionModel->add($aData);
-                    }
-                    else
-                    {
+                    } else {
                         \PFBC\Form::setError('form_subscription', Form::errorSendingEmail());
                     }
-                }
-                else
-                {
+                } else {
                     \PFBC\Form::setError('form_subscription', t('Oops! You are already subscribed to our newsletter.'));
                 }
             }
@@ -78,13 +70,10 @@ class SubscriptionFormProcess extends Form
 
             case 'unsubscribe':
             {
-                if ($bIsSubscriber)
-                {
+                if ($bIsSubscriber) {
                     $oSubscriptionModel->unsubscribe($sEmail);
                     \PFBC\Form::setSuccess('form_subscription', t('Your subscription was successfully canceled.'));
-                }
-                else
-                {
+                } else {
                     \PFBC\Form::setError('form_subscription', t('We have not found any subscriber with the email address.'));
                 }
             }
@@ -96,5 +85,4 @@ class SubscriptionFormProcess extends Form
         }
         unset($oSubscriptionModel);
     }
-
 }

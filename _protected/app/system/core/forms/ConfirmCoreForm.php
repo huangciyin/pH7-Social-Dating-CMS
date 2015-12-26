@@ -13,7 +13,7 @@ use PH7\Framework\Mvc\Router\Uri;
 class ConfirmCoreForm
 {
 
-   /**
+    /**
     * @param array $aParam The parameters
     * @return void
     */
@@ -36,5 +36,4 @@ class ConfirmCoreForm
         $oForm->addElement(new \PFBC\Element\Button(t('Cancel'), 'cancel', array('onclick'=>'$("form").attr("action", "");parent.$.colorbox.close();'))); // Bug fixes
         $oForm->render();
     }
-
 }

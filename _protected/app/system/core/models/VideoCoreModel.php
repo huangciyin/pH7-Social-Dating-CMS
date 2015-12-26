@@ -22,8 +22,7 @@ class VideoCoreModel extends Framework\Mvc\Model\Engine\Model
     {
         $this->cache->start(self::CACHE_GROUP, 'album' . $iProfileId . $iAlbumId . $iApproved . $iOffset . $iLimit .$sOrder, static::CACHE_TIME);
 
-        if(!$oData = $this->cache->get()) {
-
+        if (!$oData = $this->cache->get()) {
             $iOffset = (int) $iOffset;
             $iLimit = (int) $iLimit;
 
@@ -54,5 +53,4 @@ class VideoCoreModel extends Framework\Mvc\Model\Engine\Model
         (!empty($iVideoId)) ? $rStmt->bindValue(':videoId', $iVideoId, \PDO::PARAM_INT) : '';
         return $rStmt->execute();
     }
-
 }

@@ -72,8 +72,9 @@ class AdminModel extends AdminCoreModel
     {
         $iProfileId = (int) $iProfileId;
 
-        if ($iProfileId === 1)
+        if ($iProfileId === 1) {
             exit('You cannot delete the Root Administrator!');
+        }
 
         $oDb = Db::getInstance();
         $oDb->exec('DELETE FROM' . Db::prefix('Admins') . 'WHERE profileId = ' . $iProfileId . ' LIMIT 1');
@@ -96,21 +97,17 @@ class AdminModel extends AdminCoreModel
 
         (ctype_digit($mLooking)) ? $rStmt->bindValue(':looking', $mLooking, \PDO::PARAM_INT) : $rStmt->bindValue(':looking', '%' . $mLooking . '%', \PDO::PARAM_STR);
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $rStmt->bindParam(':offset', $iOffset, \PDO::PARAM_INT);
             $rStmt->bindParam(':limit', $iLimit, \PDO::PARAM_INT);
         }
 
         $rStmt->execute();
 
-        if (!$bCount)
-        {
+        if (!$bCount) {
             $mData = $rStmt->fetchAll(\PDO::FETCH_OBJ);
             Db::free($rStmt);
-        }
-        else
-        {
+        } else {
             $oRow = $rStmt->fetch(\PDO::FETCH_OBJ);
             Db::free($rStmt);
             $mData = (int) $oRow->totalUsers;
@@ -131,5 +128,4 @@ class AdminModel extends AdminCoreModel
     {
         return $this->orm->update('CustomCode', 'code', $sCode, 'codeType', $sType);
     }
-
 }

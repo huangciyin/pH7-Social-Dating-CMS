@@ -18,21 +18,25 @@ class PrivacyFormProcess extends Form
      */
     public function __construct($iProfileId, UserCoreModel $oUserModel)
     {
-         parent::__construct();
+        parent::__construct();
 
-         $oGetPrivacy = $oUserModel->getPrivacySetting($iProfileId);
+        $oGetPrivacy = $oUserModel->getPrivacySetting($iProfileId);
 
-        if(!$this->str->equals($this->httpRequest->post('privacy_profile'), $oGetPrivacy->privacyProfile))
+        if (!$this->str->equals($this->httpRequest->post('privacy_profile'), $oGetPrivacy->privacyProfile)) {
             $oUserModel->updatePrivacySetting('privacyProfile', $this->httpRequest->post('privacy_profile'), $iProfileId);
+        }
 
-        if(!$this->str->equals($this->httpRequest->post('search_profile'), $oGetPrivacy->searchProfile))
+        if (!$this->str->equals($this->httpRequest->post('search_profile'), $oGetPrivacy->searchProfile)) {
             $oUserModel->updatePrivacySetting('searchProfile', $this->httpRequest->post('search_profile'), $iProfileId);
+        }
 
-        if(!$this->str->equals($this->httpRequest->post('user_save_views'), $oGetPrivacy->userSaveViews))
+        if (!$this->str->equals($this->httpRequest->post('user_save_views'), $oGetPrivacy->userSaveViews)) {
             $oUserModel->updatePrivacySetting('userSaveViews', $this->httpRequest->post('user_save_views'), $iProfileId);
+        }
 
-        if(!$this->str->equals($this->httpRequest->post('user_status'), $oUserModel->getUserStatus($iProfileId)))
+        if (!$this->str->equals($this->httpRequest->post('user_status'), $oUserModel->getUserStatus($iProfileId))) {
             $oUserModel->setUserStatus($iProfileId, $this->httpRequest->post('user_status'));
+        }
 
         /* Clean UserCoreModel Cache */
         (new Framework\Cache\Cache)->start(UserCoreModel::CACHE_GROUP, 'privacySetting' . $iProfileId, null)->clear()
@@ -40,5 +44,4 @@ class PrivacyFormProcess extends Form
 
         \PFBC\Form::setSuccess('form_privacy_account', t('Your privacy settings have been saved successfully!'));
     }
-
 }

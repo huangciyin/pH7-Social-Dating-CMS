@@ -14,8 +14,7 @@ namespace PH7\Framework\Security\Spam\Captcha;
 
 defined('PH7') or exit('Restricted access');
 
-use
-PH7\Framework\Navigation\Browser,
+use PH7\Framework\Navigation\Browser,
 PH7\Framework\Session\Session,
 PH7\Framework\Util\Various;
 
@@ -52,10 +51,11 @@ class Captcha
      */
     public function show($iRandom = null)
     {
-        if (!empty($iRandom))
+        if (!empty($iRandom)) {
             $this->_sStr = Various::genRnd($iRandom, 5);
-        else
+        } else {
             $this->_sStr = Various::genRnd('pH7_Pierre-Henry_Soria_Sanz_González_captcha', 5);
+        }
 
         $this->_oSession->set('rand_code', $this->_sStr);
 
@@ -91,7 +91,6 @@ class Captcha
         imageline($this->_rImg, mt_rand(2, $this->_iHeight + $this->_iMargin), mt_rand(1, $this->_iWidth + $this->_iMargin), mt_rand(1, $this->_iWidth + $this->_iMargin), mt_rand(2, $this->_iHeight + $this->_iMargin), $this->_aColor[array_rand($this->_aColor)]);
         unset($this->_rBlack, $this->_rRed, $this->_rWhite);
 
-
         imageconvolution($this->_rImg, $this->_aMatrixBlur, 9, 0);
         imageconvolution($this->_rImg, $this->_aMatrixBlur, 9, 0);
         unset($this->_aMatrixBlur);
@@ -108,10 +107,12 @@ class Captcha
      */
     public function check($sCode)
     {
-        if ($sCode === null)
+        if ($sCode === null) {
             return false;
-        if ($sCode === $this->_oSession->get('rand_code'))
+        }
+        if ($sCode === $this->_oSession->get('rand_code')) {
             return true;
+        }
         return false;
     }
 
@@ -136,8 +137,7 @@ class Captcha
      */
     private function _mixing()
     {
-        for ($i = 0, $iLength = strlen($this->_sStr); $i < $iLength; ++$i)
-        {
+        for ($i = 0, $iLength = strlen($this->_sStr); $i < $iLength; ++$i) {
             $sText = $this->_sStr[$i]; // A string can be seen as an array
             $iAngle = mt_rand(-70, 70);
             imagettftext($this->_rImg, mt_rand($this->_iSize / 2, $this->_iSize), $iAngle, ($i * $this->_iStringWidth) + $this->_iMargin, $this->_iHeight + mt_rand(1, $this->_iMargin / 2), $this->_aColor[array_rand($this->_aColor)], $this->_sFont, $sText);
@@ -170,5 +170,4 @@ class Captcha
             $this->_rImg
         );
     }
-
 }

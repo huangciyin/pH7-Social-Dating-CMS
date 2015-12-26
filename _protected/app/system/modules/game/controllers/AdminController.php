@@ -34,8 +34,7 @@ class AdminController extends MainController
 
     public function delete()
     {
-        if ( $this->httpRequest->postExists( array('id', 'thumb', 'file') ))
-        {
+        if ( $this->httpRequest->postExists( array('id', 'thumb', 'file') )) {
             $this->oGameModel->delete( $this->httpRequest->post('id', 'int') );
 
             $aFiles = [
@@ -49,13 +48,10 @@ class AdminController extends MainController
             (new Framework\Cache\Cache)->start(GameModel::CACHE_GROUP, null, null)->clear();
 
             $sMsg = t('The game has been removed.');
-        }
-        else
-        {
+        } else {
             $sMsg = t('The game could not be removed.');
         }
 
         Header::redirect(Uri::get('game', 'admin', 'index'), $sMsg);
     }
-
 }

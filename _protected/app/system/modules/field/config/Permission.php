@@ -15,11 +15,9 @@ class Permission extends PermissionCore
     {
         parent::__construct();
 
-        if (!AdminCore::auth())
-        {
-             // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
+        if (!AdminCore::auth()) {
+            // For security reasons, we do not redirectionnons the user to hide the url of the administrative part.
             Framework\Url\Header::redirect(PH7_URL_ROOT, $this->adminSignInMsg(), 'error');
         }
     }
-
 }

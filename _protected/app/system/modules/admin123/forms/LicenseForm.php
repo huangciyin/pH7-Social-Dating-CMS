@@ -16,10 +16,10 @@ class LicenseForm
 
     public static function display()
     {
-        if (isset($_POST['submit_license']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_license']))
+        if (isset($_POST['submit_license'])) {
+            if (\PFBC\Form::isValid($_POST['submit_license'])) {
                 new LicenseFormProcess(self::$_iLicenseId);
+            }
             Framework\Url\Header::redirect(Uri::get(PH7_ADMIN_MOD, 'setting', 'license', '?set_msg=1'));
         }
 
@@ -38,5 +38,4 @@ class LicenseForm
         $oForm->addElement(new \PFBC\Element\Button(t('Register'), 'submit', array('icon' => 'key')));
         $oForm->render();
     }
-
 }

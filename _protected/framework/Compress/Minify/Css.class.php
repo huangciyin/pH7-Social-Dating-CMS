@@ -50,13 +50,13 @@ class Css
      */
     protected $_inHack = false;
 
-
     /**
      * Constructor
      *
      * @param array $options (currently ignored)
      */
-    private function __construct($options) {
+    private function __construct($options)
+    {
         $this->_options = $options;
     }
 
@@ -249,5 +249,4 @@ class Css
         }
         return $out . $m[2];
     }
-
 }

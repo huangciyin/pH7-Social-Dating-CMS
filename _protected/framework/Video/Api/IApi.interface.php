@@ -66,5 +66,4 @@ interface IApi
      * @return mixed (integer | boolean) Returns the ID of the video if it was found, FALSE otherwise.
      */
     public function getVideoId($sUrl);
-
 }

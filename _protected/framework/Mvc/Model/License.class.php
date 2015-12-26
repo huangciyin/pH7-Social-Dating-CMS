@@ -34,5 +34,4 @@ class License extends Engine\Model
     {
         return $this->orm->update('License', 'licenseKey', $sKey, 'licenseId', $iId);
     }
-
 }

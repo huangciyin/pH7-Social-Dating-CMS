@@ -21,12 +21,14 @@ define('PH7', 1);
 define('PH7_REQUIRE_SERVER_VERSION', '5.4.0');
 define('PH7_REQUIRE_SQL_VERSION', '5.0');
 
-if (version_compare(PHP_VERSION, PH7_REQUIRE_SERVER_VERSION, '<'))
+if (version_compare(PHP_VERSION, PH7_REQUIRE_SERVER_VERSION, '<')) {
     exit('ERROR: Your PHP version is ' . PHP_VERSION . '. pH7CMS requires PHP ' . PH7_REQUIRE_SERVER_VERSION . ' or newer.');
+}
 
 // If no system settings, go install
-if (!is_file(__DIR__ . '/_constants.php'))
+if (!is_file(__DIR__ . '/_constants.php')) {
     exit( (is_dir(__DIR__ . '/_install/') ? header('Location: _install/') : 'CONFIG FILE NOT FOUND!') );
+}
 
 require __DIR__ . '/_constants.php';
 require PH7_PATH_APP  . 'Bootstrap.php';

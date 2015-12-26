@@ -24,16 +24,16 @@ class Stripe extends Provider implements Api
      */
    public function getUrl($sParam = '')
    {
-        return Uri::get('payment', 'main', 'process', 'stripe');
+       return Uri::get('payment', 'main', 'process', 'stripe');
    }
 
-   public function getMsg()
-   {
+    public function getMsg()
+    {
         // Useless for Stripe. Need only in order to be compatible with its API interface.
-   }
+    }
 
-   public function valid($sParam1 = '', $sParam2 = '')
-   {
+    public function valid($sParam1 = '', $sParam2 = '')
+    {
         // Useless for Stripe. Need only in order to be compatible with its API interface.
-   }
+    }
 }

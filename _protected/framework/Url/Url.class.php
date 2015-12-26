@@ -21,7 +21,9 @@ class Url
      *
      * @access private
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * URL-encodes string.
@@ -75,5 +77,4 @@ class Url
     {
         return http_build_query($aParams, $sNumericPrefix, $sArgSeparator, $iEncType);
     }
-
 }

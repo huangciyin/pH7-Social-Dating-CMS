@@ -28,10 +28,10 @@ class ConfigFileCoreForm
         $aData = parse_ini_file($sIniFile, true);
         $rData = file_get_contents($sIniFile);
 
-        if (isset($_POST['submit_config']))
-        {
-            if (\PFBC\Form::isValid($_POST['submit_config']))
+        if (isset($_POST['submit_config'])) {
+            if (\PFBC\Form::isValid($_POST['submit_config'])) {
                 new ConfigFileCoreFormProcess($sConfigVar, $sIniFile);
+            }
 
             Framework\Url\Header::redirect();
         }
@@ -41,23 +41,22 @@ class ConfigFileCoreForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_config', 'form_config'));
         $oForm->addElement(new \PFBC\Element\Token('config'));
 
-        foreach ($aData[$sConfigVar] as $sKey => $sVal)
-        {
+        foreach ($aData[$sConfigVar] as $sKey => $sVal) {
             $sLabel = str_replace(array('.', '_'), ' ', $sKey);
             $sLabel = (new Str)->upperFirstWords($sLabel);
 
-            if (false !== strpos($sKey, 'enable'))
+            if (false !== strpos($sKey, 'enable')) {
                 $oForm->addElement(new \PFBC\Element\Select($sLabel, 'config[' . $sKey . ']', array(1 => t('Enable'), 0 => t('Disable')), array('value' => $sVal)));
-            elseif (false !== strpos($sKey, 'email'))
+            } elseif (false !== strpos($sKey, 'email')) {
                 $oForm->addElement(new \PFBC\Element\Email($sLabel, 'config[' . $sKey . ']', array('value' => $sVal)));
-            elseif (ctype_digit($sVal))
+            } elseif (ctype_digit($sVal)) {
                 $oForm->addElement(new \PFBC\Element\Number($sLabel, 'config[' . $sKey . ']', array('step' => 'any', 'value' => $sVal)));
-            else
+            } else {
                 $oForm->addElement(new \PFBC\Element\Textbox($sLabel, 'config[' . $sKey . ']', array('value' => $sVal)));
+            }
         }
 
         $oForm->addElement(new \PFBC\Element\Button);
         $oForm->render();
     }
-
 }

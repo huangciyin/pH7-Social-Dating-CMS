@@ -32,8 +32,7 @@ class StatCoreAjax
 
     private function _init()
     {
-        switch( (new Http)->post('type') )
-        {
+        switch ( (new Http)->post('type') ) {
             case 'total_users':
               $this->_mOutput = $this->_oUserModel->total();
             break;
@@ -43,8 +42,7 @@ class StatCoreAjax
              Framework\Http\Http::setHeadersByCode(400);
            exit('Bad Request Error!');
        }
-   }
-
+    }
 }
 
 echo (new StatCoreAjax)->display();

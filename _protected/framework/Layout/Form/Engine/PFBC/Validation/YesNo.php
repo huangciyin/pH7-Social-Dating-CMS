@@ -5,13 +5,16 @@
  */
 namespace PFBC\Validation;
 
-class YesNo extends \PFBC\Validation {
+class YesNo extends \PFBC\Validation
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->message = t('Error: You must accept our %element%.');
     }
 
-    public function isValid($sValue) {
+    public function isValid($sValue)
+    {
         return ($this->isNotApplicable($sValue) || $sValue == 1);
     }
 }

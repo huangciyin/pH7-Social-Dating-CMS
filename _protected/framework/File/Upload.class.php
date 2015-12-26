@@ -51,5 +51,4 @@ abstract class Upload
     {
         return ($this->iFileSize < $this->getMaxSize());
     }
-
 }

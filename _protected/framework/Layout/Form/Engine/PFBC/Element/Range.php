@@ -14,5 +14,4 @@ class Range extends Textbox
         $this->validation[] = new \PFBC\Validation\Numeric;
         parent::render();
     }
-
 }

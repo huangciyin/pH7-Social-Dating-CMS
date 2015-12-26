@@ -19,11 +19,13 @@ class BirthDate extends \PFBC\Validation
 
     public function isValid($sValue)
     {
-        if($this->isNotApplicable($sValue)) return true;
+        if ($this->isNotApplicable($sValue)) {
+            return true;
+        }
 
         /**
          * @return boolean
          */
         return $this->oValidate->birthDate($sValue, $this->iMin, $this->iMax);
-   }
+    }
 }

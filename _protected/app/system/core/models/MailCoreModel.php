@@ -22,5 +22,4 @@ class MailCoreModel extends Framework\Mvc\Model\Engine\Model
         Db::free($rStmt);
         return (int)$oRow->unread;
     }
-
 }
